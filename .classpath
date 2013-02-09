@@ -2,5 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="lib/JHotDraw 7.6/Source/jhotdraw7/src/main/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/JHotDraw 7.6/Source/jhotdraw7/lib/annotations.jar"/>
+	<classpathentry kind="lib" path="lib/JHotDraw 7.6/Source/jhotdraw7/lib/jsr305.jar"/>
+	<classpathentry kind="lib" path="lib/JHotDraw 7.6/Source/jhotdraw7/lib/quaqua.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
