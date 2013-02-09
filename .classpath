@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="lib/jhotdraw7/src/main/java"/>
+	<classpathentry kind="lib" path="lib/jhotdraw7/lib/annotations.jar"/>
+	<classpathentry kind="lib" path="lib/jhotdraw7/lib/jsr305.jar"/>
+	<classpathentry kind="lib" path="lib/jhotdraw7/lib/quaqua.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
