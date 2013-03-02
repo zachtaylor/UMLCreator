@@ -1,17 +1,12 @@
 package org.teamrocket;
 
 public class TransitionEntity {
-  public TransitionEntity() {
-
-  }
-
   public void setNext(StateEntity n) {
     _next = n;
   }
 
   public StateEntity getNext() {
     return _next;
-
   }
 
   public void setPrev(StateEntity p) {
@@ -24,16 +19,15 @@ public class TransitionEntity {
   }
 
   public void setInput(String s) {
-    this._input = s;
+    _input = s;
   }
 
   public String getInput() {
     return _input;
-
   }
 
   public void setAction(String a) {
-    this._action = a;
+    _action = a;
   }
 
   public String getAction() {
