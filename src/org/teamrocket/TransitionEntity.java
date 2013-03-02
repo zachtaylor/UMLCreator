@@ -1,6 +1,10 @@
 package org.teamrocket;
 
-public class TransitionEntity {
+import com.zachtaylor.jnodalxml.XMLNode;
+
+// We may need to extend Observable?
+public class TransitionEntity{
+  
   public void setNext(StateEntity n) {
     _next = n;
   }
