@@ -32,4 +32,26 @@ public class TestStateEntity extends TestCase {
 
     assertFalse(ent.isAcceptState());
   }
+
+  public void testAddTransition() {
+    assertTrue(ent.getTransitions().isEmpty());
+
+    TransitionEntity trans = new TransitionEntity();
+
+    trans.setPrev(ent);
+    assertTrue(ent.addSuccessor(trans));
+    assertTrue(ent.getTransitions().contains(trans));
+  }
+
+  public void testAddDuplicateTransition() {
+    assertTrue(ent.getTransitions().isEmpty());
+
+    TransitionEntity trans1 = new TransitionEntity();
+    TransitionEntity trans2 = new TransitionEntity();
+
+    assertTrue(ent.addSuccessor(trans1));
+
+    assertEquals(trans1, trans2);
+    assertFalse(ent.addSuccessor(trans2));
+  }
 }

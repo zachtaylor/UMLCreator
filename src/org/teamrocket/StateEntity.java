@@ -37,11 +37,11 @@ public class StateEntity extends Observable {
   }
 
   public boolean addSuccessor(TransitionEntity ent) {
-    // TODO : verification
+    if (_successors.contains(ent))
+      return false;
 
     _successors.add(ent);
-
-    return false;
+    return true;
   }
 
   public boolean removeSuccessor(TransitionEntity ent) {
@@ -51,11 +51,11 @@ public class StateEntity extends Observable {
   }
 
   public boolean addPredecessor(TransitionEntity ent) {
-    // TODO : verification
+    if (_predecessors.contains(ent))
+      return false;
 
     _predecessors.add(ent);
-
-    return false;
+    return true;
   }
 
   public boolean removePredecessor(TransitionEntity ent) {
@@ -82,9 +82,9 @@ public class StateEntity extends Observable {
 
   public XMLNode toXML() {
     XMLNode node = new XMLNode(_name);
-    
+
     // add stuff to this node for saving purposes...
-    
+
     return node;
   }
 
@@ -102,18 +102,18 @@ public class StateEntity extends Observable {
       return false;
     if ((_name != null && s._name == null) || (_name == null && s._name != null))
       return false;
-    if (_name != null && s._name != null && !_name.equals(s._name))
+    if (_name != null && !_name.equals(s._name))
       return false;
     if ((_description != null && s._description == null) || (_description == null && s._description != null))
       return false;
-    if (_description != null && s._description != null && !_description.equals(s._description))
+    if (_description != null && !_description.equals(s._description))
       return false;
 
     if (_successors.size() != s._successors.size())
       return false;
     if (_predecessors.size() != s._predecessors.size())
       return false;
-    
+
     for (TransitionEntity ent : _successors)
       if (!s._successors.contains(ent))
         return false;
