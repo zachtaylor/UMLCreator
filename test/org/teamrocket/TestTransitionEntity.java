@@ -4,15 +4,14 @@ import org.junit.Test;
 
 import junit.framework.TestCase;
 
-public class TestTransitionEntity extends TestCase{
+public class TestTransitionEntity extends TestCase {
 
   TransitionEntity ent;
-  
-  public void setUp()
-  {
+
+  public void setUp() {
     ent = new TransitionEntity();
   }
-	
+
   @Test
   public void testNext() {
     StateEntity nextValue = new StateEntity(false);
@@ -20,15 +19,15 @@ public class TestTransitionEntity extends TestCase{
 
     assertEquals(nextValue, ent.getNext());
   }
-  
+
   @Test
   public void testPrev() {
     StateEntity prevValue = new StateEntity(false);
     ent.setPrev(prevValue);
-    
+
     assertEquals(prevValue, ent.getPrev());
   }
-  
+
   @Test
   public void testInput() {
     String InputValue = "Fu-bar";
@@ -36,7 +35,7 @@ public class TestTransitionEntity extends TestCase{
 
     assertEquals(InputValue, ent.getInput());
   }
-  
+
   @Test
   public void testAction() {
     String actionValue = "This transition does this";
@@ -44,12 +43,7 @@ public class TestTransitionEntity extends TestCase{
 
     assertEquals(actionValue, ent.getAction());
   }
-  
-  @Test
-  public void testEquals() {
-    // TODO: Test the equals method
-  }
-  
-  // TODO: Other Transition Testing methods  (Internal Transitions, also Internal StateEntities in TestStateEntities)
-}
 
+  // TODO: Other Transition Testing methods (Internal Transitions, also Internal
+  // StateEntities in TestStateEntities)
+}
