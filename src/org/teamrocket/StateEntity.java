@@ -45,7 +45,8 @@ public class StateEntity extends Observable {
   }
 
   public boolean removeSuccessor(TransitionEntity ent) {
-    // TODO : verification
+	  if (!_successors.contains(ent))
+	  	return false;
 
     return _successors.remove(ent);
   }
@@ -59,7 +60,8 @@ public class StateEntity extends Observable {
   }
 
   public boolean removePredecessor(TransitionEntity ent) {
-    // TODO : verification
+	  if (!_predecessors.contains(ent))
+	  	return false;
 
     return _predecessors.remove(ent);
   }

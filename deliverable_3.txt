@@ -1,11 +1,22 @@
-Delivarable 3 Write Up of Test Cases
+Deliverable 3 Write Up of Test Cases
+Team Rocket:  Sam Dembinski, Zach Taylor, and Kaoutar Maghfour
 
+We chose our test cases based on the basic functionality of our StateEntity and TransitionEntity classes.  Our general theory
+was: "if we have a method, we should test it, especially if it modifies variables."  This provided several basic test case 
+methods in our testing classes.  However, we also sought to test that certain user operations would not be allowed.  For 
+instance, the user should not be able to add a transition from one state to another if a transition between the two going in 
+the same direction already exists.  This is where the 'testAddDuplicateTransition()' test case came from.
+
+Some properties of State Entities and Transition Entities we wanted to create test cases for:
 StateEntity
 A StateEntity should be able to retain its name. To this end, testName asserts that when setting a name, that name is preserved.
 A StateEntity should also retain a description. 'testDescription' works in the same way as testName
-A StateEntity should be an instance of an accept state or not. This should be decided on creation, and thus the constructor is a good place to set this value. testAcceptState tests that a StateEntity will remember whether it is an accept state, or not.
-A StateEntity should record it's possible transitions. To test this, a transition is added, and then asserted to be present on the StateEntity. This provides that StateEntity objects track their transitions.
-A StateEntity should not allow duplicate transitions. To test this, two transitions which are equivalent are created, and added to a StateEntity. The StateEntity is asserted to deny adding the second, equivalent transition.
+A StateEntity should be an instance of an accept state or not. This should be decided on creation, and thus the constructor is a 
+good place to set this value. testAcceptState tests that a StateEntity will remember whether it is an accept state, or not.
+A StateEntity should record it's possible transitions. To test this, a transition is added, and then asserted to be present on 
+the StateEntity. This provides that StateEntity objects track their transitions.
+A StateEntity should not allow duplicate transitions. To test this, two transitions which are equivalent are created, and added 
+to a StateEntity. The StateEntity is asserted to deny adding the second, equivalent transition.
 
 TransitionEntity
 The TransitionEntity should record it's next state. testNext sets a next state, and asserts that it is remembered.
@@ -13,7 +24,12 @@ TransitionEntity objects should also record their previous state. testPrev works
 A TransitionEntity should remember it's input in a similar way. testInput works in this same way.
 Finally, TransitionEntity instances should remember its action. testAction works in this same way.
 
-In each of the above cases, the oracle is expected value placed in each test method.
 
-StateControl, StateFigure, TransitionControl, TransitionFigure
-These classes are stubs, as per the deliverable. Their tests, therefore, are also not complete.
+In each of the above cases, the oracle is the expected value placed in each test method.  We, as the programmers, understand
+how StateEntities and TransitionEntities should function.  We test that our coded methods function correctly by forming
+a hypothetical circumstance, creating an object with random, but plausible, data, and testing that the object behaves in a manner
+which we expect.  If an object should change its data, we verify that it does so correctly.  If the object shouldn't allow a 
+certain function, we verify that it does not.
+
+StateControl, StateFigure, TransitionControl, TransitionFigure:
+These classes are stubs for now. Their tests, therefore, are also incomplete.
