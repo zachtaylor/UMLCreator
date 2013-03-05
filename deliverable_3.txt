@@ -11,4 +11,9 @@ TransitionEntity
 The TransitionEntity should record it's next state. testNext sets a next state, and asserts that it is remembered.
 TransitionEntity objects should also record their previous state. testPrev works in the same way as testNext
 A TransitionEntity should remember it's input in a similar way. testInput works in this same way.
-Finally, TransitionEntity instances should remember their action. testAction works in this same way.
+Finally, TransitionEntity instances should remember its action. testAction works in this same way.
+
+In each of the above cases, the oracle is expected value placed in each test method.
+
+StateControl, StateFigure, TransitionControl, TransitionFigure
+These classes are stubs, as per the deliverable. Their tests, therefore, are also not complete.
