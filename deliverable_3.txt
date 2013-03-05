@@ -1,4 +1,4 @@
-
+Delivarable 3 Write Up of Test Cases
 
 StateEntity
 A StateEntity should be able to retain its name. To this end, testName asserts that when setting a name, that name is preserved.
