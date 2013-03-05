@@ -80,16 +80,19 @@ public class StateEntity extends Observable {
     return ret;
   }
 
-  public XMLNode toXML() {
-    XMLNode node = new XMLNode(_name);
-
-    // add stuff to this node for saving purposes...
-
-    return node;
-  }
-
   public static StateEntity fromXML(XMLNode node) {
     return null; // TODO : make new state entity from xml node
+  }
+
+  public String toString() {
+    XMLNode node = new XMLNode(_name);
+
+    node.setAttribute("accept", _accept + "");
+    node.setAttribute("description", _description);
+
+    node.setSelfClosing(true);
+
+    return node.toString();
   }
 
   public boolean equals(Object o) {
