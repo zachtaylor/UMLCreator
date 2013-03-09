@@ -24,8 +24,8 @@ TransitionEntity objects should also record their previous state. testPrev works
 A TransitionEntity should remember it's input in a similar way. testInput works in this same way.
 Finally, TransitionEntity instances should remember its action. testAction works in this same way.
 
-The methods which handle XML generation are located in an external Jar, which was created and imported by one of our group members.
-The JNodalZML.jar can be found in the lib->JHotDraw 7.6 folder.
+The methods which handle XML generation are located in an external jar, which was created and imported by one of our group members. The projects source is included inside the jar.
+The JNodalXML.jar can be found in the lib directory
 
 In each of the above cases, the oracle is the expected value placed in each test method.  We, as the programmers, understand
 how StateEntities and TransitionEntities should function.  We test that our coded methods function correctly by forming
@@ -35,3 +35,13 @@ certain function, we verify that it does not.
 
 StateControl, StateFigure, TransitionControl, TransitionFigure:
 These classes are stubs for now. Their tests, therefore, are also incomplete.
+
+For the included XML library, XMLNode is tested in a number of ways.
+
+1. XMLNode instances must save their 'value'
+2. XMLNode instances should be able to have any number of unique attributes. They should not be permitted to have duplicate attribute keys.
+3. XMLNode instances should have the ability to be self-closing
+4. Self-closing XMLNode instances should not have a value
+5. XMLNodes may only have child nodes, OR a value. They may not have both.
+6. XMLNodes must be equivalent iff they are of they have the same closing status, name, attributes, and equivalent children.
+7. XMLNode.toString is simple under this implementation. XMLNodes and their children, will be stringified with regard to their self-closing status, attributes, and nested children.
