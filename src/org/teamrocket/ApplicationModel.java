@@ -89,6 +89,7 @@ public class ApplicationModel extends DefaultApplicationModel {
 
   private void addCreationButtonsTo(JToolBar tb, final DrawingEditor editor) {
     // AttributeKeys for the entitie sets
+
     HashMap<AttributeKey, Object> attributes;
 
     ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.pert.Labels");
@@ -136,15 +137,16 @@ public class ApplicationModel extends DefaultApplicationModel {
     addCreationButtonsTo(tb, editor);
     tb.setName(drawLabels.getString("window.drawToolBar.title"));
     list.add(tb);
-    tb = new JToolBar();
-    ButtonFactory.addAttributesButtonsTo(tb, editor);
-    tb.setName(drawLabels.getString("window.attributesToolBar.title"));
-    list.add(tb);
-    tb = new JToolBar();
-    ButtonFactory.addAlignmentButtonsTo(tb, editor);
-    tb.setName(drawLabels.getString("window.alignmentToolBar.title"));
-    list.add(tb);
+//    tb = new JToolBar();
+//    ButtonFactory.addAttributesButtonsTo(tb, editor);
+//    tb.setName(drawLabels.getString("window.attributesToolBar.title"));
+//    list.add(tb);
+//    tb = new JToolBar();
+//    ButtonFactory.addAlignmentButtonsTo(tb, editor);
+//    tb.setName(drawLabels.getString("window.alignmentToolBar.title"));
+//    list.add(tb);
     return list;
+    
   }
 
   /** Creates the MenuBuilder. */
