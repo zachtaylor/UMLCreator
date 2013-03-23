@@ -96,6 +96,8 @@ public class StateFigure extends GraphicalCompositeFigure{
       return handles;
   }
   
+  
+  
   /*
   public void update(Observable obs, Object o)
   {
