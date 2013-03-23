@@ -1,6 +1,7 @@
 package org.teamrocket;
 
 import org.jhotdraw.draw.GraphicalCompositeFigure;
+import org.jhotdraw.draw.RoundRectangleFigure;
 
 public class StateFigure extends GraphicalCompositeFigure{
   
@@ -10,7 +11,8 @@ public class StateFigure extends GraphicalCompositeFigure{
   
   public StateFigure()
   {
-    // TODO: 
+    super(new RoundRectangleFigure());
+    // TODO look at task figure
   }
   
   /*

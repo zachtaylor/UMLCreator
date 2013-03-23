@@ -111,7 +111,6 @@ public class ApplicationModel extends DefaultApplicationModel {
     tb.addSeparator();
     ButtonFactory.addToolTo(tb, editor, new TextAreaCreationTool(new TextAreaFigure()), "edit.createTextArea",
         drawLabels);
-
   }
 
   /**
@@ -173,6 +172,7 @@ public class ApplicationModel extends DefaultApplicationModel {
     };
   }
 
+  
   @Override
   public URIChooser createOpenChooser(Application a, @Nullable View v) {
     JFileURIChooser c = new JFileURIChooser();
