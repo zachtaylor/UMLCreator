@@ -20,7 +20,6 @@ import org.jhotdraw.samples.pert.figures.TaskFigure;
 // May implement Observer?
 public class TransitionFigure extends LabeledLineConnectionFigure {
   private String _label;
-  private TransitionControl _ctrl;
   private TransitionEntity _data;
   
   public TransitionFigure()
