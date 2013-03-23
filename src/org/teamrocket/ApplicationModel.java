@@ -61,6 +61,7 @@ public class ApplicationModel extends DefaultApplicationModel {
     ResourceBundleUtil drawLabels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
     AbstractAction aa;
 
+    m.put(ImportXMLFileAction.ID, new ImportXMLFileAction(a));
     m.put(ExportFileAction.ID, new ExportFileAction(a, v));
     m.put("view.toggleGrid", aa = new ToggleViewPropertyAction(a, v, PertView.GRID_VISIBLE_PROPERTY));
     drawLabels.configureAction(aa, "view.toggleGrid");
