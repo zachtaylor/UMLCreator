@@ -44,7 +44,11 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
 
          StateFigure sf = (StateFigure) start.getOwner();
           StateFigure ef = (StateFigure) end.getOwner();
-
+            
+          if (ef.getPredecessors().contains(sf)) {
+            return false;
+        }
+          
       }  
 
       return false;
