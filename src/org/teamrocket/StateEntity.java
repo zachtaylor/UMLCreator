@@ -37,7 +37,6 @@ public class StateEntity extends Observable {
   }
 
   public boolean addSuccessor(TransitionEntity ent) {
-  	System.out.println(".....2");
     if (_successors.contains(ent))
       return false;
 
@@ -53,7 +52,6 @@ public class StateEntity extends Observable {
   }
 
   public boolean addPredecessor(TransitionEntity ent) {
-  	System.out.println(".....");
     if (_predecessors.contains(ent))
       return false;
 
