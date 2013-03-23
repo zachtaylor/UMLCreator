@@ -32,7 +32,6 @@ import org.jhotdraw.util.ResourceBundleUtil;
 public class StateFigure extends GraphicalCompositeFigure{
   
   private String _label;
-  private StateControl _ctrl;
   private StateEntity _data;
   private HashSet<TransitionFigure> transitions;  // holds transitions associated with this state figure
   
@@ -124,6 +123,10 @@ public class StateFigure extends GraphicalCompositeFigure{
   
   public String getDescription() {
   	return getNameFigure().getText();
+  }
+  
+  public StateEntity getEntity() {
+    return _data;
   }
   
   // TaskFigure has one of these - it might be for some unseen functionality of another class
