@@ -33,7 +33,6 @@ public class StateFigure extends GraphicalCompositeFigure{
   
   private String _label;
   private StateEntity _data;
-  private HashSet<TransitionFigure> transitions;  // holds transitions associated with this state figure
   
   public StateFigure()
   {
@@ -140,43 +139,42 @@ public class StateFigure extends GraphicalCompositeFigure{
     return (TextFigure) ((ListFigure) getChild(0)).getChild(0);
   }
   
-  // Methods to handle Transitions associated with this state figure
-  public Set<TransitionFigure> getTransitions() {
-    return Collections.unmodifiableSet(transitions);
-  }
-  
-  // TODO: Mess with list of successors and predecessors
-  public void addTransition(TransitionFigure f) {
-    transitions.add(f);
+  // modifiers for predecessor and successor lists
+  public void addPredecessor(TransitionFigure f) {
+    TransitionEntity t = f.getData();
+    _data.addPredecessor(t);
     
   }
 
-  public void removeTransition(TransitionFigure f) {
-    transitions.remove(f);
+  public void removePredecessor(TransitionFigure f) {
+    TransitionEntity t = f.getData();
+    _data.removePredecessor(t);
     
   }
   
-  public List<StateFigure> getSuccessors() {
-    LinkedList<StateFigure> list = new LinkedList<StateFigure>();
-    for (TransitionFigure c : getTransitions()) {
-        if (c.getStartFigure() == this) {
-            list.add((StateFigure) c.getEndFigure());
-        }
+  public void addSuccessor(TransitionFigure f) {
+    TransitionEntity t = f.getData();
+    _data.addSuccessor(t);
+    
+  }
+  
+  public void removeSuccessor(TransitionFigure f) {
+    TransitionEntity t = f.getData();
+    _data.removeSuccessor(t);
+    
+  }
+  
+/*  public List<StateFigure> getSuccessors() {
 
     }
     return list;
   }
   
   public List<StateFigure> getPredecessors() {
-    LinkedList<StateFigure> list = new LinkedList<StateFigure>();
-    for (TransitionFigure c : getTransitions()) {
-        if (c.getEndFigure() == this) {
-            list.add((StateFigure) c.getStartFigure());
-        }
 
     }
     return list;
-  }
+  } */
 }
 
 
