@@ -6,7 +6,11 @@ import static org.jhotdraw.draw.AttributeKeys.STROKE_COLOR;
 import static org.jhotdraw.draw.AttributeKeys.STROKE_DASHES;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 import org.jhotdraw.draw.GraphicalCompositeFigure;
 import org.jhotdraw.draw.ListFigure;
@@ -20,7 +24,9 @@ import org.jhotdraw.draw.handle.MoveHandle;
 import org.jhotdraw.draw.layouter.VerticalLayouter;
 import org.jhotdraw.draw.locator.RelativeLocator;
 import org.jhotdraw.geom.Insets2D;
+import org.jhotdraw.samples.pert.figures.DependencyFigure;
 import org.jhotdraw.samples.pert.figures.SeparatorLineFigure;
+import org.jhotdraw.samples.pert.figures.TaskFigure;
 import org.jhotdraw.util.ResourceBundleUtil;
 
 public class StateFigure extends GraphicalCompositeFigure{
@@ -28,6 +34,7 @@ public class StateFigure extends GraphicalCompositeFigure{
   private String _label;
   private StateControl _ctrl;
   private StateEntity _data;
+  private HashSet<TransitionFigure> transitions;  // holds transitions associated with this state figure
   
   public StateFigure()
   {
@@ -105,19 +112,6 @@ public class StateFigure extends GraphicalCompositeFigure{
   }
   */
   
-  public void addTransition(TransitionFigure tran)
-  {
-    // TODO: add a transition
-    
-  }
-  
-  public void removeTransition(TransitionFigure tran)
-  {
-    // TODO: remove a transtion
-    
-  }
-  
-  // Other GUI and JHotDraw methods
   public void setName(String newValue) {
     getNameFigure().setText(newValue);
   }
@@ -134,9 +128,51 @@ public class StateFigure extends GraphicalCompositeFigure{
   	return getNameFigure().getText();
   }
   
+  // TaskFigure has one of these - it might be for some unseen functionality of another class
+  @Override
+  public int getLayer() {
+      return 0;
+  }
+  
   // not sure how this works, but TaskFigure seems to like it
   private TextFigure getNameFigure() {
     return (TextFigure) ((ListFigure) getChild(0)).getChild(0);
+  }
+  
+  // Methods to handle Transitions associated with this state figure
+  public Set<TransitionFigure> getTransitions() {
+    return Collections.unmodifiableSet(transitions);
+  }
+  
+  // TODO: Mess with list of successors and predecessors
+  public void addTransition(TransitionFigure f) {
+    transitions.add(f);
+  }
+
+  public void removeTransition(TransitionFigure f) {
+    transitions.remove(f);
+  }
+  
+  public List<StateFigure> getSuccessors() {
+    LinkedList<StateFigure> list = new LinkedList<StateFigure>();
+    for (TransitionFigure c : getTransitions()) {
+        if (c.getStartFigure() == this) {
+            list.add((StateFigure) c.getEndFigure());
+        }
+
+    }
+    return list;
+  }
+  
+  public List<StateFigure> getPredecessors() {
+    LinkedList<StateFigure> list = new LinkedList<StateFigure>();
+    for (TransitionFigure c : getTransitions()) {
+        if (c.getEndFigure() == this) {
+            list.add((StateFigure) c.getStartFigure());
+        }
+
+    }
+    return list;
   }
 }
 
