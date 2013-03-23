@@ -103,8 +103,6 @@ public class StateFigure extends GraphicalCompositeFigure{
       return handles;
   }
   
-  
-  
   /*
   public void update(Observable obs, Object o)
   {
@@ -147,10 +145,12 @@ public class StateFigure extends GraphicalCompositeFigure{
   // TODO: Mess with list of successors and predecessors
   public void addTransition(TransitionFigure f) {
     transitions.add(f);
+    
   }
 
   public void removeTransition(TransitionFigure f) {
     transitions.remove(f);
+    
   }
   
   public List<StateFigure> getSuccessors() {
