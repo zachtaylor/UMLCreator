@@ -76,7 +76,6 @@ public class StateFigure extends GraphicalCompositeFigure{
     _data.setDescription(descriptionFigure.getText());
   }
   
-  // Hope and pray that this creates handles!
   @Override
   public Collection<Handle> createHandles(int detailLevel) {
       java.util.List<Handle> handles = new LinkedList<Handle>();
@@ -90,7 +89,7 @@ public class StateFigure extends GraphicalCompositeFigure{
               handles.add(new MoveHandle(this, RelativeLocator.southWest()));
               handles.add(new MoveHandle(this, RelativeLocator.southEast()));
               ConnectorHandle ch;
-              handles.add(ch = new ConnectorHandle(new LocatorConnector(this, RelativeLocator.east()), new TransitionFigure()));
+              handles.add(ch = new ConnectorHandle(new LocatorConnector(this, RelativeLocator.center()), new TransitionFigure()));
               ch.setToolTipText("Drag the connector to a dependent state.");
               break;
       }
