@@ -177,14 +177,14 @@ public class ApplicationModel extends DefaultApplicationModel {
   @Override
   public URIChooser createOpenChooser(Application a, @Nullable View v) {
     JFileURIChooser c = new JFileURIChooser();
-    c.addChoosableFileFilter(new ExtensionFileFilter("Pert Diagram", "xml"));
+    c.addChoosableFileFilter(new ExtensionFileFilter("UMLCreator Diagram", "umlc"));
     return c;
   }
 
   @Override
   public URIChooser createSaveChooser(Application a, @Nullable View v) {
     JFileURIChooser c = new JFileURIChooser();
-    c.addChoosableFileFilter(new ExtensionFileFilter("Pert Diagram", "xml"));
+    c.addChoosableFileFilter(new ExtensionFileFilter("UMLCreator Diagram", "umlc"));
     return c;
   }
 }

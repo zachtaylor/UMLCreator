@@ -45,8 +45,8 @@ public class StateEntity extends Observable {
   }
 
   public boolean removeSuccessor(TransitionEntity ent) {
-	  if (!_successors.contains(ent))
-	  	return false;
+    if (!_successors.contains(ent))
+      return false;
 
     return _successors.remove(ent);
   }
@@ -60,8 +60,8 @@ public class StateEntity extends Observable {
   }
 
   public boolean removePredecessor(TransitionEntity ent) {
-	  if (!_predecessors.contains(ent))
-	  	return false;
+    if (!_predecessors.contains(ent))
+      return false;
 
     return _predecessors.remove(ent);
   }
@@ -83,10 +83,20 @@ public class StateEntity extends Observable {
   }
 
   public static StateEntity fromXML(XMLNode node) {
-    return null; // TODO : make new state entity from xml node
+    StateEntity ent = null;
+
+    try {
+      ent = new StateEntity(Boolean.parseBoolean(node.getAttribute("accept")));
+      ent.setName(node.getName());
+      ent.setDescription(node.getAttribute("description"));
+
+    } catch (Exception e) {
+    }
+
+    return ent;
   }
 
-  public String toString() {
+  public XMLNode toXML() {
     XMLNode node = new XMLNode(_name);
 
     node.setAttribute("accept", _accept + "");
@@ -94,7 +104,11 @@ public class StateEntity extends Observable {
 
     node.setSelfClosing(true);
 
-    return node.toString();
+    return node;
+  }
+
+  public String toString() {
+    return toXML().toString();
   }
 
   public boolean equals(Object o) {
