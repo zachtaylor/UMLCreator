@@ -19,7 +19,7 @@ import org.jhotdraw.draw.connector.LocatorConnector;
 import org.jhotdraw.draw.handle.BoundsOutlineHandle;
 import org.jhotdraw.draw.handle.ConnectorHandle;
 import org.jhotdraw.draw.handle.Handle;
-import org.jhotdraw.draw.handle.MoveHandle;
+import org.jhotdraw.draw.handle.ResizeHandleKit;
 import org.jhotdraw.draw.layouter.VerticalLayouter;
 import org.jhotdraw.draw.locator.RelativeLocator;
 import org.jhotdraw.geom.Insets2D;
@@ -83,16 +83,22 @@ public class StateFigure extends GraphicalCompositeFigure {
 	@Override
 	public Collection<Handle> createHandles(int detailLevel) {
 		java.util.List<Handle> handles = new LinkedList<Handle>();
+
 		switch (detailLevel) {
 		case -1:
 			handles
 					.add(new BoundsOutlineHandle(getPresentationFigure(), false, true));
 			break;
 		case 0:
-			handles.add(new MoveHandle(this, RelativeLocator.northWest()));
-			handles.add(new MoveHandle(this, RelativeLocator.northEast()));
-			handles.add(new MoveHandle(this, RelativeLocator.southWest()));
-			handles.add(new MoveHandle(this, RelativeLocator.southEast()));
+			/*
+			 * handles.add(new MoveHandle(this, RelativeLocator.northWest()));
+			 * handles.add(new MoveHandle(this, RelativeLocator.northEast()));
+			 * handles.add(new MoveHandle(this, RelativeLocator.southWest()));
+			 * handles.add(new MoveHandle(this, RelativeLocator.southEast()));
+			 */
+
+			ResizeHandleKit.addCornerResizeHandles(this, handles);
+
 			ConnectorHandle ch;
 			handles.add(ch = new ConnectorHandle(new LocatorConnector(this,
 					RelativeLocator.center()), new TransitionFigure()));
@@ -196,4 +202,10 @@ public class StateFigure extends GraphicalCompositeFigure {
 		out.closeElement();
 		out.closeElement();
 	}
+
+	// for resizing
+	public boolean isTransformable() {
+		return true;
+	}
+
 }
