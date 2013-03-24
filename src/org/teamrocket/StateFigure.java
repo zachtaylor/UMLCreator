@@ -30,12 +30,15 @@ import org.jhotdraw.xml.DOMOutput;
 
 public class StateFigure extends GraphicalCompositeFigure {
 
-	private String _label;
 	private StateEntity _data;
 
 	public StateFigure() {
 		super(new RoundRectangleFigure());
 
+		// may want to change to false, depending on how we use the boolean value in
+		// StateEntity.java
+		_data = new StateEntity(true);
+		
 		setLayouter(new VerticalLayouter());
 
 		RoundRectangleFigure nameCompartmentPF = new RoundRectangleFigure();
@@ -73,9 +76,7 @@ public class StateFigure extends GraphicalCompositeFigure {
 
 		setName(labels.getString("teamrocket.state.defaultName"));
 
-		// may want to change to false, depending on how we use the boolean value in
-		// StateEntity.java
-		_data = new StateEntity(true);
+
 		_data.setName(nameFigure.getText());
 		_data.setDescription(descriptionFigure.getText());
 	}
@@ -113,6 +114,7 @@ public class StateFigure extends GraphicalCompositeFigure {
 	 */
 
 	public void setName(String newValue) {
+		_data.setName(newValue);
 		getNameFigure().setText(newValue);
 	}
 
@@ -121,6 +123,7 @@ public class StateFigure extends GraphicalCompositeFigure {
 	}
 
 	public void setDescription(String newValue) {
+		_data.setDescription(newValue);
 		getNameFigure().setText(newValue);
 	}
 

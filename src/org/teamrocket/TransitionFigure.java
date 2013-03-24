@@ -22,6 +22,9 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
 
 	public TransitionFigure() {
 		// TODO:
+		_data = new TransitionEntity();
+		_label = "Trigger # Action";
+		
 		set(STROKE_COLOR, new Color(0x000099));
 		set(STROKE_WIDTH, 1d);
 		set(END_DECORATION, new ArrowTip());

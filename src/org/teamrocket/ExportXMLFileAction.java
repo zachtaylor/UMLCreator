@@ -2,10 +2,12 @@ package org.teamrocket;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFileChooser;
@@ -16,7 +18,6 @@ import org.jhotdraw.app.View;
 import org.jhotdraw.app.action.AbstractViewAction;
 import org.jhotdraw.draw.AbstractDrawing;
 import org.jhotdraw.draw.DefaultDrawingView;
-import org.jhotdraw.draw.Drawing;
 import org.jhotdraw.draw.Figure;
 import org.jhotdraw.gui.JFileURIChooser;
 import org.jhotdraw.gui.JSheet;
@@ -24,6 +25,8 @@ import org.jhotdraw.gui.URIChooser;
 import org.jhotdraw.gui.event.SheetEvent;
 import org.jhotdraw.gui.event.SheetListener;
 import org.jhotdraw.util.ResourceBundleUtil;
+
+import com.zachtaylor.jnodalxml.XMLNode;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
 
@@ -81,13 +84,47 @@ public class ExportXMLFileAction extends AbstractViewAction {
       if (!file.exists())
         file.createNewFile();
 
-      FileWriter writer = new FileWriter(file);
+      BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
-      Drawing d = ((DefaultDrawingView) view).getDrawing();
-      List<Figure> figures = ((AbstractDrawing) d).getChildren();
+      AbstractDrawing d = (AbstractDrawing) ((DefaultDrawingView) view).getDrawing();
+      List<Figure> figures = d.getChildren();
 
       // TODO : Write XML to the file
-
+      List<XMLNode> nodes = new ArrayList<XMLNode>();
+      if (figures.isEmpty())
+      	writer.write("\n");
+      
+      for (Figure f : figures) {
+      	XMLNode n = new XMLNode("State");
+      	if (!(f instanceof StateFigure))
+      		continue;
+      	
+      	n.setAttribute("name", ((StateFigure) f).getName());
+      	n.setAttribute("description", ((StateFigure) f).getDescription());
+      	
+      	// list of each figure's children
+      	List<Figure> chef = ((StateFigure) f).getChildren();
+      	
+      	for (Figure child : chef) {
+      		if (!(child instanceof TransitionFigure))
+      			continue;
+      		
+      		XMLNode childNode = new XMLNode("transition");
+      		childNode.setAttribute("trigger", ((TransitionFigure) child).getData().getInput());
+      		childNode.setAttribute("action", ((TransitionFigure) child).getData().getAction());
+      		childNode.setAttribute("next", ((TransitionFigure) child).getData().getNext().getName());
+      		
+      		n.addChild(childNode);
+      	}
+      	
+      	nodes.add(n);
+      }
+      // debugging printing
+      for (XMLNode q : nodes) {
+      	System.out.println(q.toString());
+      }
+      
+      
     } catch (IOException e) {
       e.printStackTrace();
     }
