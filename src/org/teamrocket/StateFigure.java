@@ -5,12 +5,11 @@ import static org.jhotdraw.draw.AttributeKeys.FONT_BOLD;
 import static org.jhotdraw.draw.AttributeKeys.STROKE_COLOR;
 import static org.jhotdraw.draw.AttributeKeys.STROKE_DASHES;
 
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.io.IOException;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
 import org.jhotdraw.draw.GraphicalCompositeFigure;
 import org.jhotdraw.draw.ListFigure;
@@ -24,10 +23,10 @@ import org.jhotdraw.draw.handle.MoveHandle;
 import org.jhotdraw.draw.layouter.VerticalLayouter;
 import org.jhotdraw.draw.locator.RelativeLocator;
 import org.jhotdraw.geom.Insets2D;
-import org.jhotdraw.samples.pert.figures.DependencyFigure;
 import org.jhotdraw.samples.pert.figures.SeparatorLineFigure;
-import org.jhotdraw.samples.pert.figures.TaskFigure;
 import org.jhotdraw.util.ResourceBundleUtil;
+import org.jhotdraw.xml.DOMInput;
+import org.jhotdraw.xml.DOMOutput;
 
 public class StateFigure extends GraphicalCompositeFigure {
 
@@ -52,7 +51,7 @@ public class StateFigure extends GraphicalCompositeFigure {
 		add(separator1);
 		add(descriptionCompartment);
 
-		Insets2D.Double insets = new Insets2D.Double(4, 8, 4, 8);
+		Insets2D.Double insets = new Insets2D.Double(8, 16, 8, 16);
 		nameCompartment.set(LAYOUT_INSETS, insets);
 		descriptionCompartment.set(LAYOUT_INSETS, insets);
 
@@ -162,5 +161,39 @@ public class StateFigure extends GraphicalCompositeFigure {
 		TransitionEntity t = f.getData();
 		_data.removeSuccessor(t);
 
+	}
+
+	@Override
+	public void read(DOMInput in) throws IOException {
+		double x = in.getAttribute("x", 0d);
+		double y = in.getAttribute("y", 0d);
+		double w = in.getAttribute("w", 0d);
+		double h = in.getAttribute("h", 0d);
+		setBounds(new Point2D.Double(x, y), new Point2D.Double(x + w, y + h));
+		readAttributes(in);
+		in.openElement("model");
+		in.openElement("name");
+		setName((String) in.readObject());
+		in.closeElement();
+		in.openElement("duration");
+		setDescription((String) in.readObject());
+		in.closeElement();
+		in.closeElement();
+	}
+
+	@Override
+	public void write(DOMOutput out) throws IOException {
+		Rectangle2D.Double r = getBounds();
+		out.addAttribute("x", r.x);
+		out.addAttribute("y", r.y);
+		writeAttributes(out);
+		out.openElement("model");
+		out.openElement("name");
+		out.writeObject(getName());
+		out.closeElement();
+		out.openElement("duration");
+		out.writeObject(getDescription());
+		out.closeElement();
+		out.closeElement();
 	}
 }

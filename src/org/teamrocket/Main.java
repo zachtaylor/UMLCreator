@@ -20,7 +20,7 @@ public class Main {
     }
 
     ApplicationModel model = new ApplicationModel();
-    model.setName("JHotDraw Pert");
+    model.setName("JHotDraw UMLCreator");
     model.setVersion(Main.class.getPackage().getImplementationVersion());
     model.setViewClassName("org.jhotdraw.samples.pert.PertView");
     app.setModel(model);
