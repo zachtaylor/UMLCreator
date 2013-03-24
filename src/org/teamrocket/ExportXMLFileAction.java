@@ -29,7 +29,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 
 public class ExportXMLFileAction extends AbstractViewAction {
 
-  public final static String ID = "file.export";
+  public final static String ID = "file.exportxml";
   private Component oldFocusOwner;
 
   /** Creates a new instance. */

@@ -4,6 +4,10 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 import org.jhotdraw.app.action.view.ViewPropertyAction;
 import org.jhotdraw.app.action.view.ToggleViewPropertyAction;
 import org.jhotdraw.app.action.file.ExportFileAction;
+import org.jhotdraw.app.action.file.LoadDirectoryAction;
+import org.jhotdraw.app.action.file.LoadFileAction;
+import org.jhotdraw.app.action.file.OpenDirectoryAction;
+import org.jhotdraw.app.action.file.OpenFileAction;
 import org.jhotdraw.draw.tool.Tool;
 import org.jhotdraw.draw.tool.CreationTool;
 import org.jhotdraw.draw.tool.TextAreaCreationTool;
@@ -12,6 +16,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
+
 import org.jhotdraw.app.*;
 import org.jhotdraw.app.action.*;
 import org.jhotdraw.draw.*;
@@ -25,7 +30,8 @@ import org.jhotdraw.samples.pert.figures.*;
 
 public class ApplicationModel extends DefaultApplicationModel {
 
-  private final static double[] scaleFactors = { 5, 4, 3, 2, 1.5, 1.25, 1, 0.75, 0.5, 0.25, 0.10 };
+  private final static double[] scaleFactors = { 5, 4, 3, 2, 1.5, 1.25, 1,
+      0.75, 0.5, 0.25, 0.10 };
 
   private static class ToolButtonListener implements ItemListener {
 
@@ -58,20 +64,55 @@ public class ApplicationModel extends DefaultApplicationModel {
   @Override
   public ActionMap createActionMap(Application a, @Nullable View v) {
     ActionMap m = super.createActionMap(a, v);
-    ResourceBundleUtil drawLabels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
+    ResourceBundleUtil drawLabels = ResourceBundleUtil
+        .getBundle("org.jhotdraw.draw.Labels");
     AbstractAction aa;
 
     m.put(ImportXMLFileAction.ID, new ImportXMLFileAction(a));
+    m.put(ExportXMLFileAction.ID, new ExportXMLFileAction(a, v));
     m.put(ExportFileAction.ID, new ExportFileAction(a, v));
-    m.put("view.toggleGrid", aa = new ToggleViewPropertyAction(a, v, PertView.GRID_VISIBLE_PROPERTY));
+
+    m.put("view.toggleGrid", aa = new ToggleViewPropertyAction(a, v,
+        PertView.GRID_VISIBLE_PROPERTY));
     drawLabels.configureAction(aa, "view.toggleGrid");
     for (double sf : scaleFactors) {
-      m.put((int) (sf * 100) + "%", aa = new ViewPropertyAction(a, v, DrawingView.SCALE_FACTOR_PROPERTY, Double.TYPE,
-          new Double(sf)));
+      m.put((int) (sf * 100) + "%", aa = new ViewPropertyAction(a, v,
+          DrawingView.SCALE_FACTOR_PROPERTY, Double.TYPE, new Double(sf)));
       aa.putValue(Action.NAME, (int) (sf * 100) + " %");
 
     }
     return m;
+  }
+
+  public MenuBuilder getMenuBuilder() {
+    return new DefaultMenuBuilder() {
+      @Override
+      public void addOpenFileItems(JMenu m, Application app, @Nullable View v) {
+        ActionMap am = app.getActionMap(v);
+        Action a;
+        if (null != (a = am.get(OpenFileAction.ID))) {
+          m.add(a);
+        }
+        if (null != (a = am.get(OpenDirectoryAction.ID))) {
+          m.add(a);
+        }
+        if (null != (a = am.get(ImportXMLFileAction.ID))) {
+          m.add(a);
+        }
+      }
+
+      @Override
+      public void addExportFileItems(JMenu m, Application app, @Nullable View v) {
+        ActionMap am = app.getActionMap(v);
+        Action a;
+        if (null != (a = am.get(ExportFileAction.ID))) {
+          m.add(a);
+        }
+        if (null != (a = am.get(ExportXMLFileAction.ID))) {
+          m.add(a);
+        }
+      }
+    };
   }
 
   public DefaultDrawingEditor getSharedEditor() {
@@ -93,8 +134,10 @@ public class ApplicationModel extends DefaultApplicationModel {
 
     HashMap<AttributeKey, Object> attributes;
 
-    ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.pert.Labels");
-    ResourceBundleUtil drawLabels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
+    ResourceBundleUtil labels = ResourceBundleUtil
+        .getBundle("org.jhotdraw.samples.pert.Labels");
+    ResourceBundleUtil drawLabels = ResourceBundleUtil
+        .getBundle("org.jhotdraw.draw.Labels");
 
     ButtonFactory.addSelectionToolTo(tb, editor);
     tb.addSeparator();
@@ -103,16 +146,18 @@ public class ApplicationModel extends DefaultApplicationModel {
     attributes.put(AttributeKeys.FILL_COLOR, Color.white);
     attributes.put(AttributeKeys.STROKE_COLOR, Color.black);
     attributes.put(AttributeKeys.TEXT_COLOR, Color.black);
-    ButtonFactory.addToolTo(tb, editor, new CreationTool(new StateFigure(), attributes), "edit.createState", labels);
-    //ButtonFactory.addToolTo(tb, editor, new CreationTool(new TaskFigure(), attributes), "edit.createTask", labels);
+    ButtonFactory.addToolTo(tb, editor, new CreationTool(new StateFigure(),
+        attributes), "edit.createState", labels);
+    // ButtonFactory.addToolTo(tb, editor, new CreationTool(new TaskFigure(),
+    // attributes), "edit.createTask", labels);
 
     attributes = new HashMap<AttributeKey, Object>();
     attributes.put(AttributeKeys.STROKE_COLOR, new Color(0x000099));
-    ButtonFactory.addToolTo(tb, editor, new ConnectionTool(new DependencyFigure(), attributes),
-        "edit.createDependency", labels);
+    ButtonFactory.addToolTo(tb, editor, new ConnectionTool(
+        new DependencyFigure(), attributes), "edit.createDependency", labels);
     tb.addSeparator();
-    ButtonFactory.addToolTo(tb, editor, new TextAreaCreationTool(new TextAreaFigure()), "edit.createTextArea",
-        drawLabels);
+    ButtonFactory.addToolTo(tb, editor, new TextAreaCreationTool(
+        new TextAreaFigure()), "edit.createTextArea", drawLabels);
   }
 
   /**
@@ -120,8 +165,10 @@ public class ApplicationModel extends DefaultApplicationModel {
    * list. Subclasses may return other values.
    */
   @Override
-  public java.util.List<JToolBar> createToolBars(Application a, @Nullable View pr) {
-    ResourceBundleUtil drawLabels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
+  public java.util.List<JToolBar> createToolBars(Application a,
+      @Nullable View pr) {
+    ResourceBundleUtil drawLabels = ResourceBundleUtil
+        .getBundle("org.jhotdraw.draw.Labels");
     PertView p = (PertView) pr;
 
     DrawingEditor editor;
@@ -138,16 +185,16 @@ public class ApplicationModel extends DefaultApplicationModel {
     addCreationButtonsTo(tb, editor);
     tb.setName(drawLabels.getString("window.drawToolBar.title"));
     list.add(tb);
-//    tb = new JToolBar();
-//    ButtonFactory.addAttributesButtonsTo(tb, editor);
-//    tb.setName(drawLabels.getString("window.attributesToolBar.title"));
-//    list.add(tb);
-//    tb = new JToolBar();
-//    ButtonFactory.addAlignmentButtonsTo(tb, editor);
-//    tb.setName(drawLabels.getString("window.alignmentToolBar.title"));
-//    list.add(tb);
+    // tb = new JToolBar();
+    // ButtonFactory.addAttributesButtonsTo(tb, editor);
+    // tb.setName(drawLabels.getString("window.attributesToolBar.title"));
+    // list.add(tb);
+    // tb = new JToolBar();
+    // ButtonFactory.addAlignmentButtonsTo(tb, editor);
+    // tb.setName(drawLabels.getString("window.alignmentToolBar.title"));
+    // list.add(tb);
     return list;
-    
+
   }
 
   /** Creates the MenuBuilder. */
@@ -174,18 +221,19 @@ public class ApplicationModel extends DefaultApplicationModel {
     };
   }
 
-  
   @Override
   public URIChooser createOpenChooser(Application a, @Nullable View v) {
     JFileURIChooser c = new JFileURIChooser();
-    c.addChoosableFileFilter(new ExtensionFileFilter("UMLCreator Diagram", "umlc"));
+    c.addChoosableFileFilter(new ExtensionFileFilter("UMLCreator Diagram",
+        "umlc"));
     return c;
   }
 
   @Override
   public URIChooser createSaveChooser(Application a, @Nullable View v) {
     JFileURIChooser c = new JFileURIChooser();
-    c.addChoosableFileFilter(new ExtensionFileFilter("UMLCreator Diagram", "umlc"));
+    c.addChoosableFileFilter(new ExtensionFileFilter("UMLCreator Diagram",
+        "umlc"));
     return c;
   }
 }
