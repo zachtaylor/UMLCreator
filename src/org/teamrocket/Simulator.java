@@ -31,6 +31,10 @@ public class Simulator {
     }
   }
 
+  public String getOutput() {
+    return _output.toString();
+  }
+
   private boolean loadAndCheckNextInput() {
     try {
       _line = _input.readLine().trim();
