@@ -28,7 +28,7 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
 		set(STROKE_COLOR, new Color(0x000099));
 		set(STROKE_WIDTH, 1d);
 		set(END_DECORATION, new ArrowTip());
-
+		
 		setAttributeEnabled(END_DECORATION, false);
 		setAttributeEnabled(START_DECORATION, false);
 		setAttributeEnabled(STROKE_DASHES, false);
