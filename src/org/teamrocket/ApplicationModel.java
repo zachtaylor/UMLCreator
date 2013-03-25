@@ -59,6 +59,7 @@ public class ApplicationModel extends DefaultApplicationModel {
 
   /** Creates a new instance. */
   public ApplicationModel() {
+    _start = new StateEntity(false);
   }
 
   @Override
@@ -71,6 +72,7 @@ public class ApplicationModel extends DefaultApplicationModel {
     m.put(ImportXMLFileAction.ID, new ImportXMLFileAction(a));
     m.put(ExportXMLFileAction.ID, new ExportXMLFileAction(a, v));
     m.put(ExportFileAction.ID, new ExportFileAction(a, v));
+    m.put(SimulatorAction.ID, new SimulatorAction(a, v, _start));
 
     m.put("view.toggleGrid", aa = new ToggleViewPropertyAction(a, v,
         PertView.GRID_VISIBLE_PROPERTY));
@@ -109,6 +111,15 @@ public class ApplicationModel extends DefaultApplicationModel {
           m.add(a);
         }
         if (null != (a = am.get(ExportXMLFileAction.ID))) {
+          m.add(a);
+        }
+      }
+
+      @Override
+      public void addOtherFileItems(JMenu m, Application app, @Nullable View v) {
+        ActionMap am = app.getActionMap(v);
+        Action a;
+        if (null != (a = am.get(SimulatorAction.ID))) {
           m.add(a);
         }
       }
@@ -236,4 +247,6 @@ public class ApplicationModel extends DefaultApplicationModel {
         "umlc"));
     return c;
   }
+
+  private StateEntity _start;
 }

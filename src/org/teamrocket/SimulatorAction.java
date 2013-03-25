@@ -1,16 +1,33 @@
 package org.teamrocket;
 
+import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 
-public class Simulator {
-  public Simulator(StateEntity start, BufferedReader input) {
+import org.jhotdraw.app.Application;
+import org.jhotdraw.app.View;
+import org.jhotdraw.app.action.AbstractViewAction;
+import org.jhotdraw.util.ResourceBundleUtil;
+
+import edu.umd.cs.findbugs.annotations.Nullable;
+
+public class SimulatorAction extends AbstractViewAction {
+  public final static String ID = "runsimulator";
+
+  /** Creates a new instance. */
+  public SimulatorAction(Application app, @Nullable View view, StateEntity start) {
+    super(app, view);
+    ResourceBundleUtil.getBundle("org.jhotdraw.app.Labels").configureAction(this, ID);
     _state = start;
-    _input = input;
   }
 
-  public void run() {
+  @Override
+  public void actionPerformed(ActionEvent evt) {
+    BufferedReader input = new BufferedReader(null);
+    // TODO : assign _input
+    _input = input;
+
     while (loadAndCheckNextInput()) {
       List<TransitionEntity> transitions = _state.getSuccessors();
       TransitionEntity transition = null;
