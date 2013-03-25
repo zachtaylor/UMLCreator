@@ -16,8 +16,8 @@ import javax.swing.SwingUtilities;
 import org.jhotdraw.app.Application;
 import org.jhotdraw.app.View;
 import org.jhotdraw.app.action.AbstractViewAction;
-import org.jhotdraw.draw.AbstractDrawing;
 import org.jhotdraw.draw.DefaultDrawingView;
+import org.jhotdraw.draw.Drawing;
 import org.jhotdraw.draw.Figure;
 import org.jhotdraw.gui.JFileURIChooser;
 import org.jhotdraw.gui.JSheet;
@@ -86,7 +86,7 @@ public class ExportXMLFileAction extends AbstractViewAction {
 
       BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
-      AbstractDrawing d = (AbstractDrawing) ((DefaultDrawingView) view).getDrawing();
+      DefaultDraw
       List<Figure> figures = d.getChildren();
 
       // TODO : Write XML to the file
