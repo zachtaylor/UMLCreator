@@ -58,4 +58,8 @@ public class StartStateFigure extends EllipseFigure {
     ellipse.width = Math.max(0.1, Math.abs(lead.x - anchor.x));
     ellipse.height = Math.max(0.1, Math.abs(lead.y - anchor.y));
   }
+  
+  public StateEntity getEntity() {
+  	return _data;
+  }
 }

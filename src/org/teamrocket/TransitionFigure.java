@@ -42,12 +42,29 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
 
 	@Override
 	public boolean canConnect(Connector start, Connector end) {
-		if ((start.getOwner() instanceof StateFigure)
-				&& (end.getOwner() instanceof StateFigure)) {
+		if ((start.getOwner() instanceof StateFigure) && (end.getOwner() instanceof StateFigure)){
 
 			StateFigure sf = (StateFigure) start.getOwner();
 			StateFigure ef = (StateFigure) end.getOwner();
 
+			_data = new TransitionEntity();
+			_data.setPrev(sf.getEntity());
+			_data.setNext(ef.getEntity());
+			return true;
+		} else if ((start.getOwner() instanceof StartStateFigure) && (end.getOwner() instanceof StateFigure)) {
+			
+			StartStateFigure sf = (StartStateFigure) start.getOwner();
+			StateFigure ef = (StateFigure) end.getOwner();
+			
+			_data = new TransitionEntity();
+			_data.setPrev(sf.getEntity());
+			_data.setNext(ef.getEntity());
+			return true;
+		} else if ((start.getOwner() instanceof StateFigure) && (end.getOwner() instanceof EndStateFigure)) {
+			
+			StateFigure sf = (StateFigure) start.getOwner();
+			EndStateFigure ef = (EndStateFigure) end.getOwner();
+			
 			_data = new TransitionEntity();
 			_data.setPrev(sf.getEntity());
 			_data.setNext(ef.getEntity());
