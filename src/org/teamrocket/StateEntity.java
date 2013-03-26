@@ -1,6 +1,7 @@
 package org.teamrocket;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Observable;
@@ -64,6 +65,10 @@ public class StateEntity extends Observable {
       return false;
 
     return _predecessors.remove(ent);
+  }
+  
+  public List<TransitionEntity> getSuccessors() {
+    return Collections.unmodifiableList(_successors);
   }
 
   public Set<TransitionEntity> getTransitions() {
