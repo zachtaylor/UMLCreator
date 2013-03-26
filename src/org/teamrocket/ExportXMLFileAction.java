@@ -86,7 +86,7 @@ public class ExportXMLFileAction extends AbstractViewAction {
 
       BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
-      DefaultDraw
+    //  DefaultDraw
       List<Figure> figures = d.getChildren();
 
       // TODO : Write XML to the file

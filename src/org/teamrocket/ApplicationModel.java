@@ -81,6 +81,10 @@ public class ApplicationModel extends DefaultApplicationModel {
   public static void addStateEntity(StateEntity s) {
     bucket.add(s);
   }
+   
+  public static List<StateEntity> getStateEntity(StateEntity s){
+    return bucket;
+  }
 
   public static void addStartStateEntity(StateEntity s) {
     // TODO : If list is not empty, warn
