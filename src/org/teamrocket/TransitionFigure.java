@@ -71,7 +71,7 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
 
   @Override
   public boolean canConnect(Connector start) {
-    return (start.getOwner() instanceof StateFigure);
+    return (start.getOwner() instanceof StateFigure || start.getOwner() instanceof StartStateFigure);
   }
 
   @Override
