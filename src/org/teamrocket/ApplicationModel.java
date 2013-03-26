@@ -189,7 +189,7 @@ public class ApplicationModel extends DefaultApplicationModel {
 
     attributes = new HashMap<AttributeKey, Object>();
     attributes.put(AttributeKeys.STROKE_COLOR, new Color(0x000099));
-    ButtonFactory.addToolTo(tb, editor, new ConnectionTool(new TransitionFigure(), attributes), "edit.createTransition.icon", labels);
+    ButtonFactory.addToolTo(tb, editor, new ConnectionTool(new TransitionFigure(), attributes), "edit.createDependency", labels);
     tb.addSeparator();
     ButtonFactory.addToolTo(tb, editor, new TextAreaCreationTool(new TextAreaFigure()), "edit.createTextArea", drawLabels);
   }
