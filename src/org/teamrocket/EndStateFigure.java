@@ -1,9 +1,11 @@
 package org.teamrocket;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 
+import org.jhotdraw.draw.AttributeKeys;
 import org.jhotdraw.draw.EllipseFigure;
-import org.jhotdraw.util.ResourceBundleUtil;
 
 public class EndStateFigure extends EllipseFigure {
   public EllipseFigure circle;
@@ -13,9 +15,11 @@ public class EndStateFigure extends EllipseFigure {
   public EndStateFigure() {
     super();
 
-		ResourceBundleUtil labels = ResourceBundleUtil
-				.getBundle("org.jhotdraw.samples.pert.Labels");
+  }
 
+  public void draw(Graphics2D g) {
+    set(AttributeKeys.FILL_COLOR, Color.BLACK);
+    super.draw(g);
   }
 
   @Override
