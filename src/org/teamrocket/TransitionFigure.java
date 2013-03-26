@@ -41,37 +41,29 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
 
   @Override
   public boolean canConnect(Connector start, Connector end) {
-    if ((start.getOwner() instanceof StateFigure)
-        && (end.getOwner() instanceof StateFigure)) {
+    Figure startowner = start.getOwner();
+    Figure endowner = end.getOwner();
 
-      StateFigure sf = (StateFigure) start.getOwner();
-      StateFigure ef = (StateFigure) end.getOwner();
-
-      _data.setPrev(sf.getEntity());
-      _data.setNext(ef.getEntity());
-      return true;
+    if (startowner instanceof StateFigure) {
+      if (endowner instanceof StateFigure
+          || endowner instanceof StartStateFigure
+          || endowner instanceof EndStateFigure) {
+        return true;
+      }
     }
-    else if ((start.getOwner() instanceof StartStateFigure)
-        && (end.getOwner() instanceof StateFigure)) {
-
-      StartStateFigure sf = (StartStateFigure) start.getOwner();
-      StateFigure ef = (StateFigure) end.getOwner();
-
-      _data = new TransitionEntity();
-      _data.setPrev(sf.getEntity());
-      _data.setNext(ef.getEntity());
-      return true;
+    else if (startowner instanceof StartStateFigure) {
+      if (endowner instanceof StateFigure
+          || endowner instanceof StartStateFigure
+          || endowner instanceof EndStateFigure) {
+        return true;
+      }
     }
-    else if ((start.getOwner() instanceof StateFigure)
-        && (end.getOwner() instanceof EndStateFigure)) {
-
-      StateFigure sf = (StateFigure) start.getOwner();
-      EndStateFigure ef = (EndStateFigure) end.getOwner();
-
-      _data = new TransitionEntity();
-      _data.setPrev(sf.getEntity());
-      _data.setNext(ef.getEntity());
-      return true;
+    else if (startowner instanceof EndStateFigure) {
+      if (endowner instanceof StateFigure
+          || endowner instanceof StartStateFigure
+          || endowner instanceof EndStateFigure) {
+        return true;
+      }
     }
 
     return false;
@@ -84,9 +76,18 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
 
   @Override
   protected void handleDisconnect(Connector start, Connector end) {
-    StateFigure sf = (StateFigure) start.getOwner();
-    StateFigure ef = (StateFigure) end.getOwner();
-
+    if (start instanceof StateFigure)
+      ((StateFigure) start.getOwner()).removeSuccessor(_data);
+    else if (start instanceof StartStateFigure)
+      ((StartStateFigure) start.getOwner()).removeSuccessor(_data);
+    else if (start instanceof EndStateFigure)
+      ((EndStateFigure) start.getOwner()).removeSuccessor(_data);
+    if (end instanceof StateFigure)
+      ((StateFigure) start.getOwner()).removePredecessor(_data);
+    else if (end instanceof StartStateFigure)
+      ((StartStateFigure) start.getOwner()).removePredecessor(_data);
+    else if (end instanceof EndStateFigure)
+      ((EndStateFigure) end.getOwner()).removePredecessor(_data);
   }
 
   @Override
@@ -98,12 +99,11 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
     else if (start instanceof EndStateFigure)
       ((EndStateFigure) start.getOwner()).addSuccessor(_data);
     if (end instanceof StateFigure)
-      ((StateFigure) start.getOwner()).addSuccessor(_data);
+      ((StateFigure) start.getOwner()).addPredecessor(_data);
     else if (end instanceof StartStateFigure)
-      ((StartStateFigure) start.getOwner()).addSuccessor(_data);
+      ((StartStateFigure) start.getOwner()).addPredecessor(_data);
     else if (end instanceof EndStateFigure)
-      ((EndStateFigure) end.getOwner()).addSuccessor(_data);
-
+      ((EndStateFigure) end.getOwner()).addPredecessor(_data);
   }
 
   @Override

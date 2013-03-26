@@ -55,6 +55,14 @@ public class StartStateFigure extends EllipseFigure {
     _data.addPredecessor(t);
   }
 
+  public void removeSuccessor(TransitionEntity t) {
+    _data.removeSuccessor(t);
+  }
+
+  public void removePredecessor(TransitionEntity t) {
+    _data.removePredecessor(t);
+  }
+
   @Override
   public void setBounds(Point2D.Double anchor, Point2D.Double lead) {
     ellipse.x = Math.min(anchor.x, lead.x);
@@ -66,4 +74,5 @@ public class StartStateFigure extends EllipseFigure {
   public StateEntity getEntity() {
     return _data;
   }
+
 }

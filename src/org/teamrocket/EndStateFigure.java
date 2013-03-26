@@ -73,4 +73,12 @@ public class EndStateFigure extends EllipseFigure {
   public void addPredecessor(TransitionEntity t) {
     _data.addPredecessor(t);
   }
+
+  public void removeSuccessor(TransitionEntity t) {
+    _data.removeSuccessor(t);
+  }
+
+  public void removePredecessor(TransitionEntity t) {
+    _data.removePredecessor(t);
+  }
 }

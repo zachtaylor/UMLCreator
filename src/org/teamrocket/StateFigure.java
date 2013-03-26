@@ -146,20 +146,16 @@ public class StateFigure extends GraphicalCompositeFigure {
 
   }
 
-  public void removePredecessor(TransitionFigure f) {
-    TransitionEntity t = f.getData();
+  public void removePredecessor(TransitionEntity t) {
     _data.removePredecessor(t);
-
   }
 
   public void addSuccessor(TransitionEntity t) {
     _data.addSuccessor(t);
   }
 
-  public void removeSuccessor(TransitionFigure f) {
-    TransitionEntity t = f.getData();
+  public void removeSuccessor(TransitionEntity t) {
     _data.removeSuccessor(t);
-
   }
 
   @Override
