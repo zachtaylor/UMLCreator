@@ -2,8 +2,13 @@ package org.teamrocket;
 
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
+
+import javax.swing.JFileChooser;
 
 import org.jhotdraw.app.Application;
 import org.jhotdraw.app.View;
@@ -23,29 +28,42 @@ public class SimulatorAction extends AbstractViewAction {
 
   @Override
   public void actionPerformed(ActionEvent evt) {
-    BufferedReader input = new BufferedReader(null);
-    // TODO : assign _input
-    _input = input;
+    JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setDialogTitle("Specify a file to save");
 
-    StateEntity state = ApplicationModel.getStartEntity();
+    if (!(fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION))
+      return;
 
-    while (loadAndCheckNextInput()) {
-      List<TransitionEntity> transitions = state.getSuccessors();
-      TransitionEntity transition = null;
+    File fileToSave = fileChooser.getSelectedFile();
+  	
+    try {
+    	BufferedReader input = new BufferedReader(new FileReader(fileToSave));
+    	
+      // TODO : assign _input
+      _input = input;
 
-      for (int i = 0; transition == null && transitions.size() > i; i++) {
-        if (transitions.get(i).getInput().trim().equals(_line))
-          transition = transitions.get(i);
+      StateEntity state = ApplicationModel.getStartEntity();
+
+      while (loadAndCheckNextInput()) {
+        List<TransitionEntity> transitions = state.getSuccessors();
+        TransitionEntity transition = null;
+
+        for (int i = 0; transition == null && transitions.size() > i; i++) {
+          if (transitions.get(i).getInput().trim().equals(_line))
+            transition = transitions.get(i);
+        }
+
+        if (transition == null) {
+          throw new RuntimeException("AWE SHIT");
+        }
+        else {
+          state = transition.getNext();
+          _output.append(transition.getAction());
+          _output.append("\n");
+        }
       }
-
-      if (transition == null) {
-        throw new RuntimeException("AWE SHIT");
-      }
-      else {
-        state = transition.getNext();
-        _output.append(transition.getAction());
-        _output.append("\n");
-      }
+    } catch (FileNotFoundException e) {
+    	
     }
   }
 
