@@ -16,10 +16,9 @@ public class SimulatorAction extends AbstractViewAction {
   public final static String ID = "runsimulator";
 
   /** Creates a new instance. */
-  public SimulatorAction(Application app, @Nullable View view, StateEntity start) {
+  public SimulatorAction(Application app, @Nullable View view) {
     super(app, view);
     ResourceBundleUtil.getBundle("org.jhotdraw.app.Labels").configureAction(this, ID);
-    _state = start;
   }
 
   @Override
@@ -28,8 +27,10 @@ public class SimulatorAction extends AbstractViewAction {
     // TODO : assign _input
     _input = input;
 
+    StateEntity state = ApplicationModel.getStartEntity();
+
     while (loadAndCheckNextInput()) {
-      List<TransitionEntity> transitions = _state.getSuccessors();
+      List<TransitionEntity> transitions = state.getSuccessors();
       TransitionEntity transition = null;
 
       for (int i = 0; transition == null && transitions.size() > i; i++) {
@@ -41,7 +42,7 @@ public class SimulatorAction extends AbstractViewAction {
         throw new RuntimeException("AWE SHIT");
       }
       else {
-        _state = transition.getNext();
+        state = transition.getNext();
         _output.append(transition.getAction());
         _output.append("\n");
       }
@@ -63,7 +64,6 @@ public class SimulatorAction extends AbstractViewAction {
   }
 
   private String _line;
-  private StateEntity _state;
   private BufferedReader _input;
   private StringBuilder _output = new StringBuilder();
 }
