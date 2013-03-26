@@ -159,6 +159,8 @@ public class ApplicationModel extends DefaultApplicationModel {
     attributes.put(AttributeKeys.TEXT_COLOR, Color.black);
     ButtonFactory.addToolTo(tb, editor, new CreationTool(new StateFigure(),
         attributes), "edit.createState", labels);
+    ButtonFactory.addToolTo(tb, editor, new CreationTool(new StartStateFigure(),
+        attributes), "edit.createState", labels);
     // ButtonFactory.addToolTo(tb, editor, new CreationTool(new TaskFigure(),
     // attributes), "edit.createTask", labels);
 
