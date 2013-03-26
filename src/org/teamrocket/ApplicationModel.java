@@ -161,8 +161,8 @@ public class ApplicationModel extends DefaultApplicationModel {
         attributes), "edit.createState", labels);
     ButtonFactory.addToolTo(tb, editor, new CreationTool(new StartStateFigure(),
         attributes), "edit.createState", labels);
-    // ButtonFactory.addToolTo(tb, editor, new CreationTool(new TaskFigure(),
-    // attributes), "edit.createTask", labels);
+     ButtonFactory.addToolTo(tb, editor, new CreationTool(new EndStateFigure(),
+     attributes), "edit.createState", labels);
 
     attributes = new HashMap<AttributeKey, Object>();
     attributes.put(AttributeKeys.STROKE_COLOR, new Color(0x000099));
