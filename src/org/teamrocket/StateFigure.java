@@ -79,6 +79,7 @@ public class StateFigure extends GraphicalCompositeFigure {
 
 		_data.setName(nameFigure.getText());
 		_data.setDescription(descriptionFigure.getText());
+		ApplicationModel.addStateEntity(_data);
 	}
 
 	@Override
