@@ -1,37 +1,68 @@
 package org.teamrocket;
 
-import edu.umd.cs.findbugs.annotations.Nullable;
-import org.jhotdraw.app.action.view.ViewPropertyAction;
-import org.jhotdraw.app.action.view.ToggleViewPropertyAction;
+import java.awt.Color;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JMenu;
+import javax.swing.JToolBar;
+
+import org.jhotdraw.app.Application;
+import org.jhotdraw.app.DefaultApplicationModel;
+import org.jhotdraw.app.DefaultMenuBuilder;
+import org.jhotdraw.app.MenuBuilder;
+import org.jhotdraw.app.View;
+import org.jhotdraw.app.action.ActionUtil;
 import org.jhotdraw.app.action.file.ExportFileAction;
-import org.jhotdraw.app.action.file.LoadDirectoryAction;
-import org.jhotdraw.app.action.file.LoadFileAction;
 import org.jhotdraw.app.action.file.OpenDirectoryAction;
 import org.jhotdraw.app.action.file.OpenFileAction;
-import org.jhotdraw.draw.tool.Tool;
+import org.jhotdraw.app.action.view.ToggleViewPropertyAction;
+import org.jhotdraw.app.action.view.ViewPropertyAction;
+import org.jhotdraw.draw.AttributeKey;
+import org.jhotdraw.draw.AttributeKeys;
+import org.jhotdraw.draw.DefaultDrawingEditor;
+import org.jhotdraw.draw.DrawingEditor;
+import org.jhotdraw.draw.DrawingView;
+import org.jhotdraw.draw.TextAreaFigure;
+import org.jhotdraw.draw.action.ButtonFactory;
+import org.jhotdraw.draw.tool.ConnectionTool;
 import org.jhotdraw.draw.tool.CreationTool;
 import org.jhotdraw.draw.tool.TextAreaCreationTool;
-import org.jhotdraw.draw.tool.ConnectionTool;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
-
-import org.jhotdraw.app.*;
-import org.jhotdraw.app.action.*;
-import org.jhotdraw.draw.*;
-import org.jhotdraw.draw.action.*;
+import org.jhotdraw.draw.tool.Tool;
 import org.jhotdraw.gui.JFileURIChooser;
 import org.jhotdraw.gui.URIChooser;
 import org.jhotdraw.gui.filechooser.ExtensionFileFilter;
-import org.jhotdraw.util.*;
 import org.jhotdraw.samples.pert.PertView;
-import org.jhotdraw.samples.pert.figures.*;
+import org.jhotdraw.samples.pert.figures.DependencyFigure;
+import org.jhotdraw.util.ResourceBundleUtil;
+
+import edu.umd.cs.findbugs.annotations.Nullable;
 
 public class ApplicationModel extends DefaultApplicationModel {
 
   private final static double[] scaleFactors = { 5, 4, 3, 2, 1.5, 1.25, 1,
       0.75, 0.5, 0.25, 0.10 };
+
+  private static List<StateEntity> bucket = new ArrayList<StateEntity>();
+  private static List<StateEntity> start = new ArrayList<StateEntity>();
+
+  public static void addStateEntity(StateEntity s) {
+    bucket.add(s);
+  }
+
+  public static void addStartStateEntity(StateEntity s) {
+    // TODO : If list is not empty, warn
+
+    start.add(s);
+  }
 
   private static class ToolButtonListener implements ItemListener {
 
@@ -65,8 +96,7 @@ public class ApplicationModel extends DefaultApplicationModel {
   @Override
   public ActionMap createActionMap(Application a, @Nullable View v) {
     ActionMap m = super.createActionMap(a, v);
-    ResourceBundleUtil drawLabels = ResourceBundleUtil
-        .getBundle("org.jhotdraw.draw.Labels");
+    ResourceBundleUtil drawLabels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
     AbstractAction aa;
 
     m.put(ImportXMLFileAction.ID, new ImportXMLFileAction(a));
@@ -74,12 +104,10 @@ public class ApplicationModel extends DefaultApplicationModel {
     m.put(ExportFileAction.ID, new ExportFileAction(a, v));
     m.put(SimulatorAction.ID, new SimulatorAction(a, v, _start));
 
-    m.put("view.toggleGrid", aa = new ToggleViewPropertyAction(a, v,
-        PertView.GRID_VISIBLE_PROPERTY));
+    m.put("view.toggleGrid", aa = new ToggleViewPropertyAction(a, v, PertView.GRID_VISIBLE_PROPERTY));
     drawLabels.configureAction(aa, "view.toggleGrid");
     for (double sf : scaleFactors) {
-      m.put((int) (sf * 100) + "%", aa = new ViewPropertyAction(a, v,
-          DrawingView.SCALE_FACTOR_PROPERTY, Double.TYPE, new Double(sf)));
+      m.put((int) (sf * 100) + "%", aa = new ViewPropertyAction(a, v, DrawingView.SCALE_FACTOR_PROPERTY, Double.TYPE, new Double(sf)));
       aa.putValue(Action.NAME, (int) (sf * 100) + " %");
 
     }
@@ -145,10 +173,8 @@ public class ApplicationModel extends DefaultApplicationModel {
 
     HashMap<AttributeKey, Object> attributes;
 
-    ResourceBundleUtil labels = ResourceBundleUtil
-        .getBundle("org.jhotdraw.samples.pert.Labels");
-    ResourceBundleUtil drawLabels = ResourceBundleUtil
-        .getBundle("org.jhotdraw.draw.Labels");
+    ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.pert.Labels");
+    ResourceBundleUtil drawLabels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
 
     ButtonFactory.addSelectionToolTo(tb, editor);
     tb.addSeparator();
@@ -157,20 +183,16 @@ public class ApplicationModel extends DefaultApplicationModel {
     attributes.put(AttributeKeys.FILL_COLOR, Color.white);
     attributes.put(AttributeKeys.STROKE_COLOR, Color.black);
     attributes.put(AttributeKeys.TEXT_COLOR, Color.black);
-    ButtonFactory.addToolTo(tb, editor, new CreationTool(new StateFigure(),
-        attributes), "edit.createState", labels);
-    ButtonFactory.addToolTo(tb, editor, new CreationTool(new StartStateFigure(),
-        attributes), "edit.createState", labels);
+    ButtonFactory.addToolTo(tb, editor, new CreationTool(new StateFigure(), attributes), "edit.createState", labels);
+    ButtonFactory.addToolTo(tb, editor, new CreationTool(new StartStateFigure(), attributes), "edit.createState", labels);
     // ButtonFactory.addToolTo(tb, editor, new CreationTool(new TaskFigure(),
     // attributes), "edit.createTask", labels);
 
     attributes = new HashMap<AttributeKey, Object>();
     attributes.put(AttributeKeys.STROKE_COLOR, new Color(0x000099));
-    ButtonFactory.addToolTo(tb, editor, new ConnectionTool(
-        new DependencyFigure(), attributes), "edit.createDependency", labels);
+    ButtonFactory.addToolTo(tb, editor, new ConnectionTool(new DependencyFigure(), attributes), "edit.createDependency", labels);
     tb.addSeparator();
-    ButtonFactory.addToolTo(tb, editor, new TextAreaCreationTool(
-        new TextAreaFigure()), "edit.createTextArea", drawLabels);
+    ButtonFactory.addToolTo(tb, editor, new TextAreaCreationTool(new TextAreaFigure()), "edit.createTextArea", drawLabels);
   }
 
   /**
@@ -180,8 +202,7 @@ public class ApplicationModel extends DefaultApplicationModel {
   @Override
   public java.util.List<JToolBar> createToolBars(Application a,
       @Nullable View pr) {
-    ResourceBundleUtil drawLabels = ResourceBundleUtil
-        .getBundle("org.jhotdraw.draw.Labels");
+    ResourceBundleUtil drawLabels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
     PertView p = (PertView) pr;
 
     DrawingEditor editor;
@@ -237,16 +258,14 @@ public class ApplicationModel extends DefaultApplicationModel {
   @Override
   public URIChooser createOpenChooser(Application a, @Nullable View v) {
     JFileURIChooser c = new JFileURIChooser();
-    c.addChoosableFileFilter(new ExtensionFileFilter("UMLCreator Diagram",
-        "umlc"));
+    c.addChoosableFileFilter(new ExtensionFileFilter("UMLCreator Diagram", "umlc"));
     return c;
   }
 
   @Override
   public URIChooser createSaveChooser(Application a, @Nullable View v) {
     JFileURIChooser c = new JFileURIChooser();
-    c.addChoosableFileFilter(new ExtensionFileFilter("UMLCreator Diagram",
-        "umlc"));
+    c.addChoosableFileFilter(new ExtensionFileFilter("UMLCreator Diagram", "umlc"));
     return c;
   }
 
