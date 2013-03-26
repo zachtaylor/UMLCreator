@@ -11,6 +11,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 
 import org.jhotdraw.draw.*;
+import org.jhotdraw.util.ResourceBundleUtil;
 
 public class StartStateFigure extends EllipseFigure {
   public EllipseFigure circle;
@@ -20,9 +21,15 @@ public class StartStateFigure extends EllipseFigure {
   public StartStateFigure() {
     super();
 
-    
+		ResourceBundleUtil labels = ResourceBundleUtil
+				.getBundle("org.jhotdraw.samples.pert.Labels");
+		
+		drawStartStateFigure();
   }
 
+  @Override
+  
+  
   @Override
   public void setBounds(Point2D.Double anchor, Point2D.Double lead) {
     ellipse.x = Math.min(anchor.x, lead.x);

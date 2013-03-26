@@ -1,16 +1,9 @@
 package org.teamrocket;
 
-import static org.jhotdraw.draw.AttributeKeys.FILL_COLOR;
-import static org.jhotdraw.draw.AttributeKeys.FONT_BOLD;
-import static org.jhotdraw.draw.AttributeKeys.STROKE_COLOR;
-import static org.jhotdraw.draw.AttributeKeys.STROKE_DASHES;
-
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 
-import org.jhotdraw.draw.*;
+import org.jhotdraw.draw.EllipseFigure;
+import org.jhotdraw.util.ResourceBundleUtil;
 
 public class EndStateFigure extends EllipseFigure {
   public EllipseFigure circle;
@@ -20,7 +13,9 @@ public class EndStateFigure extends EllipseFigure {
   public EndStateFigure() {
     super();
 
-    
+		ResourceBundleUtil labels = ResourceBundleUtil
+				.getBundle("org.jhotdraw.samples.pert.Labels");
+
   }
 
   @Override

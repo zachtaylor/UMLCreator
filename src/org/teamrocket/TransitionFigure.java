@@ -14,6 +14,7 @@ import org.jhotdraw.draw.Drawing;
 import org.jhotdraw.draw.LabeledLineConnectionFigure;
 import org.jhotdraw.draw.connector.Connector;
 import org.jhotdraw.draw.decoration.ArrowTip;
+import org.jhotdraw.util.ResourceBundleUtil;
 
 // May implement Observer?
 public class TransitionFigure extends LabeledLineConnectionFigure {
@@ -34,6 +35,9 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
 		setAttributeEnabled(STROKE_DASHES, false);
 		setAttributeEnabled(FONT_ITALIC, false);
 		setAttributeEnabled(FONT_UNDERLINE, false);
+		
+		ResourceBundleUtil labels = ResourceBundleUtil
+				.getBundle("org.jhotdraw.samples.pert.Labels");
 	}
 
 	@Override

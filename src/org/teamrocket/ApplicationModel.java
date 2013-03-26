@@ -184,12 +184,12 @@ public class ApplicationModel extends DefaultApplicationModel {
     attributes.put(AttributeKeys.STROKE_COLOR, Color.black);
     attributes.put(AttributeKeys.TEXT_COLOR, Color.black);
     ButtonFactory.addToolTo(tb, editor, new CreationTool(new StateFigure(), attributes), "edit.createState", labels);
-    ButtonFactory.addToolTo(tb, editor, new CreationTool(new StartStateFigure(), attributes), "edit.createState", labels);
-    ButtonFactory.addToolTo(tb, editor, new CreationTool(new EndStateFigure(), attributes), "edit.createState", labels);
+    ButtonFactory.addToolTo(tb, editor, new CreationTool(new StartStateFigure(), attributes), "edit.createStartState", labels);
+    ButtonFactory.addToolTo(tb, editor, new CreationTool(new EndStateFigure(), attributes), "edit.createEndState", labels);
 
     attributes = new HashMap<AttributeKey, Object>();
     attributes.put(AttributeKeys.STROKE_COLOR, new Color(0x000099));
-    ButtonFactory.addToolTo(tb, editor, new ConnectionTool(new DependencyFigure(), attributes), "edit.createDependency", labels);
+    ButtonFactory.addToolTo(tb, editor, new ConnectionTool(new TransitionFigure(), attributes), "edit.createTransition.icon", labels);
     tb.addSeparator();
     ButtonFactory.addToolTo(tb, editor, new TextAreaCreationTool(new TextAreaFigure()), "edit.createTextArea", drawLabels);
   }
