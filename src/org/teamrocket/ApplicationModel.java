@@ -81,27 +81,26 @@ public class ApplicationModel extends DefaultApplicationModel {
   public static void addStateEntity(StateEntity s) {
     bucket.add(s);
   }
-   
-  public static List<StateEntity> getStateEntity(StateEntity s){
+
+  public static List<StateEntity> getStateEntity() {
     return bucket;
   }
 
   public static void addStartStateEntity(StateEntity s) {
     // TODO : If list is not empty, warn
-    if(!start.isEmpty()){
-     //warning
+    if (!start.isEmpty()) {
+      // warning
     }
     start.add(s);
   }
- 
+
   public static StateEntity getStartEntity() {
     return start.get(0);
   }
-  
-  
+
   /** Creates a new instance. */
   public ApplicationModel() {
-    //_start = new StateEntity(false);
+    // _start = new StateEntity(false);
   }
 
   @Override

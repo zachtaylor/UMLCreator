@@ -10,7 +10,7 @@ import static org.jhotdraw.draw.AttributeKeys.STROKE_WIDTH;
 
 import java.awt.Color;
 
-import org.jhotdraw.draw.Drawing;
+import org.jhotdraw.draw.Figure;
 import org.jhotdraw.draw.LabeledLineConnectionFigure;
 import org.jhotdraw.draw.connector.Connector;
 import org.jhotdraw.draw.decoration.ArrowTip;
@@ -18,113 +18,123 @@ import org.jhotdraw.util.ResourceBundleUtil;
 
 // May implement Observer?
 public class TransitionFigure extends LabeledLineConnectionFigure {
-	private String _label;
-	private TransitionEntity _data;
+  private String _label;
+  private TransitionEntity _data;
 
-	public TransitionFigure() {
-		// TODO:
-		_data = new TransitionEntity();
-		_label = "Trigger # Action";
-		
-		set(STROKE_COLOR, new Color(0x000099));
-		set(STROKE_WIDTH, 1d);
-		set(END_DECORATION, new ArrowTip());
-		
-		setAttributeEnabled(END_DECORATION, false);
-		setAttributeEnabled(START_DECORATION, false);
-		setAttributeEnabled(STROKE_DASHES, false);
-		setAttributeEnabled(FONT_ITALIC, false);
-		setAttributeEnabled(FONT_UNDERLINE, false);
-		
-		ResourceBundleUtil labels = ResourceBundleUtil
-				.getBundle("org.jhotdraw.samples.pert.Labels");
-	}
+  public TransitionFigure() {
+    // TODO:
+    _data = new TransitionEntity();
+    _label = "Trigger # Action";
 
-	@Override
-	public boolean canConnect(Connector start, Connector end) {
-		if ((start.getOwner() instanceof StateFigure) && (end.getOwner() instanceof StateFigure)){
+    set(STROKE_COLOR, new Color(0x000099));
+    set(STROKE_WIDTH, 1d);
+    set(END_DECORATION, new ArrowTip());
 
-			StateFigure sf = (StateFigure) start.getOwner();
-			StateFigure ef = (StateFigure) end.getOwner();
+    setAttributeEnabled(END_DECORATION, false);
+    setAttributeEnabled(START_DECORATION, false);
+    setAttributeEnabled(STROKE_DASHES, false);
+    setAttributeEnabled(FONT_ITALIC, false);
+    setAttributeEnabled(FONT_UNDERLINE, false);
 
-			_data = new TransitionEntity();
-			_data.setPrev(sf.getEntity());
-			_data.setNext(ef.getEntity());
-			return true;
-		} else if ((start.getOwner() instanceof StartStateFigure) && (end.getOwner() instanceof StateFigure)) {
-			
-			StartStateFigure sf = (StartStateFigure) start.getOwner();
-			StateFigure ef = (StateFigure) end.getOwner();
-			
-			_data = new TransitionEntity();
-			_data.setPrev(sf.getEntity());
-			_data.setNext(ef.getEntity());
-			return true;
-		} else if ((start.getOwner() instanceof StateFigure) && (end.getOwner() instanceof EndStateFigure)) {
-			
-			StateFigure sf = (StateFigure) start.getOwner();
-			EndStateFigure ef = (EndStateFigure) end.getOwner();
-			
-			_data = new TransitionEntity();
-			_data.setPrev(sf.getEntity());
-			_data.setNext(ef.getEntity());
-			return true;
-		}
+    ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.pert.Labels");
+  }
 
-		return false;
-	}
+  @Override
+  public boolean canConnect(Connector start, Connector end) {
+    if ((start.getOwner() instanceof StateFigure)
+        && (end.getOwner() instanceof StateFigure)) {
 
-	@Override
-	public boolean canConnect(Connector start) {
-		return (start.getOwner() instanceof StateFigure);
-	}
+      StateFigure sf = (StateFigure) start.getOwner();
+      StateFigure ef = (StateFigure) end.getOwner();
 
-	@Override
-	protected void handleDisconnect(Connector start, Connector end) {
-		StateFigure sf = (StateFigure) start.getOwner();
-		StateFigure ef = (StateFigure) end.getOwner();
+      _data.setPrev(sf.getEntity());
+      _data.setNext(ef.getEntity());
+      return true;
+    }
+    else if ((start.getOwner() instanceof StartStateFigure)
+        && (end.getOwner() instanceof StateFigure)) {
 
-	}
+      StartStateFigure sf = (StartStateFigure) start.getOwner();
+      StateFigure ef = (StateFigure) end.getOwner();
 
-	@Override
-	protected void handleConnect(Connector start, Connector end) {
-		StateFigure sf = (StateFigure) start.getOwner();
-		StateFigure ef = (StateFigure) end.getOwner();
+      _data = new TransitionEntity();
+      _data.setPrev(sf.getEntity());
+      _data.setNext(ef.getEntity());
+      return true;
+    }
+    else if ((start.getOwner() instanceof StateFigure)
+        && (end.getOwner() instanceof EndStateFigure)) {
 
-		// TODO: add the connection
-		sf.addSuccessor(this);
-		ef.addPredecessor(this);
-	}
+      StateFigure sf = (StateFigure) start.getOwner();
+      EndStateFigure ef = (EndStateFigure) end.getOwner();
 
-	@Override
-	public TransitionFigure clone() {
-		TransitionFigure that = (TransitionFigure) super.clone();
+      _data = new TransitionEntity();
+      _data.setPrev(sf.getEntity());
+      _data.setNext(ef.getEntity());
+      return true;
+    }
 
-		return that;
-	}
+    return false;
+  }
 
-	@Override
-	public int getLayer() {
-		return 1;
-	}
+  @Override
+  public boolean canConnect(Connector start) {
+    return (start.getOwner() instanceof StateFigure);
+  }
 
-	public void setLabel(String s) {
-		_label = s;
-	}
+  @Override
+  protected void handleDisconnect(Connector start, Connector end) {
+    StateFigure sf = (StateFigure) start.getOwner();
+    StateFigure ef = (StateFigure) end.getOwner();
 
-	public String getLabel() {
-		return _label;
-	}
+  }
 
-	public void setData(TransitionEntity tran) {
-		_data = tran;
-	}
+  @Override
+  protected void handleConnect(Connector start, Connector end) {
+    if (start instanceof StateFigure)
+      ((StateFigure) start.getOwner()).addSuccessor(_data);
+    else if (start instanceof StartStateFigure)
+      ((StartStateFigure) start.getOwner()).addSuccessor(_data);
+    else if (start instanceof EndStateFigure)
+      ((EndStateFigure) start.getOwner()).addSuccessor(_data);
+    if (end instanceof StateFigure)
+      ((StateFigure) start.getOwner()).addSuccessor(_data);
+    else if (end instanceof StartStateFigure)
+      ((StartStateFigure) start.getOwner()).addSuccessor(_data);
+    else if (end instanceof EndStateFigure)
+      ((EndStateFigure) end.getOwner()).addSuccessor(_data);
 
-	public TransitionEntity getData() {
-		return _data;
-	}
+  }
 
-	// TODO: Other GUI and JHotDraw methods
-	//
+  @Override
+  public TransitionFigure clone() {
+    TransitionFigure that = (TransitionFigure) super.clone();
+
+    return that;
+  }
+
+  @Override
+  public int getLayer() {
+    return 1;
+  }
+
+  public void setLabel(String s) {
+    _label = s;
+  }
+
+  public String getLabel() {
+    return _label;
+  }
+
+  public void setData(TransitionEntity tran) {
+    _data = tran;
+  }
+
+  public TransitionEntity getData() {
+    return _data;
+  }
+
+  // TODO: Other GUI and JHotDraw methods
+  //
 
 }

@@ -77,7 +77,8 @@ public class ExportXMLFileAction extends AbstractViewAction {
     }
   }
 
-  protected void exportView(final View view, final URI uri, @Nullable final URIChooser chooser) {
+  protected void exportView(final View view, final URI uri,
+      @Nullable final URIChooser chooser) {
     try {
       File file = new File(uri);
 
@@ -86,45 +87,39 @@ public class ExportXMLFileAction extends AbstractViewAction {
 
       BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
-    //  DefaultDraw
-      List<Figure> figures = d.getChildren();
+      List<StateEntity> figures = ApplicationModel.getStateEntity();
 
       // TODO : Write XML to the file
       List<XMLNode> nodes = new ArrayList<XMLNode>();
       if (figures.isEmpty())
-      	writer.write("\n");
-      
-      for (Figure f : figures) {
-      	XMLNode n = new XMLNode("State");
-      	if (!(f instanceof StateFigure))
-      		continue;
-      	
-      	n.setAttribute("name", ((StateFigure) f).getName());
-      	n.setAttribute("description", ((StateFigure) f).getDescription());
-      	
-      	// list of each figure's children
-      	List<Figure> chef = ((StateFigure) f).getChildren();
-      	
-      	for (Figure child : chef) {
-      		if (!(child instanceof TransitionFigure))
-      			continue;
-      		
-      		XMLNode childNode = new XMLNode("transition");
-      		childNode.setAttribute("trigger", ((TransitionFigure) child).getData().getInput());
-      		childNode.setAttribute("action", ((TransitionFigure) child).getData().getAction());
-      		childNode.setAttribute("next", ((TransitionFigure) child).getData().getNext().getName());
-      		
-      		n.addChild(childNode);
-      	}
-      	
-      	nodes.add(n);
+        writer.write("\n");
+
+      for (StateEntity e : figures) {
+        XMLNode n = new XMLNode("State");
+
+        n.setAttribute("name", e.getName());
+        n.setAttribute("description", e.getDescription());
+
+        // list of each figure's children
+        List<TransitionEntity> chef = e.getSuccessors();
+
+        for (TransitionEntity child : chef) {
+
+          XMLNode childNode = new XMLNode("transition");
+          childNode.setAttribute("trigger", child.getInput());
+          childNode.setAttribute("action", child.getAction());
+          childNode.setAttribute("next", child.getNext().getName());
+
+          n.addChild(childNode);
+        }
+
+        nodes.add(n);
       }
       // debugging printing
       for (XMLNode q : nodes) {
-      	System.out.println(q.toString());
+        System.out.println(q.toString());
       }
-      
-      
+
     } catch (IOException e) {
       e.printStackTrace();
     }

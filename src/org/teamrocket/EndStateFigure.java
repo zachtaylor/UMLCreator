@@ -29,8 +29,16 @@ public class EndStateFigure extends EllipseFigure {
     ellipse.width = Math.max(0.1, Math.abs(lead.x - anchor.x));
     ellipse.height = Math.max(0.1, Math.abs(lead.y - anchor.y));
   }
-  
+
   public StateEntity getEntity() {
-  	return _data;
+    return _data;
+  }
+
+  public void addSuccessor(TransitionEntity t) {
+    _data.addSuccessor(t);
+  }
+
+  public void addPredecessor(TransitionEntity t) {
+    _data.addPredecessor(t);
   }
 }
