@@ -104,6 +104,9 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
       ((StartStateFigure) start.getOwner()).addPredecessor(_data);
     else if (end instanceof EndStateFigure)
       ((EndStateFigure) end.getOwner()).addPredecessor(_data);
+
+    if (start.getOwner() == end.getOwner())
+      setLiner(new CurvedLiner());
   }
 
   @Override
