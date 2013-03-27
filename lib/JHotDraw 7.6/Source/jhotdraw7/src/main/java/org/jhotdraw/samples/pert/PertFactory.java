@@ -16,6 +16,7 @@ import org.jhotdraw.draw.GroupFigure;
 import org.jhotdraw.draw.ListFigure;
 import org.jhotdraw.draw.TextAreaFigure;
 import org.jhotdraw.draw.TextFigure;
+import org.jhotdraw.draw.connector.ChopEllipseConnector;
 import org.jhotdraw.draw.connector.ChopRectangleConnector;
 import org.jhotdraw.draw.connector.LocatorConnector;
 import org.jhotdraw.draw.decoration.ArrowTip;
@@ -24,6 +25,8 @@ import org.jhotdraw.samples.pert.figures.DependencyFigure;
 import org.jhotdraw.samples.pert.figures.SeparatorLineFigure;
 import org.jhotdraw.samples.pert.figures.TaskFigure;
 import org.jhotdraw.xml.DefaultDOMFactory;
+import org.teamrocket.EndStateFigure;
+import org.teamrocket.StartStateFigure;
 import org.teamrocket.StateFigure;
 import org.teamrocket.TransitionFigure;
 /**
@@ -44,8 +47,11 @@ public class PertFactory extends DefaultDOMFactory {
         { SeparatorLineFigure.class, "separator" },
         
         { StateFigure.class, "state" },
+        { StartStateFigure.class, "startState" },
+        { EndStateFigure.class, "endState" },
         { TransitionFigure.class, "tran" },
         
+        { ChopEllipseConnector.class, "chopEllipseConnector" },
         { ChopRectangleConnector.class, "rectConnector" },
         { LocatorConnector.class, "locConnector" },
         { RelativeLocator.class, "relativeLocator" },
