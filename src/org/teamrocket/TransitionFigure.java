@@ -14,6 +14,7 @@ import org.jhotdraw.draw.Figure;
 import org.jhotdraw.draw.LabeledLineConnectionFigure;
 import org.jhotdraw.draw.connector.Connector;
 import org.jhotdraw.draw.decoration.ArrowTip;
+import org.jhotdraw.draw.liner.CurvedLiner;
 import org.jhotdraw.util.ResourceBundleUtil;
 
 // May implement Observer?
