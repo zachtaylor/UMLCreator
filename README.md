@@ -30,11 +30,23 @@ Priority Level:  Medium
 Flow of Events: 
 1.	The user selects an edit option.
 2.	The edit option is performed on the diagram. 
-3.	The edit options are as follow: delete, duplicate, creating state figure, draw transition.
+3.	The edit options are as follow: delete, creating state figure, create nested state figure, draw transition.
 Entry Condition: 
 -	The diagram exists.
 Exit Condition: 
 -	The new changes are shown on the diagram.
+
+
+Use Case: CheckForErrors
+Participating Actors: User
+Priority Level: Low
+Flow of Events:
+1.  The user selects the check for errors option
+2.  A pop-up window tells the user if their UML Diagram has errors or not
+Entry Condition:
+-   None
+Exit Condition:
+-   A pop-up report has been displayed
 
 
 Use Case:  SaveDiagram
@@ -50,6 +62,7 @@ Entry Conditions:
 Exit Conditions:
 -	The diagram has been saved to a file.
 -	The diagram has not been altered.
+
 
 Use Case:  OpenDiagram
 Participating Actors:  User
@@ -92,8 +105,6 @@ Exit Conditions:
 -	The diagram remains open.
 
 
-
-
 Use Case:  XMLSimulation
 Participating Actors:  User
 Priority Level:  Low
@@ -101,8 +112,9 @@ Flow of Events:
 1.	The user selects the “SimulateXML” option.
 2.	A window opens allowing the user to select a file location.
 3.	The user navigates to an already existing XML representation of a diagram.
-4.	The user selects the XML representation document and selects open.
-5.	A text file is generated based off the XML representation listing each state, each state transition, and the effects of each transition.
+4.	The user is prompted for an input file to be executed
+5.  The user navigates to an already existing text file
+6.	A text file is generated based off the XML representation listing the effects of each transition.
 Entry Conditions:
 -	An XML representation of a UML state diagram exists.
 -	The user must generate an XML representation of a particular diagram if one does not already exist for it.
