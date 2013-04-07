@@ -25,10 +25,10 @@ import org.jhotdraw.samples.pert.figures.DependencyFigure;
 import org.jhotdraw.samples.pert.figures.SeparatorLineFigure;
 import org.jhotdraw.samples.pert.figures.TaskFigure;
 import org.jhotdraw.xml.DefaultDOMFactory;
-import org.teamrocket.EndStateFigure;
-import org.teamrocket.StartStateFigure;
-import org.teamrocket.StateFigure;
-import org.teamrocket.TransitionFigure;
+import org.teamrocket.figures.EndStateFigure;
+import org.teamrocket.figures.StartStateFigure;
+import org.teamrocket.figures.StateFigure;
+import org.teamrocket.figures.TransitionFigure;
 /**
  * PertFactory.
  * 

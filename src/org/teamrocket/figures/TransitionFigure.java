@@ -1,4 +1,4 @@
-package org.teamrocket;
+package org.teamrocket.figures;
 
 import static org.jhotdraw.draw.AttributeKeys.END_DECORATION;
 import static org.jhotdraw.draw.AttributeKeys.FONT_ITALIC;
@@ -16,6 +16,7 @@ import org.jhotdraw.draw.connector.Connector;
 import org.jhotdraw.draw.decoration.ArrowTip;
 import org.jhotdraw.draw.liner.CurvedLiner;
 import org.jhotdraw.util.ResourceBundleUtil;
+import org.teamrocket.entities.TransitionEntity;
 
 // May implement Observer?
 public class TransitionFigure extends LabeledLineConnectionFigure {

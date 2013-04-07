@@ -1,5 +1,8 @@
 package org.teamrocket;
 
+import org.teamrocket.entities.StateEntity;
+import org.teamrocket.entities.TransitionEntity;
+
 import junit.framework.TestCase;
 
 public class TestStateEntity extends TestCase {
@@ -11,7 +14,7 @@ public class TestStateEntity extends TestCase {
 
   public void testName() {
     String nameValue = "Fu-bar";
-    ent.setName(nameValue);
+    ent.setLabel(nameValue);
 
     assertEquals(nameValue, ent.getName());
   }

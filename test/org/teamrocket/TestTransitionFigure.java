@@ -1,6 +1,7 @@
 package org.teamrocket;
 
 import org.junit.Test;
+import org.teamrocket.figures.TransitionFigure;
 
 public class TestTransitionFigure {
 

@@ -1,8 +1,9 @@
-package org.teamrocket;
+package org.teamrocket.entities;
 
 import java.util.Observable;
 
-public class TransitionEntity extends Observable {
+
+public class TransitionEntity extends AbstractEntity {
 
   public void setNext(StateEntity n) {
     _next = n;
@@ -12,11 +13,11 @@ public class TransitionEntity extends Observable {
     return _next;
   }
 
-  public void setPrev(StateEntity p) {
+  public void setPrev(AbstractEntity p) {
     _prev = p;
   }
 
-  public StateEntity getPrev() {
+  public AbstractEntity getPrev() {
     return _prev;
   }
 
@@ -60,5 +61,5 @@ public class TransitionEntity extends Observable {
   private String _input;
   private String _action;
   private StateEntity _next;
-  private StateEntity _prev;
+  private AbstractEntity _prev;
 }

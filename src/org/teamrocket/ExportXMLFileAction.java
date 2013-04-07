@@ -25,6 +25,8 @@ import org.jhotdraw.gui.URIChooser;
 import org.jhotdraw.gui.event.SheetEvent;
 import org.jhotdraw.gui.event.SheetListener;
 import org.jhotdraw.util.ResourceBundleUtil;
+import org.teamrocket.entities.StateEntity;
+import org.teamrocket.entities.TransitionEntity;
 
 import com.zachtaylor.jnodalxml.XMLNode;
 

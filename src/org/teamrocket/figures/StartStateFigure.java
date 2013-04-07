@@ -1,4 +1,4 @@
-package org.teamrocket;
+package org.teamrocket.figures;
 
 import java.awt.geom.Point2D;
 import java.util.Collection;
@@ -12,19 +12,15 @@ import org.jhotdraw.draw.handle.Handle;
 import org.jhotdraw.draw.handle.MoveHandle;
 import org.jhotdraw.draw.locator.RelativeLocator;
 import org.jhotdraw.util.ResourceBundleUtil;
+import org.teamrocket.entities.AbstractEntity;
+import org.teamrocket.entities.StateEntity;
+import org.teamrocket.entities.TransitionEntity;
 
-public class StartStateFigure extends EllipseFigure {
-  public EllipseFigure circle;
-  private String _label;
-  private StateEntity _data;
-
+public class StartStateFigure extends StateFigure {
   public StartStateFigure() {
-    super();
-
-    ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.pert.Labels");
-
+    super(new EllipseFigure());
   }
-
+/*
   @Override
   public Collection<Handle> createHandles(int detailLevel) {
     java.util.List<Handle> handles = new LinkedList<Handle>();
@@ -45,34 +41,5 @@ public class StartStateFigure extends EllipseFigure {
     break;
     }
     return handles;
-  }
-
-  public void addSuccessor(TransitionEntity t) {
-    _data.addSuccessor(t);
-  }
-
-  public void addPredecessor(TransitionEntity t) {
-    _data.addPredecessor(t);
-  }
-
-  public void removeSuccessor(TransitionEntity t) {
-    _data.removeSuccessor(t);
-  }
-
-  public void removePredecessor(TransitionEntity t) {
-    _data.removePredecessor(t);
-  }
-
-  @Override
-  public void setBounds(Point2D.Double anchor, Point2D.Double lead) {
-    ellipse.x = Math.min(anchor.x, lead.x);
-    ellipse.y = Math.min(anchor.y, lead.y);
-    ellipse.width = Math.max(0.1, Math.abs(lead.x - anchor.x));
-    ellipse.height = Math.max(0.1, Math.abs(lead.y - anchor.y));
-  }
-
-  public StateEntity getEntity() {
-    return _data;
-  }
-
+  }*/
 }

@@ -1,5 +1,9 @@
 package org.teamrocket;
 
+import org.teamrocket.entities.AbstractEntity;
+import org.teamrocket.entities.StateEntity;
+import org.teamrocket.entities.TransitionEntity;
+
 import junit.framework.TestCase;
 
 public class TestTransitionEntity extends TestCase {
@@ -17,7 +21,7 @@ public class TestTransitionEntity extends TestCase {
   }
 
   public void testPrev() {
-    StateEntity prevValue = new StateEntity(false);
+    AbstractEntity prevValue = new StateEntity(false);
     ent.setPrev(prevValue);
 
     assertEquals(prevValue, ent.getPrev());

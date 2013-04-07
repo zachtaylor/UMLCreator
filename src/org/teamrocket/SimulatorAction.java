@@ -14,6 +14,8 @@ import org.jhotdraw.app.Application;
 import org.jhotdraw.app.View;
 import org.jhotdraw.app.action.AbstractViewAction;
 import org.jhotdraw.util.ResourceBundleUtil;
+import org.teamrocket.entities.StateEntity;
+import org.teamrocket.entities.TransitionEntity;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
 

@@ -1,15 +1,15 @@
-package org.teamrocket;
+package org.teamrocket.entities;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Observable;
 import java.util.Set;
+
 
 import com.zachtaylor.jnodalxml.XMLNode;
 
-public class StateEntity extends Observable {
+public class StateEntity extends AbstractEntity {
   public StateEntity(boolean accept) {
     _accept = accept;
     
@@ -19,14 +19,6 @@ public class StateEntity extends Observable {
 
   public boolean isAcceptState() {
     return _accept;
-  }
-
-  public String getName() {
-    return _name;
-  }
-
-  public void setName(String n) {
-    _name = n;
   }
 
   public String getDescription() {
@@ -92,7 +84,7 @@ public class StateEntity extends Observable {
 
     try {
       ent = new StateEntity(Boolean.parseBoolean(node.getAttribute("accept")));
-      ent.setName(node.getName());
+      ent.setLabel(node.getName());
       ent.setDescription(node.getAttribute("description"));
 
     } catch (Exception e) {
@@ -102,7 +94,7 @@ public class StateEntity extends Observable {
   }
 
   public XMLNode toXML() {
-    XMLNode node = new XMLNode(_name);
+    XMLNode node = new XMLNode(_label);
 
     node.setAttribute("accept", _accept + "");
     node.setAttribute("description", _description);
@@ -110,10 +102,6 @@ public class StateEntity extends Observable {
     node.setSelfClosing(true);
 
     return node;
-  }
-
-  public String toString() {
-    return toXML().toString();
   }
 
   public boolean equals(Object o) {
@@ -124,9 +112,9 @@ public class StateEntity extends Observable {
 
     if (_accept ^ s._accept) // XOR
       return false;
-    if ((_name != null && s._name == null) || (_name == null && s._name != null))
+    if ((_label != null && s._label == null) || (_label == null && s._label != null))
       return false;
-    if (_name != null && !_name.equals(s._name))
+    if (_label != null && !_label.equals(s._label))
       return false;
     if ((_description != null && s._description == null) || (_description == null && s._description != null))
       return false;
@@ -149,6 +137,6 @@ public class StateEntity extends Observable {
   }
 
   private boolean _accept;
-  private String _name, _description;
+  private String _description;
   private List<TransitionEntity> _successors, _predecessors;
 }

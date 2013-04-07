@@ -1,4 +1,4 @@
-package org.teamrocket;
+package org.teamrocket.figures;
 
 import static org.jhotdraw.draw.AttributeKeys.FILL_COLOR;
 import static org.jhotdraw.draw.AttributeKeys.FONT_BOLD;
@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import org.jhotdraw.draw.EllipseFigure;
+import org.jhotdraw.draw.Figure;
 import org.jhotdraw.draw.GraphicalCompositeFigure;
 import org.jhotdraw.draw.ListFigure;
 import org.jhotdraw.draw.RoundRectangleFigure;
@@ -27,6 +29,10 @@ import org.jhotdraw.samples.pert.figures.SeparatorLineFigure;
 import org.jhotdraw.util.ResourceBundleUtil;
 import org.jhotdraw.xml.DOMInput;
 import org.jhotdraw.xml.DOMOutput;
+import org.teamrocket.ApplicationModel;
+import org.teamrocket.entities.AbstractEntity;
+import org.teamrocket.entities.StateEntity;
+import org.teamrocket.entities.TransitionEntity;
 
 public class StateFigure extends GraphicalCompositeFigure {
 
@@ -75,12 +81,16 @@ public class StateFigure extends GraphicalCompositeFigure {
 
     setName(labels.getString("teamrocket.state.defaultName"));
 
-    _data.setName(nameFigure.getText());
+    _data.setLabel(nameFigure.getText());
     _data.setDescription(descriptionFigure.getText());
     ApplicationModel.addStateEntity(_data);
   }
 
-  @Override
+  public StateFigure(Figure figure) {
+	super(figure);
+  }
+
+@Override
   public Collection<Handle> createHandles(int detailLevel) {
     java.util.List<Handle> handles = new LinkedList<Handle>();
 
@@ -107,7 +117,7 @@ public class StateFigure extends GraphicalCompositeFigure {
   /* public void update(Observable obs, Object o) { // TODO: } */
 
   public void setName(String newValue) {
-    _data.setName(newValue);
+    _data.setLabel(newValue);
     getNameFigure().setText(newValue);
   }
 
@@ -124,7 +134,7 @@ public class StateFigure extends GraphicalCompositeFigure {
     return getNameFigure().getText();
   }
 
-  public StateEntity getEntity() {
+  public AbstractEntity getEntity() {
     return _data;
   }
 

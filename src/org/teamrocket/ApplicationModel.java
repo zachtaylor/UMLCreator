@@ -43,6 +43,12 @@ import org.jhotdraw.gui.filechooser.ExtensionFileFilter;
 import org.jhotdraw.samples.pert.PertView;
 import org.jhotdraw.samples.pert.figures.DependencyFigure;
 import org.jhotdraw.util.ResourceBundleUtil;
+import org.teamrocket.entities.AbstractEntity;
+import org.teamrocket.entities.StateEntity;
+import org.teamrocket.figures.EndStateFigure;
+import org.teamrocket.figures.StartStateFigure;
+import org.teamrocket.figures.StateFigure;
+import org.teamrocket.figures.TransitionFigure;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
 
@@ -277,5 +283,5 @@ public class ApplicationModel extends DefaultApplicationModel {
     return c;
   }
 
-  private StateEntity _start;
+  private AbstractEntity _start;
 }
