@@ -43,32 +43,16 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
 
   @Override
   public boolean canConnect(Connector start, Connector end) {
-    Figure startowner = start.getOwner();
-    Figure endowner = end.getOwner();
-
-    if (startowner instanceof StateFigure) {
-      if (endowner instanceof StateFigure
-          || endowner instanceof StartStateFigure
-          || endowner instanceof EndStateFigure) {
-        return true;
-      }
-    }
-    else if (startowner instanceof StartStateFigure) {
-      if (endowner instanceof StateFigure
-          || endowner instanceof StartStateFigure
-          || endowner instanceof EndStateFigure) {
-        return true;
-      }
-    }
-    else if (startowner instanceof EndStateFigure) {
-      if (endowner instanceof StateFigure
-          || endowner instanceof StartStateFigure
-          || endowner instanceof EndStateFigure) {
-        return true;
-      }
-    }
-
-    return false;
+    final Figure startState = start.getOwner();
+    final Figure endState = end.getOwner();
+    
+    if (!(startState instanceof StateFigure) ||
+    		!(endState instanceof StateFigure))
+    		return false;
+    
+    return !(startState instanceof EndStateFigure) && 
+    		!(endState instanceof StartStateFigure) &&
+    		(start != null) && (end != null);
   }
 
   @Override
