@@ -41,9 +41,8 @@ import org.jhotdraw.gui.JFileURIChooser;
 import org.jhotdraw.gui.URIChooser;
 import org.jhotdraw.gui.filechooser.ExtensionFileFilter;
 import org.jhotdraw.samples.pert.PertView;
-import org.jhotdraw.samples.pert.figures.DependencyFigure;
 import org.jhotdraw.util.ResourceBundleUtil;
-import org.teamrocket.entities.AbstractEntity;
+import org.teamrocket.entities.StartStateEntity;
 import org.teamrocket.entities.StateEntity;
 import org.teamrocket.figures.EndStateFigure;
 import org.teamrocket.figures.StartStateFigure;
@@ -283,5 +282,5 @@ public class ApplicationModel extends DefaultApplicationModel {
     return c;
   }
 
-  private AbstractEntity _start;
+  private StartStateEntity _start;
 }

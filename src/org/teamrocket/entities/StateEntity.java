@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
 import com.zachtaylor.jnodalxml.XMLNode;
 
 public class StateEntity extends AbstractEntity {

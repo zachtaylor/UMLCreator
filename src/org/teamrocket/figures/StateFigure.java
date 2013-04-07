@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import org.jhotdraw.draw.EllipseFigure;
 import org.jhotdraw.draw.Figure;
 import org.jhotdraw.draw.GraphicalCompositeFigure;
 import org.jhotdraw.draw.ListFigure;
@@ -30,7 +29,6 @@ import org.jhotdraw.util.ResourceBundleUtil;
 import org.jhotdraw.xml.DOMInput;
 import org.jhotdraw.xml.DOMOutput;
 import org.teamrocket.ApplicationModel;
-import org.teamrocket.entities.AbstractEntity;
 import org.teamrocket.entities.StateEntity;
 import org.teamrocket.entities.TransitionEntity;
 
@@ -134,7 +132,7 @@ public class StateFigure extends GraphicalCompositeFigure {
     return getNameFigure().getText();
   }
 
-  public AbstractEntity getEntity() {
+  public StateEntity getEntity() {
     return _data;
   }
 
