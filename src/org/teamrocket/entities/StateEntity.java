@@ -2,6 +2,7 @@ package org.teamrocket.entities;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -135,7 +136,37 @@ public class StateEntity extends AbstractEntity {
     return true;
   }
 
+  public boolean addInternalTransition(String event, String action) {
+	HashSet<String> value = internalTransitions.get(event);	
+	if(value == null) {
+	  value = new HashSet<String>();
+	  value.add(action);
+	  return internalTransitions.put(event, value) != null;
+	} else {
+	  return value.add(action);
+	}
+  }
+
+  public boolean containsInternalTransition(String event, String action) {
+	//return internalTransitions.
+	return false;
+  } 
+
+  public Set<String> getInternalTransitions(String event) {
+    return Collections.unmodifiableSet(internalTransitions.get(event));	  
+  }
+  public void removeInternalTransition(String event, String action) {
+	HashSet<String> value = internalTransitions.get(event);
+	value.remove(action);
+	if(value.isEmpty()) internalTransitions.remove(event);
+  }
+
+  public void removeInternalTransition(String event) {
+    internalTransitions.remove(event);
+  }  
+  
   private boolean _accept;
   private String _description;
   private List<TransitionEntity> _successors, _predecessors;
+  private HashMap<String,HashSet<String>> internalTransitions;
 }

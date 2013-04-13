@@ -1,9 +1,9 @@
 package org.teamrocket;
 
+import junit.framework.TestCase;
+
 import org.teamrocket.entities.StateEntity;
 import org.teamrocket.entities.TransitionEntity;
-
-import junit.framework.TestCase;
 
 public class TestStateEntity extends TestCase {
   StateEntity ent;
@@ -26,6 +26,29 @@ public class TestStateEntity extends TestCase {
     assertEquals(descriptionValue, ent.getDescription());
   }
 
+  public void testAddInternalTransitions() {
+    ent.addInternalTransition(null, null);
+    ent.addInternalTransition(null, "action");
+    ent.addInternalTransition("Event", null);
+	  
+    ent.addInternalTransition("Event", "action");
+    assertTrue(ent.containsInternalTransition("Event", "action"));
+    assertTrue(ent.getInternalTransitions("Event").contains("action"));
+    ent.addInternalTransition("Event", "action2");
+    assertTrue(ent.getInternalTransitions("Event").contains("action"));
+    assertTrue(ent.getInternalTransitions("Event").contains("action2"));
+  }
+  
+  public void testRemoveInternalTransitions() {
+	ent.addInternalTransition("Event", "action");	  
+    ent.removeInternalTransition("Event", "action");
+    
+    assertTrue(ent.getInternalTransitions("Event").isEmpty());
+    ent.addInternalTransition("Event", "action");
+    ent.removeInternalTransition("Event");    
+	assertFalse(ent.containsInternalTransition("Event", "action"));	
+  }
+  
   public void testAcceptState() {
     ent = new StateEntity(true);
 
