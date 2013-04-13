@@ -4,12 +4,13 @@ import junit.framework.TestCase;
 
 import org.teamrocket.entities.StateEntity;
 import org.teamrocket.entities.TransitionEntity;
+import org.teamrocket.figures.StateFigure;
 
 public class TestStateEntity extends TestCase {
   StateEntity ent;
 
   public void setUp() {
-    ent = new StateEntity(false);
+    ent = new StateEntity();
   }
 
   public void testName() {
@@ -50,15 +51,37 @@ public class TestStateEntity extends TestCase {
   }
   
   public void testAcceptState() {
-    ent = new StateEntity(true);
+    ent = new StateEntity();
 
     assertTrue(ent.isAcceptState());
 
-    ent = new StateEntity(false);
+    ent = new StateEntity();
 
     assertFalse(ent.isAcceptState());
   }
 
+  public void testAddRemoveNestedStates() {
+	StateEntity child, parent;
+	child = new StateEntity();
+	parent = new StateEntity();
+	
+	assertNull(child.getParent());
+	assertNull(parent.getParent());
+	
+	
+	child.setParent(parent);
+	assertEqual(child.getParent(), parent);
+	
+	parent.setParent(child);
+	parent.addChild(child);
+	parent.removeChild(child);
+	parent.getChildren();
+  }
+  
+  public void testAddRemoveNestedTransitions() {
+    
+  }
+  
   public void testAddTransition() {
     assertTrue(ent.getTransitions().isEmpty());
 

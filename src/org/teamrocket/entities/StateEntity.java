@@ -10,15 +10,9 @@ import java.util.Set;
 import com.zachtaylor.jnodalxml.XMLNode;
 
 public class StateEntity extends AbstractEntity {
-  public StateEntity(boolean accept) {
-    _accept = accept;
-    
+  public StateEntity() {
     _successors = new ArrayList<TransitionEntity>();
     _predecessors = new ArrayList<TransitionEntity>();
-  }
-
-  public boolean isAcceptState() {
-    return _accept;
   }
 
   public String getDescription() {
@@ -83,7 +77,7 @@ public class StateEntity extends AbstractEntity {
     StateEntity ent = null;
 
     try {
-      ent = new StateEntity(Boolean.parseBoolean(node.getAttribute("accept")));
+      ent = new StateEntity();
       ent.setLabel(node.getName());
       ent.setDescription(node.getAttribute("description"));
 
@@ -96,7 +90,6 @@ public class StateEntity extends AbstractEntity {
   public XMLNode toXML() {
     XMLNode node = new XMLNode(_label);
 
-    node.setAttribute("accept", _accept + "");
     node.setAttribute("description", _description);
 
     node.setSelfClosing(true);
@@ -110,8 +103,6 @@ public class StateEntity extends AbstractEntity {
 
     StateEntity s = (StateEntity) o;
 
-    if (_accept ^ s._accept) // XOR
-      return false;
     if ((_label != null && s._label == null) || (_label == null && s._label != null))
       return false;
     if (_label != null && !_label.equals(s._label))
@@ -136,6 +127,7 @@ public class StateEntity extends AbstractEntity {
     return true;
   }
 
+//Internal transitions start here!
   public boolean addInternalTransition(String event, String action) {
 	HashSet<String> value = internalTransitions.get(event);	
 	if(value == null) {
@@ -163,10 +155,35 @@ public class StateEntity extends AbstractEntity {
 
   public void removeInternalTransition(String event) {
     internalTransitions.remove(event);
+  }
+  
+//Nested states start here  
+  public void setParent(StateEntity parent) {
+	// TODO Auto-generated method stub
+  }
+
+  public void getParent() {
+	// TODO Auto-generated method stub
+  }
+
+  public void addChild(StateEntity child) {
+	// TODO Auto-generated method stub
+  }
+
+  public void removeChild(StateEntity child) {
+	// TODO Auto-generated method stub
+  }
+
+  public void getChildren() {
+	// TODO Auto-generated method stub
   }  
   
-  private boolean _accept;
+  
   private String _description;
   private List<TransitionEntity> _successors, _predecessors;
   private HashMap<String,HashSet<String>> internalTransitions;
+  private StateEntity parent = null;
+  private HashSet<StateEntity> children = new HashSet<StateEntity>();
+
+
 }

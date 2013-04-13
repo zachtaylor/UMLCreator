@@ -9,8 +9,11 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 
+import org.jhotdraw.draw.AttributeKey;
 import org.jhotdraw.draw.Figure;
 import org.jhotdraw.draw.GraphicalCompositeFigure;
 import org.jhotdraw.draw.ListFigure;
@@ -41,7 +44,7 @@ public class StateFigure extends GraphicalCompositeFigure {
 
     // may want to change to false, depending on how we use the boolean value in
     // StateEntity.java
-    _data = new StateEntity(true);
+    _data = new StateEntity();
 
     setLayouter(new VerticalLayouter());
 
@@ -203,6 +206,14 @@ public class StateFigure extends GraphicalCompositeFigure {
   // for resizing
   public boolean isTransformable() {
     return true;
+  }
+  
+  @Override @SuppressWarnings("unchecked")
+  public StateFigure clone() {
+	  StateFigure that = (StateFigure) super.clone();
+	  that.setName("!!!!");
+
+      return that;
   }
 
 }
