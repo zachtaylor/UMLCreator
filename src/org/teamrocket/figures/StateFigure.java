@@ -211,7 +211,7 @@ public class StateFigure extends GraphicalCompositeFigure {
   @Override @SuppressWarnings("unchecked")
   public StateFigure clone() {
 	  StateFigure that = (StateFigure) super.clone();
-	  that.setName("!!!!");
+	  
 
       return that;
   }
