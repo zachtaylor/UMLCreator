@@ -162,20 +162,22 @@ public class StateEntity extends AbstractEntity {
 	// TODO Auto-generated method stub
   }
 
-  public void getParent() {
+  public StateEntity getParent() {
 	// TODO Auto-generated method stub
+	return null;
   }
 
-  public void addChild(StateEntity child) {
+  public boolean addChild(StateEntity child) {
 	// TODO Auto-generated method stub
+	return false;
   }
 
   public void removeChild(StateEntity child) {
 	// TODO Auto-generated method stub
   }
 
-  public void getChildren() {
-	// TODO Auto-generated method stub
+  public Set<StateEntity>  getChildren() {
+	  return Collections.unmodifiableSet(children);
   }  
   
   
