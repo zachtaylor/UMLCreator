@@ -2,16 +2,18 @@ package org.teamrocket.entities;
 
 public class TransitionEntity extends AbstractEntity {
 
-  public void setNext(StateEntity n) {
+  public TransitionEntity setNext(StateEntity n) {
     _next = n;
+    return this;
   }
 
   public StateEntity getNext() {
     return _next;
   }
 
-  public void setPrev(StateEntity p) {
+  public TransitionEntity setPrev(StateEntity p) {
     _prev = p;
+    return this;
   }
 
   public StateEntity getPrev() {
