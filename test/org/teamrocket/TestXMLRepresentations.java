@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 
 import org.teamrocket.entities.StateEntity;
 
-public class TextXMLRepresentations extends TestCase {
+public class TestXMLRepresentations extends TestCase {
 
   public void testStateEntityEmpty() {
     StateEntity ent = new StateEntity();
