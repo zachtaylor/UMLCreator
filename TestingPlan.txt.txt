@@ -1,0 +1,7 @@
+Passing tests
+3 of our test suites are passing
+
+Failing Tests
+XMLRepresentation tests fail. This is because the xml representation which includes internal transitions has not been implemented yet.
+
+Several tests in TestStateEntity fail as well, for lack of implementation
