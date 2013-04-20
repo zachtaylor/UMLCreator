@@ -12,9 +12,12 @@ import java.awt.Color;
 
 import org.jhotdraw.draw.Figure;
 import org.jhotdraw.draw.LabeledLineConnectionFigure;
+import org.jhotdraw.draw.TextFigure;
 import org.jhotdraw.draw.connector.Connector;
 import org.jhotdraw.draw.decoration.ArrowTip;
+import org.jhotdraw.draw.layouter.LocatorLayouter;
 import org.jhotdraw.draw.liner.CurvedLiner;
+import org.jhotdraw.draw.locator.RelativeLocator;
 import org.jhotdraw.util.ResourceBundleUtil;
 import org.teamrocket.entities.TransitionEntity;
 
@@ -22,7 +25,8 @@ import org.teamrocket.entities.TransitionEntity;
 public class TransitionFigure extends LabeledLineConnectionFigure {
   private String _label;
   private TransitionEntity _data;
-
+  private TextFigure _labelFigure;
+  
   public TransitionFigure() {
     // TODO:
     _data = new TransitionEntity();
@@ -31,7 +35,7 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
     set(STROKE_COLOR, new Color(0x000099));
     set(STROKE_WIDTH, 1d);
     set(END_DECORATION, new ArrowTip());
-
+    setLayouter(new LocatorLayouter());
     setAttributeEnabled(END_DECORATION, false);
     setAttributeEnabled(START_DECORATION, false);
     setAttributeEnabled(STROKE_DASHES, false);
@@ -93,6 +97,8 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
 
     if (start.getOwner() == end.getOwner())
       setLiner(new CurvedLiner());
+    
+    setLabel("[label]");
   }
 
   @Override
@@ -109,6 +115,14 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
 
   public void setLabel(String s) {
     _label = s;
+   
+  	willChange();
+  	this.remove(_labelFigure);
+  	_labelFigure = new TextFigure(_label);
+  	LocatorLayouter.LAYOUT_LOCATOR.set(_labelFigure, new RelativeLocator(.25,.5,false));
+  	_labelFigure.setEditable(false);
+  	add(_labelFigure);
+  	changed();
   }
 
   public String getLabel() {
@@ -122,8 +136,5 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
   public TransitionEntity getData() {
     return _data;
   }
-
-  // TODO: Other GUI and JHotDraw methods
-  //
 
 }
