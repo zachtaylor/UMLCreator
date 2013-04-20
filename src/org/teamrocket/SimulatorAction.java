@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.List;
 
 import javax.swing.JFileChooser;
 
@@ -21,6 +20,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 
 public class SimulatorAction extends AbstractViewAction {
   public final static String ID = "runsimulator";
+  public final static String ENTRY_LABEL = "entry", EXIT_LABEL = "exit";
 
   /** Creates a new instance. */
   public SimulatorAction(Application app, @Nullable View view) {
@@ -30,6 +30,7 @@ public class SimulatorAction extends AbstractViewAction {
 
   @Override
   public void actionPerformed(ActionEvent evt) {
+
     JFileChooser fileChooser = new JFileChooser();
     fileChooser.setDialogTitle("Specify a file to save");
 
@@ -37,53 +38,71 @@ public class SimulatorAction extends AbstractViewAction {
       return;
 
     File fileToSave = fileChooser.getSelectedFile();
-  	
+
     try {
-    	BufferedReader input = new BufferedReader(new FileReader(fileToSave));
-    	
-      // TODO : assign _input
-      _input = input;
-
-      StateEntity state = ApplicationModel.getStartEntity();
-
-      while (loadAndCheckNextInput()) {
-        List<TransitionEntity> transitions = state.getSuccessors();
-        TransitionEntity transition = null;
-
-        for (int i = 0; transition == null && transitions.size() > i; i++) {
-          if (transitions.get(i).getInput().trim().equals(_line))
-            transition = transitions.get(i);
-        }
-
-        if (transition == null) {
-          throw new RuntimeException("AWE SHIT");
-        }
-        else {
-          state = transition.getNext();
-          _output.append(transition.getAction());
-          _output.append("\n");
-        }
-      }
+      _input = new BufferedReader(new FileReader(fileToSave));
     } catch (FileNotFoundException e) {
-    	
+      return;
     }
+
+    _state = ApplicationModel.getStartEntity();
+
+    while (loadAndCheckNextInput()) {
+      processInput();
+    }
+
   }
 
   public String getOutput() {
     return _output.toString();
   }
 
+  private void processInput() {
+    if (_state.getInternalTransitions(_line) != null) {
+      for (String s : _state.getInternalTransitions(_line)) {
+        appendOutput(s);
+      }
+    }
+    else {
+      for (TransitionEntity te : _state.getSuccessors()) {
+        if (_line.equals(te.getInput())) {
+
+          if (_state.getInternalTransitions(EXIT_LABEL) != null)
+            for (String s : _state.getInternalTransitions(EXIT_LABEL))
+              appendOutput(s);
+
+          appendOutput(te.getAction());
+          _state = te.getNext();
+
+          if (_state.getInternalTransitions(ENTRY_LABEL) != null)
+            for (String s : _state.getInternalTransitions(ENTRY_LABEL))
+              appendOutput(s);
+          return;
+        }
+      }
+    }
+
+    // TODO : Throw error
+  }
+
+  private void appendOutput(String append) {
+    _output.append(append);
+    _output.append("\n");
+  }
+
   private boolean loadAndCheckNextInput() {
     try {
       _line = _input.readLine().trim();
+      if (_line.equals(ENTRY_LABEL) || _line.equals(EXIT_LABEL))
+        return loadAndCheckNextInput();
       return true;
     } catch (IOException e) {
-      e.printStackTrace();
       return false;
     }
   }
 
   private String _line;
+  private StateEntity _state;
   private BufferedReader _input;
   private StringBuilder _output = new StringBuilder();
 }
