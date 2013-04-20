@@ -9,11 +9,9 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
-import org.jhotdraw.draw.AttributeKey;
 import org.jhotdraw.draw.Figure;
 import org.jhotdraw.draw.GraphicalCompositeFigure;
 import org.jhotdraw.draw.ListFigure;
@@ -45,6 +43,7 @@ public class StateFigure extends GraphicalCompositeFigure {
     // may want to change to false, depending on how we use the boolean value in
     // StateEntity.java
     _data = new StateEntity();
+    _internalTransitions = new ListFigure();
 
     setLayouter(new VerticalLayouter());
 
@@ -54,27 +53,23 @@ public class StateFigure extends GraphicalCompositeFigure {
     nameCompartmentPF.set(FILL_COLOR, null);
     nameCompartmentPF.setAttributeEnabled(FILL_COLOR, false);
     ListFigure nameCompartment = new ListFigure(nameCompartmentPF);
-    ListFigure descriptionCompartment = new ListFigure();
     SeparatorLineFigure separator1 = new SeparatorLineFigure();
 
     add(nameCompartment);
     add(separator1);
-    add(descriptionCompartment);
+    add(_internalTransitions);
 
     Insets2D.Double insets = new Insets2D.Double(8, 16, 8, 16);
     nameCompartment.set(LAYOUT_INSETS, insets);
-    descriptionCompartment.set(LAYOUT_INSETS, insets);
+    _internalTransitions.set(LAYOUT_INSETS, insets);
 
     TextFigure nameFigure;
     nameCompartment.add(nameFigure = new TextFigure());
     nameFigure.set(FONT_BOLD, true);
     nameFigure.setAttributeEnabled(FONT_BOLD, true);
 
-    TextFigure descriptionFigure;
-    descriptionCompartment.add(descriptionFigure = new TextFigure());
-    descriptionFigure.set(FONT_BOLD, false);
-    descriptionFigure.setText("<State Description>");
-    descriptionFigure.setAttributeEnabled(FONT_BOLD, false);
+    addBlankInternalTransition();
+    addBlankInternalTransition();
 
     setAttributeEnabled(STROKE_DASHES, false);
 
@@ -83,34 +78,36 @@ public class StateFigure extends GraphicalCompositeFigure {
     setName(labels.getString("teamrocket.state.defaultName"));
 
     _data.setLabel(nameFigure.getText());
-    _data.setDescription(descriptionFigure.getText());
     ApplicationModel.addStateEntity(_data);
   }
 
   public StateFigure(Figure figure) {
-	super(figure);
+    super(figure);
   }
 
-@Override
+  @Override
   public Collection<Handle> createHandles(int detailLevel) {
     java.util.List<Handle> handles = new LinkedList<Handle>();
 
     switch (detailLevel) {
     case -1:
       handles.add(new BoundsOutlineHandle(getPresentationFigure(), false, true));
-    break;
+      break;
     case 0:
-      /* handles.add(new MoveHandle(this, RelativeLocator.northWest()));
+      /*
+       * handles.add(new MoveHandle(this, RelativeLocator.northWest()));
        * handles.add(new MoveHandle(this, RelativeLocator.northEast()));
        * handles.add(new MoveHandle(this, RelativeLocator.southWest()));
-       * handles.add(new MoveHandle(this, RelativeLocator.southEast())); */
+       * handles.add(new MoveHandle(this, RelativeLocator.southEast()));
+       */
 
       ResizeHandleKit.addCornerResizeHandles(this, handles);
 
       ConnectorHandle ch;
-      handles.add(ch = new ConnectorHandle(new LocatorConnector(this, RelativeLocator.center()), new TransitionFigure()));
+      handles
+          .add(ch = new ConnectorHandle(new LocatorConnector(this, RelativeLocator.center()), new TransitionFigure()));
       ch.setToolTipText("Drag the connector to a dependent state.");
-    break;
+      break;
     }
     return handles;
   }
@@ -123,15 +120,6 @@ public class StateFigure extends GraphicalCompositeFigure {
   }
 
   public String getName() {
-    return getNameFigure().getText();
-  }
-
-  public void setDescription(String newValue) {
-    _data.setDescription(newValue);
-    getNameFigure().setText(newValue);
-  }
-
-  public String getDescription() {
     return getNameFigure().getText();
   }
 
@@ -169,6 +157,12 @@ public class StateFigure extends GraphicalCompositeFigure {
     _data.removeSuccessor(t);
   }
 
+  public void addBlankInternalTransition() {
+    _internalTransitions.add(new InternalTransitionFigure());
+
+    // TODO : Cause redraw
+  }
+
   @Override
   public void read(DOMInput in) throws IOException {
     double x = in.getAttribute("x", 0d);
@@ -182,7 +176,6 @@ public class StateFigure extends GraphicalCompositeFigure {
     setName((String) in.readObject());
     in.closeElement();
     in.openElement("duration");
-    setDescription((String) in.readObject());
     in.closeElement();
     in.closeElement();
   }
@@ -198,7 +191,6 @@ public class StateFigure extends GraphicalCompositeFigure {
     out.writeObject(getName());
     out.closeElement();
     out.openElement("duration");
-    out.writeObject(getDescription());
     out.closeElement();
     out.closeElement();
   }
@@ -207,13 +199,52 @@ public class StateFigure extends GraphicalCompositeFigure {
   public boolean isTransformable() {
     return true;
   }
-  
-  @Override @SuppressWarnings("unchecked")
-  public StateFigure clone() {
-	  StateFigure that = (StateFigure) super.clone();
-	  
 
-      return that;
+  @Override
+  public StateFigure clone() {
+    StateFigure that = (StateFigure) super.clone();
+
+    return that;
   }
 
+  private class InternalTransitionFigure extends TextFigure {
+    public InternalTransitionFigure() {
+      set(FONT_BOLD, false);
+      setText("<Event> # <Action>");
+      setAttributeEnabled(FONT_BOLD, false);
+    }
+
+    public void setText(String newText) {
+      String oldText = getText();
+      super.setText(newText);
+      StateEntity ent = StateFigure.this.getEntity();
+
+      if (oldText != null && !oldText.equals("Text")) {
+        String[] newPieces = newText.split("#");
+
+        if (newPieces.length < 2)
+          ; // TODO : Complain
+
+        ent.addInternalTransition(newPieces[0].trim(), newPieces[1].trim());
+
+        if (oldText.equals("<Event> # <Action>")) {
+          StateFigure.this.addBlankInternalTransition();
+        }
+        else {
+          String[] oldPieces = oldText.split("#");
+          Set<String> oldVals = ent.getInternalTransitions(oldPieces[0].trim());
+          ent.removeInternalTransition(oldPieces[0].trim());
+
+          for (String s : oldVals) {
+            if (s.equals(oldPieces[1].trim()))
+              continue;
+
+            ent.addInternalTransition(oldPieces[0], s);
+          }
+        }
+      }
+    }
+  }
+
+  private ListFigure _internalTransitions;
 }

@@ -15,14 +15,6 @@ public class StateEntity extends AbstractEntity {
     _predecessors = new ArrayList<TransitionEntity>();
   }
 
-  public String getDescription() {
-    return _description;
-  }
-
-  public void setDescription(String d) {
-    _description = d;
-  }
-
   public boolean addSuccessor(TransitionEntity ent) {
     if (_successors.contains(ent))
       return false;
@@ -52,7 +44,7 @@ public class StateEntity extends AbstractEntity {
 
     return _predecessors.remove(ent);
   }
-  
+
   public List<TransitionEntity> getSuccessors() {
     return Collections.unmodifiableList(_successors);
   }
@@ -79,7 +71,6 @@ public class StateEntity extends AbstractEntity {
     try {
       ent = new StateEntity();
       ent.setLabel(node.getName());
-      ent.setDescription(node.getAttribute("description"));
 
     } catch (Exception e) {
     }
@@ -89,8 +80,6 @@ public class StateEntity extends AbstractEntity {
 
   public XMLNode toXML() {
     XMLNode node = new XMLNode(_label);
-
-    node.setAttribute("description", _description);
 
     node.setSelfClosing(true);
 
@@ -106,10 +95,6 @@ public class StateEntity extends AbstractEntity {
     if ((_label != null && s._label == null) || (_label == null && s._label != null))
       return false;
     if (_label != null && !_label.equals(s._label))
-      return false;
-    if ((_description != null && s._description == null) || (_description == null && s._description != null))
-      return false;
-    if (_description != null && !_description.equals(s._description))
       return false;
 
     if (_successors.size() != s._successors.size())
@@ -127,63 +112,62 @@ public class StateEntity extends AbstractEntity {
     return true;
   }
 
-//Internal transitions start here!
+  // Internal transitions start here!
   public boolean addInternalTransition(String event, String action) {
-	HashSet<String> value = _internalTransitions.get(event);	
-	if(value == null) {
-	  value = new HashSet<String>();
-	  value.add(action);
-	  return _internalTransitions.put(event, value) != null;
-	} else {
-	  return value.add(action);
-	}
+    HashSet<String> value = _internalTransitions.get(event);
+    if (value == null) {
+      value = new HashSet<String>();
+      value.add(action);
+      return _internalTransitions.put(event, value) != null;
+    }
+    else {
+      return value.add(action);
+    }
   }
 
   public boolean containsInternalTransition(String event, String action) {
-	//return internalTransitions.
-	return false;
-  } 
+    // return internalTransitions.
+    return false;
+  }
 
   public Set<String> getInternalTransitions(String event) {
-    return Collections.unmodifiableSet(_internalTransitions.get(event));	  
+    return Collections.unmodifiableSet(_internalTransitions.get(event));
   }
+
   public void removeInternalTransition(String event, String action) {
-	HashSet<String> value = _internalTransitions.get(event);
-	value.remove(action);
-	if(value.isEmpty()) _internalTransitions.remove(event);
+    HashSet<String> value = _internalTransitions.get(event);
+    value.remove(action);
+    if (value.isEmpty())
+      _internalTransitions.remove(event);
   }
 
   public void removeInternalTransition(String event) {
     _internalTransitions.remove(event);
   }
-  
-//Nested states start here  
+
+  // Nested states start here
   public void setParent(StateEntity parent) {
-  	_parent = parent;
+    _parent = parent;
   }
 
   public StateEntity getParent() {
-  	return _parent;
+    return _parent;
   }
 
   public boolean addChild(StateEntity child) {
-  	return _children.add(child);
+    return _children.add(child);
   }
 
   public boolean removeChild(StateEntity child) {
-  	return _children.remove(child);
+    return _children.remove(child);
   }
 
-  public Set<StateEntity>  getChildren() {
-	  return Collections.unmodifiableSet(_children);
-  }  
-  
-  
-  private String _description;
+  public Set<StateEntity> getChildren() {
+    return Collections.unmodifiableSet(_children);
+  }
+
   private List<TransitionEntity> _successors, _predecessors;
-  private HashMap<String,HashSet<String>> _internalTransitions;
+  private HashMap<String, HashSet<String>> _internalTransitions;
   private StateEntity _parent = null;
   private HashSet<StateEntity> _children = new HashSet<StateEntity>();
-
-
 }
