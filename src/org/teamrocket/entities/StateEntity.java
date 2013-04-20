@@ -159,21 +159,19 @@ public class StateEntity extends AbstractEntity {
   
 //Nested states start here  
   public void setParent(StateEntity parent) {
-	// TODO Auto-generated method stub
+  	_parent = parent;
   }
 
   public StateEntity getParent() {
-	// TODO Auto-generated method stub
-	return null;
+  	return _parent;
   }
 
   public boolean addChild(StateEntity child) {
-	// TODO Auto-generated method stub
-	return false;
+  	return _children.add(child);
   }
 
-  public void removeChild(StateEntity child) {
-	// TODO Auto-generated method stub
+  public boolean removeChild(StateEntity child) {
+  	return _children.remove(child);
   }
 
   public Set<StateEntity>  getChildren() {
