@@ -20,13 +20,6 @@ public class TestStateEntity extends TestCase {
     assertEquals(nameValue, ent.getName());
   }
 
-  public void testDescription() {
-    String descriptionValue = "A description goes here";
-    ent.setDescription(descriptionValue);
-
-    assertEquals(descriptionValue, ent.getDescription());
-  }
-
   public void testAddInternalTransitions() {
     ent.addInternalTransition(null, null);
     ent.addInternalTransition(null, "action");

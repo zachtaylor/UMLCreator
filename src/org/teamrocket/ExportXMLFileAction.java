@@ -79,8 +79,7 @@ public class ExportXMLFileAction extends AbstractViewAction {
     }
   }
 
-  protected void exportView(final View view, final URI uri,
-      @Nullable final URIChooser chooser) {
+  protected void exportView(final View view, final URI uri, @Nullable final URIChooser chooser) {
     try {
       File file = new File(uri);
 
@@ -91,36 +90,15 @@ public class ExportXMLFileAction extends AbstractViewAction {
 
       List<StateEntity> figures = ApplicationModel.getStateEntity();
 
-      // TODO : Write XML to the file
       List<XMLNode> nodes = new ArrayList<XMLNode>();
       if (figures.isEmpty())
         writer.write("\n");
 
       for (StateEntity e : figures) {
-        XMLNode n = new XMLNode("State");
-
-        n.setAttribute("name", e.getName());
-        n.setAttribute("description", e.getDescription());
-
-        // list of each figure's children
-        List<TransitionEntity> chef = e.getSuccessors();
-
-        for (TransitionEntity child : chef) {
-
-          XMLNode childNode = new XMLNode("transition");
-          childNode.setAttribute("trigger", child.getInput());
-          childNode.setAttribute("action", child.getAction());
-          childNode.setAttribute("next", child.getNext().getName());
-
-          n.addChild(childNode);
-        }
-
-        nodes.add(n);
+        nodes.add(e.toXML());
       }
-      // debugging printing
-      for (XMLNode q : nodes) {
-        System.out.println(q.toString());
-      }
+      // TODO : Add transitions to save file
+      // TODO : Write XML to the file
 
     } catch (IOException e) {
       e.printStackTrace();

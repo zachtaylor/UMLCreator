@@ -20,7 +20,7 @@ public class TestXMLRepresentations extends TestCase {
     ent.setLabel("foo");
     ent.addInternalTransition("event", "action");
 
-    assertEquals("<foo>\n  <event id=\"event\">\n    <action id=\"action\" />\n  </event>\n</foo>", ent.toXML().toString());
+    assertEquals("<foo>\n\t<event id=\"event\">\n\t\t<action id=\"action\" />\n\t</event>\n</foo>\n", ent.toXML().toString());
   }
 
   public void testStateEntityWithInternalTransitionToMultipleActions() {
@@ -30,7 +30,7 @@ public class TestXMLRepresentations extends TestCase {
     ent.addInternalTransition("event", "action1");
     ent.addInternalTransition("event", "action2");
 
-    assertEquals("<foo>\n  <event id=\"event\">\n    <action id=\"action1\" />\n    <action id=\"action2\" />\n  </event>\n</foo>", ent.toXML().toString());
+    assertEquals("<foo>\n\t<event id=\"event\">\n\t\t<action id=\"action1\" />\n\t\t<action id=\"action2\" />\n\t</event>\n</foo>\n", ent.toXML().toString());
   }
 
   public void testStateEntityWithMultipleInternalTransitions() {
@@ -40,6 +40,6 @@ public class TestXMLRepresentations extends TestCase {
     ent.addInternalTransition("event1", "action1");
     ent.addInternalTransition("event2", "action2");
 
-    assertEquals("<foo>\n  <event id=\"event1\">\n    <action id=\"action1\" />\n  </event>\n  <event id=\"event2\">\n    <action id=\"action2\" />\n  </event>\n</foo>", ent.toXML().toString());
+    assertEquals("<foo>\n\t<event id=\"event1\">\n\t\t<action id=\"action1\" />\n\t</event>\n\t<event id=\"event2\">\n\t\t<action id=\"action2\" />\n\t</event>\n</foo>\n", ent.toXML().toString());
   }
 }

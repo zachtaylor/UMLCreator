@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.zachtaylor.jnodalxml.XMLNode;
@@ -81,7 +82,22 @@ public class StateEntity extends AbstractEntity {
   public XMLNode toXML() {
     XMLNode node = new XMLNode(_label);
 
-    node.setSelfClosing(true);
+    if (_internalTransitions.entrySet().isEmpty())
+      node.setSelfClosing(true);
+
+    for (Map.Entry<String, List<String>> me : _internalTransitions.entrySet()) {
+      XMLNode childNode = new XMLNode("event");
+      childNode.setAttribute("id", me.getKey());
+
+      for (String a : me.getValue()) {
+        XMLNode grandChildNode = new XMLNode("action");
+        grandChildNode.setAttribute("id", a);
+        grandChildNode.setSelfClosing(true);
+        childNode.addChild(grandChildNode);
+      }
+
+      node.addChild(childNode);
+    }
 
     return node;
   }
@@ -114,9 +130,9 @@ public class StateEntity extends AbstractEntity {
 
 //Internal transitions start here!
   public boolean addInternalTransition(String event, String action) {
-    HashSet<String> value = _internalTransitions.get(event);
+    List<String> value = _internalTransitions.get(event);
     if (value == null) {
-      value = new HashSet<String>();
+      value = new ArrayList<String>();
       value.add(action);
       return _internalTransitions.put(event, value) != null;
     }
@@ -130,12 +146,14 @@ public class StateEntity extends AbstractEntity {
     return false;
   }
 
-  public Set<String> getInternalTransitions(String event) {
-    return Collections.unmodifiableSet(_internalTransitions.get(event));
+  public List<String> getInternalTransitions(String event) {
+    if (_internalTransitions.get(event) != null)
+      return Collections.unmodifiableList(_internalTransitions.get(event));
+    return new ArrayList<String>();
   }
 
   public void removeInternalTransition(String event, String action) {
-    HashSet<String> value = _internalTransitions.get(event);
+    List<String> value = _internalTransitions.get(event);
     value.remove(action);
     if (value.isEmpty())
       _internalTransitions.remove(event);
@@ -167,7 +185,7 @@ public class StateEntity extends AbstractEntity {
   }
 
   private List<TransitionEntity> _successors, _predecessors;
-  private HashMap<String, HashSet<String>> _internalTransitions;
+  private Map<String, List<String>> _internalTransitions = new HashMap<String, List<String>>();
   private StateEntity _parent = null;
   private HashSet<StateEntity> _children = new HashSet<StateEntity>();
 }
