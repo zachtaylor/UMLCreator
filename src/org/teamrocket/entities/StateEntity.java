@@ -129,11 +129,11 @@ public class StateEntity extends AbstractEntity {
 
 //Internal transitions start here!
   public boolean addInternalTransition(String event, String action) {
-	HashSet<String> value = internalTransitions.get(event);	
+	HashSet<String> value = _internalTransitions.get(event);	
 	if(value == null) {
 	  value = new HashSet<String>();
 	  value.add(action);
-	  return internalTransitions.put(event, value) != null;
+	  return _internalTransitions.put(event, value) != null;
 	} else {
 	  return value.add(action);
 	}
@@ -145,16 +145,16 @@ public class StateEntity extends AbstractEntity {
   } 
 
   public Set<String> getInternalTransitions(String event) {
-    return Collections.unmodifiableSet(internalTransitions.get(event));	  
+    return Collections.unmodifiableSet(_internalTransitions.get(event));	  
   }
   public void removeInternalTransition(String event, String action) {
-	HashSet<String> value = internalTransitions.get(event);
+	HashSet<String> value = _internalTransitions.get(event);
 	value.remove(action);
-	if(value.isEmpty()) internalTransitions.remove(event);
+	if(value.isEmpty()) _internalTransitions.remove(event);
   }
 
   public void removeInternalTransition(String event) {
-    internalTransitions.remove(event);
+    _internalTransitions.remove(event);
   }
   
 //Nested states start here  
@@ -177,15 +177,15 @@ public class StateEntity extends AbstractEntity {
   }
 
   public Set<StateEntity>  getChildren() {
-	  return Collections.unmodifiableSet(children);
+	  return Collections.unmodifiableSet(_children);
   }  
   
   
   private String _description;
   private List<TransitionEntity> _successors, _predecessors;
-  private HashMap<String,HashSet<String>> internalTransitions;
-  private StateEntity parent = null;
-  private HashSet<StateEntity> children = new HashSet<StateEntity>();
+  private HashMap<String,HashSet<String>> _internalTransitions;
+  private StateEntity _parent = null;
+  private HashSet<StateEntity> _children = new HashSet<StateEntity>();
 
 
 }
