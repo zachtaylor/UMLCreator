@@ -112,7 +112,7 @@ public class StateEntity extends AbstractEntity {
     return true;
   }
 
-  // Internal transitions start here!
+//Internal transitions start here!
   public boolean addInternalTransition(String event, String action) {
     HashSet<String> value = _internalTransitions.get(event);
     if (value == null) {

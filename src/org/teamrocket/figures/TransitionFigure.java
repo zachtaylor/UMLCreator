@@ -98,6 +98,8 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
     if (start.getOwner() == end.getOwner())
       setLiner(new CurvedLiner());
     
+    
+    
     setLabel("[label]");
   }
 

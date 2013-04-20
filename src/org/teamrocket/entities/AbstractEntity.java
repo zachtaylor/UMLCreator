@@ -5,7 +5,7 @@ import java.util.Observable;
 import com.zachtaylor.jnodalxml.XMLNode;
 
 public abstract class AbstractEntity extends Observable {
-	protected String _label;
+	protected String _label ="";
 
   public String getName() {
     return _label;
