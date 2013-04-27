@@ -56,40 +56,7 @@ public class StateFigure extends GraphicalCompositeFigure {
     // may want to change to false, depending on how we use the boolean value in
     // StateEntity.java
     
-    _internalTransitions = new ListFigure();
-
-    setLayouter(new VerticalLayouter());
-
-    RoundRectangleFigure nameCompartmentPF = new RoundRectangleFigure();
-    nameCompartmentPF.set(STROKE_COLOR, null);
-    nameCompartmentPF.setAttributeEnabled(STROKE_COLOR, false);
-    nameCompartmentPF.set(FILL_COLOR, null);
-    nameCompartmentPF.setAttributeEnabled(FILL_COLOR, false);
-    ListFigure nameCompartment = new ListFigure(nameCompartmentPF);
-    SeparatorLineFigure separator1 = new SeparatorLineFigure();
-
-    add(nameCompartment);
-    add(separator1);
-    add(_internalTransitions);
-
-    Insets2D.Double insets = new Insets2D.Double(8, 16, 8, 16);
-    nameCompartment.set(LAYOUT_INSETS, insets);
-    _internalTransitions.set(LAYOUT_INSETS, insets);
-
-    nameCompartment.add(_nameFigure);
-    _nameFigure.set(FONT_BOLD, true);
-    _nameFigure.setAttributeEnabled(FONT_BOLD, true);
-
-    addBlankInternalTransition();
-    addBlankInternalTransition();
-
-    setAttributeEnabled(STROKE_DASHES, false);
-
-    ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.pert.Labels");
-
-    setName(labels.getString("teamrocket.state.defaultName"));
-
-    _data.setLabel(_nameFigure.getText());
+  
   }
 
   public StateFigure(Figure figure) {
@@ -125,7 +92,9 @@ public class StateFigure extends GraphicalCompositeFigure {
   /* public void update(Observable obs, Object o) { // TODO: } */
 
   public void setName(String newValue) {
+	willChange();
 	_nameFigure.setText(newValue);
+	changed();
     //_data.setLabel(newValue);
     //_nameFigure.set(TEXT, newValue);
     // getNameFigure().setText(newValue);
@@ -254,9 +223,9 @@ public class StateFigure extends GraphicalCompositeFigure {
       });
     }
 
-    ApplicationModel.addStateEntity(that._data);
     that.changed();
-
+    ApplicationModel.addStateEntity(that._data);
+    
     return that;
   }
 
@@ -296,29 +265,63 @@ public class StateFigure extends GraphicalCompositeFigure {
               ent.addInternalTransition(oldPieces[0].trim(), s);
           }
         }
-
-        System.out.println(ent.toString());
       }
     }
   }
   
   public void init() {
-	  final StateFigure self = this;
-	  _data = new StateEntity();	  
-	  _nameFigure = new TextFigure() {
-
-      @Override
-      public void setText(String newText) {
-          self.willChange();
-//    	  if(getText() != null)
-          _data.setLabel(newText);          
-//   	    self.setName(newText);
-    		
-    	  set(TEXT, newText);
-    	  self.changed();
-      }
-    };
+	final StateFigure self = this;
+	this.removeAllChildren();
+	_data = new StateEntity();	  
+	_nameFigure = new TextFigure() {
+	@Override
+		public void setText(String newText) {
+			self.willChange();
+		
+			_data.setLabel(newText);
+				
+			set(TEXT, newText);
+			self.changed();	
+		}
+	};
+	
+	_internalTransitions = new ListFigure();
+	
+	setLayouter(new VerticalLayouter());
+	
+	RoundRectangleFigure nameCompartmentPF = new RoundRectangleFigure();
+	nameCompartmentPF.set(STROKE_COLOR, null);
+	nameCompartmentPF.setAttributeEnabled(STROKE_COLOR, false);
+	nameCompartmentPF.set(FILL_COLOR, null);
+	nameCompartmentPF.setAttributeEnabled(FILL_COLOR, false);
+	ListFigure nameCompartment = new ListFigure(nameCompartmentPF);
+	SeparatorLineFigure separator1 = new SeparatorLineFigure();
+	
+	add(nameCompartment);
+	add(separator1);
+	add(_internalTransitions);
+	
+	Insets2D.Double insets = new Insets2D.Double(8, 16, 8, 16);
+	nameCompartment.set(LAYOUT_INSETS, insets);
+	_internalTransitions.set(LAYOUT_INSETS, insets);
+	
+	nameCompartment.add(_nameFigure);
+	_nameFigure.set(FONT_BOLD, true);
+	_nameFigure.setAttributeEnabled(FONT_BOLD, true);
+	
+	addBlankInternalTransition();
+	addBlankInternalTransition();
+	
+	setAttributeEnabled(STROKE_DASHES, false);
+	
+	ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.pert.Labels");
+	
+	setName(labels.getString("teamrocket.state.defaultName"));
+	
+	_data.setLabel(_nameFigure.getText());	  
+	
   }
+ 
 
   private ListFigure _internalTransitions;
 }
