@@ -87,7 +87,7 @@ public class ApplicationModel extends DefaultApplicationModel {
     bucket.add(s);
   }
 
-  public static List<StateEntity> getStateEntity() {
+  public static List<StateEntity> getStateEntityBucket() {
     return bucket;
   }
 

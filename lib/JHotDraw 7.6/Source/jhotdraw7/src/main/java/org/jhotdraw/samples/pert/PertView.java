@@ -34,6 +34,7 @@ import org.jhotdraw.app.*;
 import org.jhotdraw.draw.*;
 import org.jhotdraw.draw.action.*;
 import org.jhotdraw.gui.URIChooser;
+import org.teamrocket.TeamRocketDrawing;
 
 /**
  * A view for Pert diagrams.
@@ -102,7 +103,7 @@ public class PertView extends AbstractView {
      * Creates a new Drawing for this view.
      */
     protected Drawing createDrawing() {
-        DefaultDrawing drawing = new DefaultDrawing();
+        DefaultDrawing drawing = new TeamRocketDrawing();
         DOMStorableInputOutputFormat ioFormat =
                 new DOMStorableInputOutputFormat(new PertFactory());
         LinkedList<InputFormat> inputFormats = new LinkedList<InputFormat>();

@@ -55,7 +55,7 @@ public class StateFigure extends GraphicalCompositeFigure {
     init();
     // may want to change to false, depending on how we use the boolean value in
     // StateEntity.java
-    
+
     _internalTransitions = new ListFigure();
 
     setLayouter(new VerticalLayouter());
@@ -125,9 +125,9 @@ public class StateFigure extends GraphicalCompositeFigure {
   /* public void update(Observable obs, Object o) { // TODO: } */
 
   public void setName(String newValue) {
-	_nameFigure.setText(newValue);
-    //_data.setLabel(newValue);
-    //_nameFigure.set(TEXT, newValue);
+    _nameFigure.setText(newValue);
+    // _data.setLabel(newValue);
+    // _nameFigure.set(TEXT, newValue);
     // getNameFigure().setText(newValue);
   }
 
@@ -237,7 +237,7 @@ public class StateFigure extends GraphicalCompositeFigure {
 
       });
     }
-    for (StateEntity s : ApplicationModel.getStateEntity()) {
+    for (StateEntity s : ApplicationModel.getStateEntityBucket()) {
       if (_data.getChildren().contains(s))
         break;
 
@@ -301,21 +301,21 @@ public class StateFigure extends GraphicalCompositeFigure {
       }
     }
   }
-  
+
   public void init() {
-	  final StateFigure self = this;
-	  _data = new StateEntity();	  
-	  _nameFigure = new TextFigure() {
+    final StateFigure self = this;
+    _data = new StateEntity();
+    _nameFigure = new TextFigure() {
 
       @Override
       public void setText(String newText) {
-          self.willChange();
-//    	  if(getText() != null)
-          _data.setLabel(newText);          
-//   	    self.setName(newText);
-    		
-    	  set(TEXT, newText);
-    	  self.changed();
+        self.willChange();
+        // if(getText() != null)
+        _data.setLabel(newText);
+        // self.setName(newText);
+
+        set(TEXT, newText);
+        self.changed();
       }
     };
   }
