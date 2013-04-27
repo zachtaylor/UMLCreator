@@ -83,13 +83,13 @@ public class ExportXMLFileAction extends AbstractViewAction {
 
       BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
-      List<StateEntity> figures = ApplicationModel.getStateEntity();
+      List<StateEntity> entities = ApplicationModel.getStateEntityBucket();
 
       List<XMLNode> nodes = new ArrayList<XMLNode>();
-      if (figures.isEmpty())
+      if (entities.isEmpty())
         writer.write("\n");
 
-      for (StateEntity e : figures) {
+      for (StateEntity e : entities) {
         nodes.add(e.toXML());
       }
       // TODO : Add transitions to save file

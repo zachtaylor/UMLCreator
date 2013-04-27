@@ -55,8 +55,6 @@ public class StateFigure extends GraphicalCompositeFigure {
     init();
     // may want to change to false, depending on how we use the boolean value in
     // StateEntity.java
-    
-  
   }
 
   public StateFigure(Figure figure) {
@@ -95,9 +93,6 @@ public class StateFigure extends GraphicalCompositeFigure {
 	willChange();
 	_nameFigure.setText(newValue);
 	changed();
-    //_data.setLabel(newValue);
-    //_nameFigure.set(TEXT, newValue);
-    // getNameFigure().setText(newValue);
   }
 
   public String getName() {
@@ -206,7 +201,7 @@ public class StateFigure extends GraphicalCompositeFigure {
 
       });
     }
-    for (StateEntity s : ApplicationModel.getStateEntity()) {
+    for (StateEntity s : ApplicationModel.getStateEntityBucket()) {
       if (_data.getChildren().contains(s))
         break;
 
@@ -268,7 +263,7 @@ public class StateFigure extends GraphicalCompositeFigure {
       }
     }
   }
-  
+
   public void init() {
 	final StateFigure self = this;
 	this.removeAllChildren();
