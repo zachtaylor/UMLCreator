@@ -52,9 +52,10 @@ public class StateFigure extends GraphicalCompositeFigure {
   public StateFigure() {
     super(new RoundRectangleFigure());
     final StateFigure self = this;
+    init();
     // may want to change to false, depending on how we use the boolean value in
     // StateEntity.java
-    _data = new StateEntity();
+    
     _internalTransitions = new ListFigure();
 
     setLayouter(new VerticalLayouter());
@@ -75,14 +76,6 @@ public class StateFigure extends GraphicalCompositeFigure {
     nameCompartment.set(LAYOUT_INSETS, insets);
     _internalTransitions.set(LAYOUT_INSETS, insets);
 
-    _nameFigure = new TextFigure() {
-
-      @Override
-      public void setText(String newText) {
-        set(TEXT, newText);
-        self.setName(newText);
-      }
-    };
     nameCompartment.add(_nameFigure);
     _nameFigure.set(FONT_BOLD, true);
     _nameFigure.setAttributeEnabled(FONT_BOLD, true);
@@ -132,8 +125,9 @@ public class StateFigure extends GraphicalCompositeFigure {
   /* public void update(Observable obs, Object o) { // TODO: } */
 
   public void setName(String newValue) {
-    _data.setLabel(newValue);
-    _nameFigure.set(TEXT, newValue);
+	_nameFigure.setText(newValue);
+    //_data.setLabel(newValue);
+    //_nameFigure.set(TEXT, newValue);
     // getNameFigure().setText(newValue);
   }
 
@@ -226,7 +220,7 @@ public class StateFigure extends GraphicalCompositeFigure {
   @Override
   public StateFigure clone() {
     final StateFigure that = (StateFigure) super.clone();
-    that._data = new StateEntity();
+    that.init();
     that.setName("State " + num_of_states++);
 
     that.willChange();
@@ -306,6 +300,24 @@ public class StateFigure extends GraphicalCompositeFigure {
         System.out.println(ent.toString());
       }
     }
+  }
+  
+  public void init() {
+	  final StateFigure self = this;
+	  _data = new StateEntity();	  
+	  _nameFigure = new TextFigure() {
+
+      @Override
+      public void setText(String newText) {
+          self.willChange();
+//    	  if(getText() != null)
+          _data.setLabel(newText);          
+//   	    self.setName(newText);
+    		
+    	  set(TEXT, newText);
+    	  self.changed();
+      }
+    };
   }
 
   private ListFigure _internalTransitions;
