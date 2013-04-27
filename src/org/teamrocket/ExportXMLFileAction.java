@@ -16,9 +16,6 @@ import javax.swing.SwingUtilities;
 import org.jhotdraw.app.Application;
 import org.jhotdraw.app.View;
 import org.jhotdraw.app.action.AbstractViewAction;
-import org.jhotdraw.draw.DefaultDrawingView;
-import org.jhotdraw.draw.Drawing;
-import org.jhotdraw.draw.Figure;
 import org.jhotdraw.gui.JFileURIChooser;
 import org.jhotdraw.gui.JSheet;
 import org.jhotdraw.gui.URIChooser;
@@ -26,9 +23,7 @@ import org.jhotdraw.gui.event.SheetEvent;
 import org.jhotdraw.gui.event.SheetListener;
 import org.jhotdraw.util.ResourceBundleUtil;
 import org.teamrocket.entities.StateEntity;
-import org.teamrocket.entities.TransitionEntity;
-
-import com.zachtaylor.jnodalxml.XMLNode;
+import org.zachtaylor.jnodalxml.XMLNode;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
 

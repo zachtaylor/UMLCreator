@@ -2,7 +2,7 @@ package org.teamrocket.entities;
 
 import java.util.Observable;
 
-import com.zachtaylor.jnodalxml.XMLNode;
+import org.zachtaylor.jnodalxml.XMLNode;
 
 public abstract class AbstractEntity extends Observable {
 	protected String _label ="";
