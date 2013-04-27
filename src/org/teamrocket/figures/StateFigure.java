@@ -44,7 +44,7 @@ import org.teamrocket.entities.TransitionEntity;
 
 public class StateFigure extends GraphicalCompositeFigure {
 
-  private StateEntity _data;
+  protected StateEntity _data;
   private TextFigure _nameFigure;
   private HashSet<Action> _actions = new HashSet<Action>();
   public static int num_of_states = 0;
@@ -59,6 +59,7 @@ public class StateFigure extends GraphicalCompositeFigure {
 
   public StateFigure(Figure figure) {
     super(figure);
+    init();
   }
 
   @Override
@@ -223,6 +224,10 @@ public class StateFigure extends GraphicalCompositeFigure {
     
     return that;
   }
+  
+  protected StateFigure superDuperClone() {
+  	return (StateFigure) super.clone();
+  }
 
   private class InternalTransitionFigure extends TextFigure {
     public InternalTransitionFigure() {
@@ -267,7 +272,7 @@ public class StateFigure extends GraphicalCompositeFigure {
   public void init() {
 	final StateFigure self = this;
 	this.removeAllChildren();
-	_data = new StateEntity();	  
+	_data = new StateEntity(self);	  
 	_nameFigure = new TextFigure() {
 	@Override
 		public void setText(String newText) {

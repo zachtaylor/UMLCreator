@@ -118,6 +118,7 @@ public class ApplicationModel extends DefaultApplicationModel {
     m.put(ExportXMLFileAction.ID, new ExportXMLFileAction(a, v));
     m.put(ExportFileAction.ID, new ExportFileAction(a, v));
     m.put(SimulatorAction.ID, new SimulatorAction(a, v));
+    m.put(ErrorTestingAction.ID, new ErrorTestingAction(a, v));
 
     m.put("view.toggleGrid", aa = new ToggleViewPropertyAction(a, v, PertView.GRID_VISIBLE_PROPERTY));
     drawLabels.configureAction(aa, "view.toggleGrid");
@@ -164,6 +165,9 @@ public class ApplicationModel extends DefaultApplicationModel {
         Action a;
         if (null != (a = am.get(SimulatorAction.ID))) {
           m.add(a);
+        }
+        if (null != (a = am.get(ErrorTestingAction.ID))) {
+        	m.add(a);
         }
       }
     };

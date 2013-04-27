@@ -8,14 +8,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.jhotdraw.draw.Figure;
+import org.teamrocket.figures.StateFigure;
 import org.zachtaylor.jnodalxml.XMLNode;
 
 public class StateEntity extends AbstractEntity {
-  public StateEntity() {
+  public StateEntity(Figure parent) {
     _successors = new ArrayList<TransitionEntity>();
     _predecessors = new ArrayList<TransitionEntity>();
+    _entitysFigure = parent;
   }
 
+  public Figure getInheritanceParent() {
+  	return _entitysFigure;
+  }
+  
   public boolean addSuccessor(TransitionEntity ent) {
     if (_successors.contains(ent))
       return false;
@@ -70,7 +77,7 @@ public class StateEntity extends AbstractEntity {
     StateEntity ent = null;
 
     try {
-      ent = new StateEntity();
+      ent = new StateEntity(null);
       ent.setLabel(node.getName());
 
     } catch (Exception e) {
@@ -184,6 +191,7 @@ public class StateEntity extends AbstractEntity {
     return Collections.unmodifiableSet(_children);
   }
 
+  private Figure _entitysFigure;
   private List<TransitionEntity> _successors, _predecessors;
   private Map<String, List<String>> _internalTransitions = new HashMap<String, List<String>>();
   private StateEntity _parent = null;
