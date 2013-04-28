@@ -120,9 +120,10 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
     this.remove(_labelFigure);
     _labelFigure = new TextFigure(_label);
     LocatorLayouter.LAYOUT_LOCATOR.set(_labelFigure, new RelativeLocator(.25, .5, false));
-    _labelFigure.setEditable(false);
+    _labelFigure.setEditable(true);
     add(_labelFigure);
     changed();
+
   }
 
   public void setLabelSelf(String s) {
@@ -132,9 +133,10 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
     this.remove(_labelFigure);
     _labelFigure = new TextFigure(_label);
     LocatorLayouter.LAYOUT_LOCATOR.set(_labelFigure, new RelativeLocator(.25, -.5, false));
-    _labelFigure.setEditable(false);
+    _labelFigure.setEditable(true);
     add(_labelFigure);
     changed();
+
   }
 
   public String getLabel() {
