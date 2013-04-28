@@ -310,7 +310,6 @@ public class StateFigure extends GraphicalCompositeFigure {
 	_nameFigure.setAttributeEnabled(FONT_BOLD, true);
 	
 	addBlankInternalTransition();
-	addBlankInternalTransition();
 	
 	setAttributeEnabled(STROKE_DASHES, false);
 	
