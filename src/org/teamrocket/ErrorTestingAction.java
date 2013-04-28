@@ -81,6 +81,6 @@ public class ErrorTestingAction extends AbstractViewAction {
     
     //TODO : No island states (iterate over the bucket to make sure every stateEntity (not start/end) has a predecessor.)
     
-    //TODO : Nested state tests - do previous tests on child buckets
+    //TODO : Nested state tests
 	}
 }
