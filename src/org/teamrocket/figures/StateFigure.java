@@ -6,7 +6,6 @@ import static org.jhotdraw.draw.AttributeKeys.STROKE_COLOR;
 import static org.jhotdraw.draw.AttributeKeys.STROKE_DASHES;
 import static org.jhotdraw.draw.AttributeKeys.TEXT;
 
-import java.awt.event.ActionEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
@@ -15,9 +14,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 
 import org.jhotdraw.draw.Figure;
 import org.jhotdraw.draw.GraphicalCompositeFigure;
@@ -46,12 +44,15 @@ public class StateFigure extends GraphicalCompositeFigure {
 
   protected StateEntity _data;
   private TextFigure _nameFigure;
-  private HashSet<Action> _actions = new HashSet<Action>();
+  private HashSet<Action> _actions;
+  private HashSet<Action> _disassociate;
   public static int num_of_states = 0;
 
   public StateFigure() {
     super(new RoundRectangleFigure());
     final StateFigure self = this;
+    _actions = new HashSet<Action>();
+    _disassociate = new HashSet<Action>();
     init();
     // may want to change to false, depending on how we use the boolean value in
     // StateEntity.java
@@ -91,9 +92,9 @@ public class StateFigure extends GraphicalCompositeFigure {
   /* public void update(Observable obs, Object o) { // TODO: } */
 
   public void setName(String newValue) {
-	willChange();
-	_nameFigure.setText(newValue);
-	changed();
+    willChange();
+    _nameFigure.setText(newValue);
+    changed();
   }
 
   public String getName() {
@@ -118,7 +119,10 @@ public class StateFigure extends GraphicalCompositeFigure {
 
   @Override
   public Collection<Action> getActions(Point2D.Double p) {
-    return _actions;
+    if (getEntity().getParent() == null)
+      return _actions;
+
+    return _disassociate;
   }
 
   // modifiers for predecessor and successor lists
@@ -192,41 +196,32 @@ public class StateFigure extends GraphicalCompositeFigure {
 
     that._actions = new HashSet<Action>();
 
+    that._disassociate = new HashSet<Action>();
+    that._disassociate.add(new ContextMenuItemAction(that));
+
     // TODO update when parent updates. Perhaps move to separate method.
-    if (_data.getParent() != null) {
-      that._actions.add(new ContextMenuItemAction("Unset Parent", "Disassociate this child from it's parent.") {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-          that._data.setParent(null);
-        }
-
-      });
-    }
+    // if (_data.getParent() != null) {
+    // that._actions.add(new ContextMenuItemAction("Unset Parent",
+    // "Disassociate this child from it's parent.") {
+    // });
+    // }
     for (StateEntity s : ApplicationModel.getStateEntityBucket()) {
-      if (_data.getChildren().contains(s))
-        break;
-
-      that._actions.add(new ContextSubMenuItemAction(s.getName(), s.getName(), "Add child state", s) {
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-          if (!(object instanceof StateEntity))
-            return;
-
-          if (!_data.getChildren().contains((StateEntity) object))
-            ;
-          _data.addChild((StateEntity) object);
-        }
-      });
+      that.addStateToChildMenu(s);
+      s.getStateFigure().addStateToChildMenu(that._data);
     }
 
     that.changed();
     ApplicationModel.addStateEntity(that._data);
-    
+
     return that;
   }
-  
+
+  private void addStateToChildMenu(StateEntity ent) {
+    _actions.add(new ContextSubMenuItemAction(this, "Add child state", ent));
+  }
+
   protected StateFigure superDuperClone() {
-  	return (StateFigure) super.clone();
+    return (StateFigure) super.clone();
   }
 
   private class InternalTransitionFigure extends TextFigure {
@@ -270,57 +265,56 @@ public class StateFigure extends GraphicalCompositeFigure {
   }
 
   public void init() {
-	final StateFigure self = this;
-	this.removeAllChildren();
-	_data = new StateEntity(self);	  
-	_nameFigure = new TextFigure() {
-	@Override
-		public void setText(String newText) {
-			self.willChange();
-		
-			_data.setLabel(newText);
-				
-			set(TEXT, newText);
-			self.changed();	
-		}
-	};
-	
-	_internalTransitions = new ListFigure();
-	
-	setLayouter(new VerticalLayouter());
-	
-	RoundRectangleFigure nameCompartmentPF = new RoundRectangleFigure();
-	nameCompartmentPF.set(STROKE_COLOR, null);
-	nameCompartmentPF.setAttributeEnabled(STROKE_COLOR, false);
-	nameCompartmentPF.set(FILL_COLOR, null);
-	nameCompartmentPF.setAttributeEnabled(FILL_COLOR, false);
-	ListFigure nameCompartment = new ListFigure(nameCompartmentPF);
-	SeparatorLineFigure separator1 = new SeparatorLineFigure();
-	
-	add(nameCompartment);
-	add(separator1);
-	add(_internalTransitions);
-	
-	Insets2D.Double insets = new Insets2D.Double(8, 16, 8, 16);
-	nameCompartment.set(LAYOUT_INSETS, insets);
-	_internalTransitions.set(LAYOUT_INSETS, insets);
-	
-	nameCompartment.add(_nameFigure);
-	_nameFigure.set(FONT_BOLD, true);
-	_nameFigure.setAttributeEnabled(FONT_BOLD, true);
-	
-	addBlankInternalTransition();
-	
-	setAttributeEnabled(STROKE_DASHES, false);
-	
-	ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.pert.Labels");
-	
-	setName(labels.getString("teamrocket.state.defaultName"));
-	
-	_data.setLabel(_nameFigure.getText());	  
-	
+    final StateFigure self = this;
+    this.removeAllChildren();
+    _data = new StateEntity(self);
+    _nameFigure = new TextFigure() {
+      @Override
+      public void setText(String newText) {
+        self.willChange();
+
+        _data.setLabel(newText);
+
+        set(TEXT, newText);
+        self.changed();
+      }
+    };
+
+    _internalTransitions = new ListFigure();
+
+    setLayouter(new VerticalLayouter());
+
+    RoundRectangleFigure nameCompartmentPF = new RoundRectangleFigure();
+    nameCompartmentPF.set(STROKE_COLOR, null);
+    nameCompartmentPF.setAttributeEnabled(STROKE_COLOR, false);
+    nameCompartmentPF.set(FILL_COLOR, null);
+    nameCompartmentPF.setAttributeEnabled(FILL_COLOR, false);
+    ListFigure nameCompartment = new ListFigure(nameCompartmentPF);
+    SeparatorLineFigure separator1 = new SeparatorLineFigure();
+
+    add(nameCompartment);
+    add(separator1);
+    add(_internalTransitions);
+
+    Insets2D.Double insets = new Insets2D.Double(8, 16, 8, 16);
+    nameCompartment.set(LAYOUT_INSETS, insets);
+    _internalTransitions.set(LAYOUT_INSETS, insets);
+
+    nameCompartment.add(_nameFigure);
+    _nameFigure.set(FONT_BOLD, true);
+    _nameFigure.setAttributeEnabled(FONT_BOLD, true);
+
+    addBlankInternalTransition();
+
+    setAttributeEnabled(STROKE_DASHES, false);
+
+    ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.pert.Labels");
+
+    setName(labels.getString("teamrocket.state.defaultName"));
+
+    _data.setLabel(_nameFigure.getText());
+
   }
- 
 
   private ListFigure _internalTransitions;
 }

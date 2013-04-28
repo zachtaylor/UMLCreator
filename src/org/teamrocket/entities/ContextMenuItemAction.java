@@ -4,20 +4,21 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-public class ContextMenuItemAction extends AbstractAction {
+import org.teamrocket.figures.StateFigure;
 
-	private static final long serialVersionUID = 1L;
-  public ContextMenuItemAction(String text, String desc) {
-    super(text);
-    putValue(SHORT_DESCRIPTION, desc);
-    //this.putValue(ActionUtil.SUBMENU_KEY, "SUBMENU");
+public class ContextMenuItemAction extends AbstractAction {
+  private static final long serialVersionUID = 1L;
+  protected StateEntity nextEntity;
+  protected StateFigure myFigure;
+
+  public ContextMenuItemAction(StateFigure figure) {
+    super("Disassociate from parent");
+    putValue(SHORT_DESCRIPTION, "remove parent");
+    myFigure = figure;
   }
 
   @Override
   public void actionPerformed(ActionEvent arg0) {
-  // TODO Auto-generated method stub
-
+    myFigure.getEntity().removeParent();
   }
-
-
 }

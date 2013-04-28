@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.JFileChooser;
@@ -83,7 +84,7 @@ public class ExportXMLFileAction extends AbstractViewAction {
 
       BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
-      List<StateEntity> entities = ApplicationModel.getStateEntityBucket();
+      Collection<StateEntity> entities = ApplicationModel.getStateEntityBucket();
 
       List<XMLNode> nodes = new ArrayList<XMLNode>();
       if (entities.isEmpty())

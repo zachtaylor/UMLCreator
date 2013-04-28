@@ -9,9 +9,6 @@ public class TeamRocketDrawing extends DefaultDrawing {
     if (figure instanceof StateFigure) {
       ApplicationModel.getStateEntityBucket().remove(((StateFigure) figure).getEntity());
     }
-
-    System.out.println(ApplicationModel.getStateEntityBucket().toString());
-
     return super.remove(figure);
   }
 }

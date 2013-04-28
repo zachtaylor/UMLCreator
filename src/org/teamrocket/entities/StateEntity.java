@@ -1,28 +1,45 @@
 package org.teamrocket.entities;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
-import org.jhotdraw.draw.Figure;
+import org.jhotdraw.draw.AttributeKeys;
 import org.teamrocket.figures.StateFigure;
 import org.zachtaylor.jnodalxml.XMLNode;
 
 public class StateEntity extends AbstractEntity {
-  public StateEntity(Figure parent) {
-    _successors = new ArrayList<TransitionEntity>();
-    _predecessors = new ArrayList<TransitionEntity>();
-    _entitysFigure = parent;
+  private static Queue<Color> availableColors = new LinkedList<Color>();
+
+  static {
+    availableColors.add(Color.orange);
+    availableColors.add(Color.green);
+    availableColors.add(Color.blue);
+    availableColors.add(Color.magenta);
+    availableColors.add(Color.cyan);
+    availableColors.add(Color.red);
+    availableColors.add(Color.yellow);
+    availableColors.add(Color.gray);
+    availableColors.add(Color.pink);
   }
 
-  public Figure getInheritanceParent() {
-  	return _entitysFigure;
+  public StateEntity(StateFigure parent) {
+    _successors = new ArrayList<TransitionEntity>();
+    _predecessors = new ArrayList<TransitionEntity>();
+    _figure = parent;
   }
-  
+
+  public StateFigure getStateFigure() {
+    return _figure;
+  }
+
   public boolean addSuccessor(TransitionEntity ent) {
     if (_successors.contains(ent))
       return false;
@@ -135,7 +152,7 @@ public class StateEntity extends AbstractEntity {
     return true;
   }
 
-//Internal transitions start here!
+  // Internal transitions start here!
   public boolean addInternalTransition(String event, String action) {
     List<String> value = _internalTransitions.get(event);
     if (value == null) {
@@ -172,7 +189,29 @@ public class StateEntity extends AbstractEntity {
 
   // Nested states start here
   public void setParent(StateEntity parent) {
+    if (_parent != null)
+      _parent.removeChild(this);
+
     _parent = parent;
+    _figure.willChange();
+    _figure.set(AttributeKeys.FILL_COLOR, parent.getColor());
+    _figure.changed();
+  }
+
+  public void removeParent() {
+    _parent.removeChild(this);
+    _parent = null;
+    _figure.willChange();
+    _figure.set(AttributeKeys.FILL_COLOR, Color.white);
+    _figure.changed();
+  }
+
+  private Color getColor() {
+    if (_color == Color.black && availableColors.size() > 0) {
+      _color = availableColors.remove();
+      getStateFigure();
+    }
+    return _color;
   }
 
   public StateEntity getParent() {
@@ -180,20 +219,37 @@ public class StateEntity extends AbstractEntity {
   }
 
   public boolean addChild(StateEntity child) {
+    _figure.willChange();
+    _figure.set(AttributeKeys.STROKE_COLOR, getColor());
+    _figure.changed();
+
+    child.setParent(this);
     return _children.add(child);
   }
 
   public boolean removeChild(StateEntity child) {
-    return _children.remove(child);
+    if (!_children.remove(child))
+      return false;
+
+    if (_children.isEmpty()) {
+      availableColors.add(_color);
+      _color = Color.black;
+      _figure.willChange();
+      _figure.set(AttributeKeys.STROKE_COLOR, _color);
+      _figure.changed();
+    }
+
+    return true;
   }
 
   public Set<StateEntity> getChildren() {
     return Collections.unmodifiableSet(_children);
   }
 
-  private Figure _entitysFigure;
-  private List<TransitionEntity> _successors, _predecessors;
-  private Map<String, List<String>> _internalTransitions = new HashMap<String, List<String>>();
+  private Color _color = Color.black;
   private StateEntity _parent = null;
+  private StateFigure _figure;
+  private List<TransitionEntity> _successors, _predecessors;
   private HashSet<StateEntity> _children = new HashSet<StateEntity>();
+  private Map<String, List<String>> _internalTransitions = new HashMap<String, List<String>>();
 }
