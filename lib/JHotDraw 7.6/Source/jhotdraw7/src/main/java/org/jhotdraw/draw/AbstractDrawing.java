@@ -95,6 +95,7 @@ public abstract class AbstractDrawing extends AbstractAttributedCompositeFigure 
     public void write(DOMOutput out) throws IOException {
         out.openElement("figures");
         for (Figure f : getChildren()) {
+          System.out.println(f);
             out.writeObject(f);
         }
         out.closeElement();
