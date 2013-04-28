@@ -37,6 +37,7 @@ import org.jhotdraw.xml.DOMOutput;
 import org.teamrocket.ApplicationModel;
 import org.teamrocket.entities.ContextMenuItemAction;
 import org.teamrocket.entities.ContextSubMenuItemAction;
+import org.teamrocket.entities.StartStateEntity;
 import org.teamrocket.entities.StateEntity;
 import org.teamrocket.entities.TransitionEntity;
 
@@ -206,6 +207,9 @@ public class StateFigure extends GraphicalCompositeFigure {
     // });
     // }
     for (StateEntity s : ApplicationModel.getStateEntityBucket()) {
+      if (s.getStateFigure() instanceof StartStateFigure || s.getStateFigure() instanceof EndStateFigure)
+        continue;
+    
       that.addStateToChildMenu(s);
       s.getStateFigure().addStateToChildMenu(that._data);
     }
