@@ -98,9 +98,10 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
     if (start.getOwner() == end.getOwner())
       setLiner(new CurvedLiner());
     
-    
-    
-    setLabel("[label]");
+    if (start.getOwner() == end.getOwner())
+    	setLabelSelf("[label]");
+    else
+    	setLabel("[label]");
   }
 
   @Override
@@ -118,13 +119,25 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
   public void setLabel(String s) {
     _label = s;
    
-  	willChange();
-  	this.remove(_labelFigure);
-  	_labelFigure = new TextFigure(_label);
-  	LocatorLayouter.LAYOUT_LOCATOR.set(_labelFigure, new RelativeLocator(.25,.5,false));
-  	_labelFigure.setEditable(false);
-  	add(_labelFigure);
-  	changed();
+    	willChange();
+    	this.remove(_labelFigure);
+    	_labelFigure = new TextFigure(_label);
+    	LocatorLayouter.LAYOUT_LOCATOR.set(_labelFigure, new RelativeLocator(.25,.5,false));
+    	_labelFigure.setEditable(false);
+    	add(_labelFigure);
+    	changed();
+  }
+  
+  public void setLabelSelf(String s) {
+    _label = s;
+   
+    	willChange();
+    	this.remove(_labelFigure);
+    	_labelFigure = new TextFigure(_label);
+    	LocatorLayouter.LAYOUT_LOCATOR.set(_labelFigure, new RelativeLocator(.25,-.5,false));
+    	_labelFigure.setEditable(false);
+    	add(_labelFigure);
+    	changed();
   }
 
   public String getLabel() {

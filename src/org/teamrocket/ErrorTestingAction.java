@@ -54,13 +54,13 @@ public class ErrorTestingAction extends AbstractViewAction {
     	    JOptionPane.ERROR_MESSAGE);
     }
     
-    /*
+    
     // Cheat for finding one path
   	JOptionPane.showMessageDialog(null,
   	    "Diagram must include at least one complete path.",
   	    "Diagram Error",
   	    JOptionPane.ERROR_MESSAGE);
-    
+  	/*
   	// Cheat for no island states
   	JOptionPane.showMessageDialog(null,
   	    "Diagrams must not have island states.",
