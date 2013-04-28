@@ -26,7 +26,7 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
   private String _label;
   private TransitionEntity _data;
   private TextFigure _labelFigure;
-  
+
   public TransitionFigure() {
     // TODO:
     _data = new TransitionEntity();
@@ -49,14 +49,11 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
   public boolean canConnect(Connector start, Connector end) {
     final Figure startState = start.getOwner();
     final Figure endState = end.getOwner();
-    
-    if (!(startState instanceof StateFigure) ||
-    		!(endState instanceof StateFigure))
-    		return false;
-    
-    return !(startState instanceof EndStateFigure) && 
-    		!(endState instanceof StartStateFigure) &&
-    		(start != null) && (end != null);
+
+    if (!(startState instanceof StateFigure) || !(endState instanceof StateFigure))
+      return false;
+
+    return !(startState instanceof EndStateFigure) && !(endState instanceof StartStateFigure) && (start != null) && (end != null);
   }
 
   @Override
@@ -97,11 +94,11 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
 
     if (start.getOwner() == end.getOwner())
       setLiner(new CurvedLiner());
-    
+
     if (start.getOwner() == end.getOwner())
-    	setLabelSelf("[label]");
+      setLabelSelf("[label]");
     else
-    	setLabel("[label]");
+      setLabel("[label]");
   }
 
   @Override
@@ -118,26 +115,26 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
 
   public void setLabel(String s) {
     _label = s;
-   
-    	willChange();
-    	this.remove(_labelFigure);
-    	_labelFigure = new TextFigure(_label);
-    	LocatorLayouter.LAYOUT_LOCATOR.set(_labelFigure, new RelativeLocator(.25,.5,false));
-    	_labelFigure.setEditable(false);
-    	add(_labelFigure);
-    	changed();
+
+    willChange();
+    this.remove(_labelFigure);
+    _labelFigure = new TextFigure(_label);
+    LocatorLayouter.LAYOUT_LOCATOR.set(_labelFigure, new RelativeLocator(.25, .5, false));
+    _labelFigure.setEditable(false);
+    add(_labelFigure);
+    changed();
   }
-  
+
   public void setLabelSelf(String s) {
     _label = s;
-   
-    	willChange();
-    	this.remove(_labelFigure);
-    	_labelFigure = new TextFigure(_label);
-    	LocatorLayouter.LAYOUT_LOCATOR.set(_labelFigure, new RelativeLocator(.25,-.5,false));
-    	_labelFigure.setEditable(false);
-    	add(_labelFigure);
-    	changed();
+
+    willChange();
+    this.remove(_labelFigure);
+    _labelFigure = new TextFigure(_label);
+    LocatorLayouter.LAYOUT_LOCATOR.set(_labelFigure, new RelativeLocator(.25, -.5, false));
+    _labelFigure.setEditable(false);
+    add(_labelFigure);
+    changed();
   }
 
   public String getLabel() {

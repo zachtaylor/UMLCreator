@@ -3,6 +3,7 @@ package org.teamrocket.entities;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.JOptionPane;
 
 import org.jhotdraw.app.action.ActionUtil;
 import org.teamrocket.figures.StateFigure;
@@ -30,9 +31,8 @@ public class ContextSubMenuItemAction extends AbstractAction {
 
   @Override
   public void actionPerformed(ActionEvent arg0) {
-    if (myFigure.getEntity().getChildren().contains(nextEntity)
-        || !nextEntity.getChildren().isEmpty()
-        || myFigure.getEntity().getParent() != null) {
+    if (myFigure.getEntity().getChildren().contains(nextEntity) || !nextEntity.getChildren().isEmpty()) {
+      JOptionPane.showMessageDialog(null, "You cannot do that", "ERROR", JOptionPane.ERROR_MESSAGE);
       return;
     }
 

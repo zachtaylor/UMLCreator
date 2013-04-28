@@ -3,7 +3,6 @@ package org.teamrocket;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import org.jhotdraw.app.Application;
@@ -35,9 +34,9 @@ public class ErrorTestingAction extends AbstractViewAction {
     int endCounter = 0;
     
     for(StateEntity i : theBucket) {
-    	if ((i.getInheritanceParent() instanceof StartStateFigure))
+    	if ((i.getStateFigure() instanceof StartStateFigure))
     		startCounter++;
-    	if ((i.getInheritanceParent() instanceof EndStateFigure))
+    	if ((i.getStateFigure() instanceof EndStateFigure))
     		endCounter++;
     }
     
