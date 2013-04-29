@@ -12,6 +12,7 @@ import java.util.Queue;
 import java.util.Set;
 
 import org.jhotdraw.draw.AttributeKeys;
+import org.teamrocket.figures.StartStateFigure;
 import org.teamrocket.figures.StateFigure;
 import org.zachtaylor.jnodalxml.XMLNode;
 
@@ -34,6 +35,16 @@ public class StateEntity extends AbstractEntity {
     _successors = new ArrayList<TransitionEntity>();
     _predecessors = new ArrayList<TransitionEntity>();
     _figure = parent;
+  }
+
+  public String getName() {
+    if (_label.isEmpty()) {
+      if (getStateFigure() instanceof StartStateFigure)
+        return "startstate";
+      else
+        return "endstate";
+    }
+    return _label;
   }
 
   public StateFigure getStateFigure() {
@@ -104,10 +115,10 @@ public class StateEntity extends AbstractEntity {
   }
 
   public XMLNode toXML() {
-    XMLNode node = new XMLNode(_label);
+    XMLNode node = new XMLNode(getName());
 
-    if (_internalTransitions.entrySet().isEmpty())
-      node.setSelfClosing(true);
+    if (_parent != null)
+      node.setAttribute("parent", _parent.getName());
 
     for (Map.Entry<String, List<String>> me : _internalTransitions.entrySet()) {
       XMLNode childNode = new XMLNode("event");
@@ -121,6 +132,17 @@ public class StateEntity extends AbstractEntity {
       }
 
       node.addChild(childNode);
+    }
+
+    for (TransitionEntity trans : _successors) {
+      XMLNode childNode = new XMLNode("transition");
+      childNode.setAttribute("next", trans.getNext().getName());
+      childNode.setSelfClosing(true);
+      node.addChild(childNode);
+    }
+
+    if (node.getAllChildren().isEmpty()) {
+      node.setSelfClosing(true);
     }
 
     return node;

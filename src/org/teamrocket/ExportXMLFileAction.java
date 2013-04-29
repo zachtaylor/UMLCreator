@@ -93,8 +93,11 @@ public class ExportXMLFileAction extends AbstractViewAction {
       for (StateEntity e : entities) {
         nodes.add(e.toXML());
       }
-      // TODO : Add transitions to save file
-      // TODO : Write XML to the file
+
+      for (XMLNode node : nodes) {
+        writer.write(node.toString());
+      }
+      writer.close();
 
     } catch (IOException e) {
       e.printStackTrace();

@@ -58,7 +58,7 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
 
   @Override
   public boolean canConnect(Connector start) {
-    return (start.getOwner() instanceof StateFigure || start.getOwner() instanceof StartStateFigure);
+    return (start.getOwner() instanceof StateFigure);
   }
 
   @Override
@@ -79,23 +79,19 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
 
   @Override
   protected void handleConnect(Connector start, Connector end) {
-    if (start instanceof StateFigure)
-      ((StateFigure) start.getOwner()).addSuccessor(_data);
-    else if (start instanceof StartStateFigure)
-      ((StartStateFigure) start.getOwner()).addSuccessor(_data);
-    else if (start instanceof EndStateFigure)
-      ((EndStateFigure) start.getOwner()).addSuccessor(_data);
-    if (end instanceof StateFigure)
-      ((StateFigure) start.getOwner()).addPredecessor(_data);
-    else if (end instanceof StartStateFigure)
-      ((StartStateFigure) start.getOwner()).addPredecessor(_data);
-    else if (end instanceof EndStateFigure)
-      ((EndStateFigure) end.getOwner()).addPredecessor(_data);
+    Figure startFigure = start.getOwner();
+    Figure endFigure = end.getOwner();
 
-    if (start.getOwner() == end.getOwner())
-      setLiner(new CurvedLiner());
+    if (startFigure instanceof StateFigure) {
+      _data.setPrev(((StateFigure) startFigure).getEntity());
+      ((StateFigure) startFigure).addSuccessor(_data);
+    }
+    if (endFigure instanceof StateFigure) {
+      _data.setNext(((StateFigure) endFigure).getEntity());
+      ((StateFigure) endFigure).addPredecessor(_data);
+    }
 
-    if (start.getOwner() == end.getOwner())
+    if (startFigure == endFigure)
       setLabelSelf("[label]");
     else
       setLabel("[label]");
@@ -104,6 +100,7 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
   @Override
   public TransitionFigure clone() {
     TransitionFigure that = (TransitionFigure) super.clone();
+    that._data = new TransitionEntity();
 
     return that;
   }

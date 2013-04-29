@@ -1,24 +1,18 @@
 package org.teamrocket.entities;
 
 public class TransitionEntity extends AbstractEntity {
-	
- public TransitionEntity() {
-	 super();
-	 _label = "";
- }
+
+  public TransitionEntity() {
+    super();
+    _label = "";
+  }
 
   public TransitionEntity setNext(StateEntity n) {
     _next = n;
-	setLabel();
     return this;
   }
 
-  private void setLabel() {
-	_label = _prev == null ? "" : _prev.toString();
-	_label += _next == null ? "" : _next.toString();
-}
-
-public StateEntity getNext() {
+  public StateEntity getNext() {
     return _next;
   }
 
@@ -46,7 +40,6 @@ public StateEntity getNext() {
   public String getAction() {
     return _action;
   }
-  
 
   public boolean equals(Object o) {
     if (!(o instanceof TransitionEntity))
