@@ -1,6 +1,5 @@
 package org.teamrocket;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -17,7 +16,6 @@ import javax.swing.JOptionPane;
 import org.jhotdraw.app.Application;
 import org.jhotdraw.app.View;
 import org.jhotdraw.app.action.AbstractViewAction;
-import org.jhotdraw.draw.AttributeKeys;
 import org.jhotdraw.util.ResourceBundleUtil;
 import org.teamrocket.entities.StateEntity;
 import org.teamrocket.entities.TransitionEntity;
@@ -51,8 +49,6 @@ public class SimulatorAction extends AbstractViewAction {
     }
 
     _state = ApplicationModel.getStartEntity();
-
-    Color oldColor = _state.getStateFigure().get(AttributeKeys.FILL_COLOR);
 
     while (loadAndCheckNextInput()) {
       processInput();
