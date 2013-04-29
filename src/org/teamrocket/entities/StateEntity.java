@@ -195,7 +195,7 @@ public class StateEntity extends AbstractEntity {
   public List<String> getInternalTransitions(String event) {
     if (_internalTransitions.get(event) != null)
       return Collections.unmodifiableList(_internalTransitions.get(event));
-    return new ArrayList<String>();
+    return null;
   }
 
   public void removeInternalTransition(String event, String action) {

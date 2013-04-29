@@ -37,7 +37,6 @@ import org.jhotdraw.xml.DOMOutput;
 import org.teamrocket.ApplicationModel;
 import org.teamrocket.entities.ContextMenuItemAction;
 import org.teamrocket.entities.ContextSubMenuItemAction;
-import org.teamrocket.entities.StartStateEntity;
 import org.teamrocket.entities.StateEntity;
 import org.teamrocket.entities.TransitionEntity;
 
@@ -51,7 +50,6 @@ public class StateFigure extends GraphicalCompositeFigure {
 
   public StateFigure() {
     super(new RoundRectangleFigure());
-    final StateFigure self = this;
     _actions = new HashSet<Action>();
     _disassociate = new HashSet<Action>();
     init();

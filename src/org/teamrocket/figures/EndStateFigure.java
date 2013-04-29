@@ -12,16 +12,21 @@ public class EndStateFigure extends StateFigure {
   public EndStateFigure() {
     super(new EllipseFigure());
   }
-  
+
   public void draw(Graphics2D g) {
     set(AttributeKeys.FILL_COLOR, Color.BLACK);
     super.draw(g);
   }
-  
-  public void init() {_data = new StateEntity(this);}
-  
+
+  public void init() {
+    _data = new StateEntity(this);
+  }
+
   public EndStateFigure clone() {
-  	ApplicationModel.addStateEntity(_data);
-  	return (EndStateFigure) super.superDuperClone();
+    EndStateFigure noob = (EndStateFigure) super.superDuperClone();
+
+    noob._data = new StateEntity(noob);
+    ApplicationModel.addStateEntity(noob._data);
+    return noob;
   }
 }

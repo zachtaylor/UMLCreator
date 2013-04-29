@@ -2,7 +2,6 @@ package org.teamrocket.figures;
 
 import static org.jhotdraw.draw.AttributeKeys.END_DECORATION;
 import static org.jhotdraw.draw.AttributeKeys.FONT_ITALIC;
-import static org.jhotdraw.draw.AttributeKeys.FONT_UNDERLINE;
 import static org.jhotdraw.draw.AttributeKeys.START_DECORATION;
 import static org.jhotdraw.draw.AttributeKeys.STROKE_COLOR;
 import static org.jhotdraw.draw.AttributeKeys.STROKE_DASHES;
@@ -16,9 +15,7 @@ import org.jhotdraw.draw.TextFigure;
 import org.jhotdraw.draw.connector.Connector;
 import org.jhotdraw.draw.decoration.ArrowTip;
 import org.jhotdraw.draw.layouter.LocatorLayouter;
-import org.jhotdraw.draw.liner.CurvedLiner;
 import org.jhotdraw.draw.locator.RelativeLocator;
-import org.jhotdraw.util.ResourceBundleUtil;
 import org.teamrocket.entities.TransitionEntity;
 
 // May implement Observer?
@@ -40,9 +37,6 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
     setAttributeEnabled(START_DECORATION, false);
     setAttributeEnabled(STROKE_DASHES, false);
     setAttributeEnabled(FONT_ITALIC, false);
-    setAttributeEnabled(FONT_UNDERLINE, false);
-
-    ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.pert.Labels");
   }
 
   @Override
@@ -115,12 +109,28 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
 
     willChange();
     this.remove(_labelFigure);
-    _labelFigure = new TextFigure(_label);
+    _labelFigure = new TextFigure(_label) {
+      @Override
+      public void setText(String text) {
+        super.setText(text);
+        setTransitionInfo(text);
+      }
+    };
     LocatorLayouter.LAYOUT_LOCATOR.set(_labelFigure, new RelativeLocator(.25, .5, false));
     _labelFigure.setEditable(true);
     add(_labelFigure);
     changed();
 
+  }
+
+  private void setTransitionInfo(String s) {
+    String[] parts = s.split("#");
+
+    getData().setInput(parts[0]);
+
+    if (parts.length > 1) {
+      getData().setAction(parts[1]);
+    }
   }
 
   public void setLabelSelf(String s) {
@@ -147,5 +157,4 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
   public TransitionEntity getData() {
     return _data;
   }
-
 }
