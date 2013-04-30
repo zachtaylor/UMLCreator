@@ -15,6 +15,7 @@ import org.jhotdraw.draw.TextFigure;
 import org.jhotdraw.draw.connector.Connector;
 import org.jhotdraw.draw.decoration.ArrowTip;
 import org.jhotdraw.draw.layouter.LocatorLayouter;
+import org.jhotdraw.draw.liner.CurvedLiner;
 import org.jhotdraw.draw.locator.RelativeLocator;
 import org.teamrocket.entities.TransitionEntity;
 
@@ -86,11 +87,14 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
     }
 
     if (startFigure == endFigure)
+      setLiner(new CurvedLiner());
+    
+    if (startFigure == endFigure) 
       setLabelSelf("[label]");
-    else
+    else 
       setLabel("[label]");
   }
-
+  
   @Override
   public TransitionFigure clone() {
     TransitionFigure that = (TransitionFigure) super.clone();
@@ -138,7 +142,13 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
 
     willChange();
     this.remove(_labelFigure);
-    _labelFigure = new TextFigure(_label);
+    _labelFigure = new TextFigure(_label) {
+      @Override
+      public void setText(String text) {
+        super.setText(text);
+        setTransitionInfo(text);
+      }
+    };
     LocatorLayouter.LAYOUT_LOCATOR.set(_labelFigure, new RelativeLocator(.25, -.5, false));
     _labelFigure.setEditable(true);
     add(_labelFigure);
