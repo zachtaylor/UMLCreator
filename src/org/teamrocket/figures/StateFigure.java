@@ -6,6 +6,7 @@ import static org.jhotdraw.draw.AttributeKeys.STROKE_COLOR;
 import static org.jhotdraw.draw.AttributeKeys.STROKE_DASHES;
 import static org.jhotdraw.draw.AttributeKeys.TEXT;
 
+import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import java.util.List;
 import javax.swing.Action;
 import javax.swing.JOptionPane;
 
+import org.jhotdraw.draw.AttributeKeys;
 import org.jhotdraw.draw.Figure;
 import org.jhotdraw.draw.GraphicalCompositeFigure;
 import org.jhotdraw.draw.ListFigure;
@@ -225,6 +227,22 @@ public class StateFigure extends GraphicalCompositeFigure {
   protected StateFigure superDuperClone() {
     return (StateFigure) super.clone();
   }
+  
+  
+  Color _oldColor;
+  public void toggleHighlight() {
+    willChange();
+	  //int xorColor = _figure.get(AttributeKeys.FILL_COLOR).getRGB() ^ Color.white.getRGB();
+	if(_oldColor == null) {
+	  _oldColor = get(AttributeKeys.FILL_COLOR);
+	  set(AttributeKeys.FILL_COLOR, Color.green);
+	} else {
+	  set(AttributeKeys.FILL_COLOR, _oldColor);
+	  _oldColor = null;
+	}
+	  changed();
+  }    
+  
 
   private class InternalTransitionFigure extends TextFigure {
     public InternalTransitionFigure() {
@@ -319,4 +337,5 @@ public class StateFigure extends GraphicalCompositeFigure {
   }
 
   private ListFigure _internalTransitions;
+
 }

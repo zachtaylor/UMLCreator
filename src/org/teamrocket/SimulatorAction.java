@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import org.jhotdraw.app.Application;
 import org.jhotdraw.app.View;
 import org.jhotdraw.app.action.AbstractViewAction;
+import org.jhotdraw.samples.pert.PertView;
 import org.jhotdraw.util.ResourceBundleUtil;
 import org.teamrocket.entities.StateEntity;
 import org.teamrocket.entities.TransitionEntity;
@@ -34,43 +35,59 @@ public class SimulatorAction extends AbstractViewAction {
 
   @Override
   public void actionPerformed(ActionEvent evt) {
+	  (new Thread(new Simulate())).start();
+  }
+  
+  
+  private class Simulate implements Runnable {
 
-    JFileChooser fileChooser = new JFileChooser();
-    fileChooser.setDialogTitle("Specify an input file");
+	@Override
+	public void run() {
 
-    if (!(fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION))
-      return;
-    File inputFile = fileChooser.getSelectedFile();
+	    JFileChooser fileChooser = new JFileChooser();
+	    fileChooser.setDialogTitle("Specify an input file");
 
-    try {
-      _input = new BufferedReader(new FileReader(inputFile));
-    } catch (FileNotFoundException e) {
-      return;
-    }
+	    if (!(fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION))
+	      return;
+	    File inputFile = fileChooser.getSelectedFile();
 
-    _state = ApplicationModel.getStartEntity();
+	    try {
+	      _input = new BufferedReader(new FileReader(inputFile));
+	    } catch (FileNotFoundException e) {
+	      return;
+	    }
 
-    while (loadAndCheckNextInput()) {
-      processInput();
-    }
+	    _state = ApplicationModel.getStartEntity();
 
-    fileChooser.setDialogTitle("Specify a location to save output");
-    if (!(fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION))
-      return;
-    File fileToSave = fileChooser.getSelectedFile();
+	    while (loadAndCheckNextInput()) {
+	      processInput();
+	    }
+	    try {
+			_input.close();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
-    Writer writer = null;
+	    fileChooser.setDialogTitle("Specify a location to save output");
+	    if (!(fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION))
+	      return;
+	    File fileToSave = fileChooser.getSelectedFile();
 
-    try {
-      writer = new BufferedWriter(new FileWriter(fileToSave));
+	    Writer writer = null;
 
-      writer.write(getOutput());
+	    try {
+	      writer = new BufferedWriter(new FileWriter(fileToSave));
 
-      writer.close();
-    } catch (IOException e) {
-      JOptionPane.showConfirmDialog(null, "Error with save destination");
-    }
+	      writer.write(getOutput());
 
+	      writer.close();
+	    } catch (IOException e) {
+	      JOptionPane.showConfirmDialog(null, "Error with save destination");
+	    }
+
+	}
+	  
   }
 
   public String getOutput() {
@@ -92,6 +109,15 @@ public class SimulatorAction extends AbstractViewAction {
               appendOutput(s);
 
           appendOutput(te.getAction());
+          _state.getStateFigure().toggleHighlight();
+        try {
+        	synchronized (this) {
+			wait(3000);}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+          _state.getStateFigure().toggleHighlight();
           _state = te.getNext();
 
           if (_state.getInternalTransitions(ENTRY_LABEL) != null)
