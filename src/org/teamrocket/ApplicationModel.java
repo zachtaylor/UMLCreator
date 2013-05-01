@@ -97,6 +97,9 @@ public class ApplicationModel extends DefaultApplicationModel {
       // warning
     }
     start.add(s);
+    // This is necessary for error checking.  Im not sure if the simulator
+    // or some other thing doesnt want this to function this way?
+    bucket.add(s);
   }
 
   public static StateEntity getStartEntity() {
