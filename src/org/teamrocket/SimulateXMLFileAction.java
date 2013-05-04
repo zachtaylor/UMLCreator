@@ -11,7 +11,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URI;
+import java.util.List;
 import java.util.prefs.Preferences;
 
 import javax.swing.JDialog;
@@ -26,6 +29,12 @@ import org.jhotdraw.app.action.AbstractApplicationAction;
 import org.jhotdraw.gui.URIChooser;
 import org.jhotdraw.util.ResourceBundleUtil;
 import org.jhotdraw.util.prefs.PreferencesUtil;
+import org.teamrocket.entities.EndStateEntity;
+import org.teamrocket.entities.StartStateEntity;
+import org.teamrocket.entities.StateEntity;
+import org.teamrocket.entities.TransitionEntity;
+import org.zachtaylor.jnodalxml.XMLNode;
+import org.zachtaylor.jnodalxml.XMLParser;
 
 public class SimulateXMLFileAction extends AbstractApplicationAction {
 
@@ -104,7 +113,76 @@ public class SimulateXMLFileAction extends AbstractApplicationAction {
     view.getComponent().requestFocus();
     app.addRecentURI(uri);
 
+    try {
+      List<XMLNode> data = XMLParser.parse(new File(uri));
+
+      for (XMLNode item : data) {
+        if (item.getAttribute("id").equals("startstate")) {
+          StartStateEntity ent = new StartStateEntity(null);
+          ApplicationModel.addStartStateEntity(ent);
+        }
+        else if (item.getAttribute("id").equals("endstate")) {
+          EndStateEntity ent = new EndStateEntity(null);
+          ApplicationModel.addStateEntity(ent);
+        }
+        else {
+          StateEntity ent = new StateEntity(null);
+          ent.setLabel(item.getAttribute("id"));
+
+          for (XMLNode eventNode : item.getChildren("event")) {
+            for (XMLNode actionNode : eventNode.getChildren("action")) {
+              ent.addInternalTransition(eventNode.getAttribute("id"), actionNode.getAttribute("id"));
+            }
+          }
+
+          ApplicationModel.addStateEntity(ent);
+        }
+      }
+
+      for (XMLNode item : data) {
+        StateEntity ent = findStateEntityByName(item.getAttribute("id"));
+
+        for (XMLNode transitionNode : item.getChildren("transition")) {
+          TransitionEntity tent = new TransitionEntity();
+          tent.setInput(transitionNode.getAttribute("event"));
+          tent.setAction(transitionNode.getAttribute("action"));
+
+          StateEntity pointer = findStateEntityByName(transitionNode.getAttribute("next"));
+
+          tent.setPrev(ent);
+          ent.addSuccessor(tent);
+
+          tent.setNext(pointer);
+          pointer.addPredecessor(tent);
+        }
+      }
+
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+
     (new Thread(new Simulate())).start();
+
+    // TODO : Close the app
+  }
+
+  private StateEntity findStateEntityByName(String name) {
+    if (name.equals("startstate"))
+      return ApplicationModel.getStartEntity();
+    else if (name.equals("endstate")) {
+      for (StateEntity ent : ApplicationModel.getStateEntityBucket()) {
+        if (ent instanceof EndStateEntity)
+          return ent;
+      }
+      return null;
+    }
+    else {
+      for (StateEntity ent : ApplicationModel.getStateEntityBucket()) {
+        if (ent.getName().equals(name))
+          return ent;
+      }
+      return null;
+    }
   }
 
   /**

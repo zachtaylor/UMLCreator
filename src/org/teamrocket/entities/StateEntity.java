@@ -12,7 +12,6 @@ import java.util.Queue;
 import java.util.Set;
 
 import org.jhotdraw.draw.AttributeKeys;
-import org.teamrocket.figures.StartStateFigure;
 import org.teamrocket.figures.StateFigure;
 import org.zachtaylor.jnodalxml.XMLNode;
 
@@ -39,10 +38,7 @@ public class StateEntity extends AbstractEntity {
 
   public String getName() {
     if (_label.isEmpty()) {
-      if (getStateFigure() instanceof StartStateFigure)
-        return "startstate";
-      else
-        return "endstate";
+      return "";
     }
     return _label;
   }
@@ -115,7 +111,8 @@ public class StateEntity extends AbstractEntity {
   }
 
   public XMLNode toXML() {
-    XMLNode node = new XMLNode(getName());
+    XMLNode node = new XMLNode("state");
+    node.setAttribute("id", getName());
 
     if (_parent != null)
       node.setAttribute("parent", _parent.getName());
@@ -135,10 +132,7 @@ public class StateEntity extends AbstractEntity {
     }
 
     for (TransitionEntity trans : _successors) {
-      XMLNode childNode = new XMLNode("transition");
-      childNode.setAttribute("next", trans.getNext().getName());
-      childNode.setSelfClosing(true);
-      node.addChild(childNode);
+      node.addChild(trans.toXML());
     }
 
     if (node.getAllChildren().isEmpty()) {

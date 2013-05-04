@@ -75,10 +75,8 @@ public class StateFigure extends GraphicalCompositeFigure {
       break;
     case 0:
       /*
-       * handles.add(new MoveHandle(this, RelativeLocator.northWest()));
-       * handles.add(new MoveHandle(this, RelativeLocator.northEast()));
-       * handles.add(new MoveHandle(this, RelativeLocator.southWest()));
-       * handles.add(new MoveHandle(this, RelativeLocator.southEast()));
+       * handles.add(new MoveHandle(this, RelativeLocator.northWest())); handles.add(new MoveHandle(this, RelativeLocator.northEast())); handles.add(new
+       * MoveHandle(this, RelativeLocator.southWest())); handles.add(new MoveHandle(this, RelativeLocator.southEast()));
        */
 
       ResizeHandleKit.addCornerResizeHandles(this, handles);
@@ -210,7 +208,7 @@ public class StateFigure extends GraphicalCompositeFigure {
     for (StateEntity s : ApplicationModel.getStateEntityBucket()) {
       if (s.getStateFigure() instanceof StartStateFigure || s.getStateFigure() instanceof EndStateFigure)
         continue;
-    
+
       that.addStateToChildMenu(s);
       s.getStateFigure().addStateToChildMenu(that._stateEntity);
     }
@@ -228,28 +226,29 @@ public class StateFigure extends GraphicalCompositeFigure {
   protected StateFigure superDuperClone() {
     return (StateFigure) super.clone();
   }
-  
+
   @Override
   public void removeNotify(Drawing drawing) {
-      super.removeNotify(drawing);
-      _stateEntity.setParent(null);
-      ApplicationModel.removeState(this._stateEntity);
+    super.removeNotify(drawing);
+    _stateEntity.setParent(null);
+    ApplicationModel.removeState(this._stateEntity);
   }
-  
+
   Color _oldColor;
+
   public void toggleHighlight() {
     willChange();
-	  //int xorColor = _figure.get(AttributeKeys.FILL_COLOR).getRGB() ^ Color.white.getRGB();
-	if(_oldColor == null) {
-	  _oldColor = get(AttributeKeys.FILL_COLOR);
-	  set(AttributeKeys.FILL_COLOR, Color.green);
-	} else {
-	  set(AttributeKeys.FILL_COLOR, _oldColor);
-	  _oldColor = null;
-	}
-	  changed();
-  }    
-  
+    // int xorColor = _figure.get(AttributeKeys.FILL_COLOR).getRGB() ^ Color.white.getRGB();
+    if (_oldColor == null) {
+      _oldColor = get(AttributeKeys.FILL_COLOR);
+      set(AttributeKeys.FILL_COLOR, Color.green);
+    }
+    else {
+      set(AttributeKeys.FILL_COLOR, _oldColor);
+      _oldColor = null;
+    }
+    changed();
+  }
 
   private class InternalTransitionFigure extends TextFigure {
     public InternalTransitionFigure() {
@@ -344,5 +343,4 @@ public class StateFigure extends GraphicalCompositeFigure {
   }
 
   private ListFigure _internalTransitions;
-
 }

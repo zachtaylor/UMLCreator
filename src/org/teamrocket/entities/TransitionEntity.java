@@ -1,6 +1,9 @@
 package org.teamrocket.entities;
 
+import org.zachtaylor.jnodalxml.XMLNode;
+
 public class TransitionEntity extends AbstractEntity {
+  public static final String XML_NODE_NAME = "transition";
 
   public TransitionEntity() {
     super();
@@ -39,6 +42,17 @@ public class TransitionEntity extends AbstractEntity {
 
   public String getAction() {
     return _action;
+  }
+
+  public XMLNode toXML() {
+    XMLNode node = new XMLNode(XML_NODE_NAME);
+
+    node.setAttribute("next", getNext().getName());
+    node.setAttribute("event", _input);
+    node.setAttribute("action", _action);
+    node.setSelfClosing(true);
+
+    return node;
   }
 
   public boolean equals(Object o) {

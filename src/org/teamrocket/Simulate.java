@@ -92,16 +92,20 @@ public class Simulate implements Runnable {
               appendOutput(s);
 
           appendOutput(te.getAction());
-          _state.getStateFigure().toggleHighlight();
-          try {
-            synchronized (this) {
-              wait(3000);
+
+          if (_state.getStateFigure() != null) {
+            _state.getStateFigure().toggleHighlight();
+            try {
+              synchronized (this) {
+                wait(3000);
+              }
+            } catch (InterruptedException e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
             }
-          } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            _state.getStateFigure().toggleHighlight();
           }
-          _state.getStateFigure().toggleHighlight();
+
           _state = te.getNext();
 
           if (_state.getInternalTransitions(ENTRY_LABEL) != null)
