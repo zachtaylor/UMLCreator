@@ -29,4 +29,12 @@ public class EndStateFigure extends StateFigure {
     ApplicationModel.addStateEntity(noob._data);
     return noob;
   }
+
+  public String getName() {
+    return _data.getName();
+  }
+
+  public void setName(String newValue) {
+    _data.setLabel(newValue);
+  }
 }
