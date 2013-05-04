@@ -20,22 +20,22 @@ public class EndStateFigure extends StateFigure {
   }
 
   public void init() {
-    _data = new StateEntity(this);
+    _stateEntity = new StateEntity(this);
   }
 
   public EndStateFigure clone() {
     EndStateFigure noob = (EndStateFigure) super.superDuperClone();
 
-    noob._data = new EndStateEntity(noob);
-    ApplicationModel.addStateEntity(noob._data);
+    noob._stateEntity = new EndStateEntity(noob);
+    ApplicationModel.addStateEntity(noob._stateEntity);
     return noob;
   }
 
   public String getName() {
-    return _data.getName();
+    return _stateEntity.getName();
   }
 
   public void setName(String newValue) {
-    _data.setLabel(newValue);
+    _stateEntity.setLabel(newValue);
   }
 }

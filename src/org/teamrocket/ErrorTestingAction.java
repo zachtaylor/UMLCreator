@@ -1,7 +1,9 @@
 package org.teamrocket;
 
 import java.awt.event.ActionEvent;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JOptionPane;
 
@@ -9,6 +11,7 @@ import org.jhotdraw.app.Application;
 import org.jhotdraw.app.View;
 import org.jhotdraw.app.action.AbstractViewAction;
 import org.jhotdraw.util.ResourceBundleUtil;
+import org.teamrocket.entities.EndStateEntity;
 import org.teamrocket.entities.StateEntity;
 import org.teamrocket.entities.TransitionEntity;
 import org.teamrocket.figures.EndStateFigure;
@@ -29,7 +32,7 @@ public class ErrorTestingAction extends AbstractViewAction {
 	public void actionPerformed(ActionEvent errorCheck) {
 		final View view = (View) getActiveView();
 
-		// TODO: Test for exactly one start state and exactly one end state
+		// Test for exactly one start state and exactly one end state
 		List<StateEntity> theBucket = ApplicationModel.getStateEntityBucket();
 		int endCounter = 0;
 
@@ -40,37 +43,22 @@ public class ErrorTestingAction extends AbstractViewAction {
 
 		if (ApplicationModel.getStartStates().size() > 1) {
 			JOptionPane.showMessageDialog(null,
-					"Diagrams must have exactly one Start State. (You have too many)", "Diagram Error",
-					JOptionPane.ERROR_MESSAGE);
+					"Diagrams must have exactly one Start State. (You have too many)",
+					"Diagram Error", JOptionPane.ERROR_MESSAGE);
 		} else if (ApplicationModel.getStartStates().size() < 1) {
 			JOptionPane.showMessageDialog(null,
-					"Diagrams must have exactly one Start State. (You have too few)", "Diagram Error",
-					JOptionPane.ERROR_MESSAGE);
+					"Diagrams must have exactly one Start State. (You have too few)",
+					"Diagram Error", JOptionPane.ERROR_MESSAGE);
 		}
 		if (endCounter < 1) {
 			JOptionPane.showMessageDialog(null,
-					"Diagrams must have exactly one End State. (You have too few)", "Diagram Error",
-					JOptionPane.ERROR_MESSAGE);
-		}	else if (endCounter > 1) {
+					"Diagrams must have exactly one End State. (You have too few)",
+					"Diagram Error", JOptionPane.ERROR_MESSAGE);
+		} else if (endCounter > 1) {
 			JOptionPane.showMessageDialog(null,
-					"Diagrams must have exactly one End State. (You have too many)", "Diagram Error",
-					JOptionPane.ERROR_MESSAGE);
+					"Diagrams must have exactly one End State. (You have too many)",
+					"Diagram Error", JOptionPane.ERROR_MESSAGE);
 		}
-
-		/*
-		 * // Cheat for finding one path JOptionPane.showMessageDialog(null,
-		 * "Diagram must include at least one complete path.", "Diagram Error",
-		 * JOptionPane.ERROR_MESSAGE);
-		 * 
-		 * // Cheat for no island states JOptionPane.showMessageDialog(null,
-		 * "Diagrams must not have island states.", "Diagram Error",
-		 * JOptionPane.ERROR_MESSAGE);
-		 * 
-		 * // Cheat for every state must have unique name
-		 * JOptionPane.showMessageDialog(null,
-		 * "Each Figure must have a unique name.", "Diagram Error",
-		 * JOptionPane.ERROR_MESSAGE);
-		 */
 
 		for (StateEntity se : theBucket) {
 
@@ -86,15 +74,43 @@ public class ErrorTestingAction extends AbstractViewAction {
 			}
 		}
 
-		// TODO : Each stateFigure must have a unique identity / unique name (for
-		// XML)
+		// Each stateFigure must have a unique identity / unique name (for XML)
+		Set<String> stateNames = new HashSet<String>();
 
-		// TODO : Breadth First Search to determine if there is a complete path from
-		// start to end.
+		for (StateEntity se : theBucket) {
+			if (se instanceof EndStateEntity)
+				continue;
+			else {
+				if (!(stateNames.add(se.getName()))) {
+					JOptionPane
+							.showMessageDialog(
+									null,
+									("Each Figure must have a unique name:  \"" + se.getName() + "\" appears more than once."),
+									"Diagram Error", JOptionPane.ERROR_MESSAGE);
+					break;
+				}
+			}
+		}
 
-		// TODO : No island states (iterate over the bucket to make sure every
-		// stateEntity (not start/end) has a predecessor.)
-
-		// TODO : Nested state tests
+		// All states much be reachable
+		_visited = new HashSet<StateEntity>();
+		dfsStates(ApplicationModel.getStartEntity());
+		int bucketSize = ApplicationModel.getStateEntityBucket().size()
+				+ ApplicationModel.getStartStates().size();
+		if (bucketSize != _visited.size()) {
+			JOptionPane.showMessageDialog(null,
+					"Not all states can be reached from Start State.", "Diagram Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
 	}
+
+	private void dfsStates(StateEntity s) {
+		if (!(_visited.add(s)))
+			return;
+		for (TransitionEntity t : s.getSuccessors()) {
+			dfsStates(t.getNext());
+		}
+	}
+
+	Set<StateEntity> _visited;
 }

@@ -22,12 +22,12 @@ import org.teamrocket.entities.TransitionEntity;
 // May implement Observer?
 public class TransitionFigure extends LabeledLineConnectionFigure {
   private String _label;
-  private TransitionEntity _data;
+  private TransitionEntity _transitionEntity;
   private TextFigure _labelFigure;
 
   public TransitionFigure() {
     // TODO:
-    _data = new TransitionEntity();
+    _transitionEntity = new TransitionEntity();
     _label = "Trigger # Action";
 
     set(STROKE_COLOR, new Color(0x000099));
@@ -66,13 +66,13 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
 
   @Override
   protected void handleDisconnect(Connector start, Connector end) {
-  	if (!(start instanceof StateFigure) || !(end instanceof StateFigure))
+  	if (!(start.getOwner() instanceof StateFigure) || !(end.getOwner() instanceof StateFigure))
   		return;
   	
-  	StateFigure sf = (StateFigure) start;
-  	StateFigure ef = (StateFigure) end;
-  	sf.removeSuccessor(_data);
-  	ef.removePredecessor(_data);
+  	StateFigure sf = (StateFigure) start.getOwner();
+  	StateFigure ef = (StateFigure) end.getOwner();
+  	sf.removeSuccessor(_transitionEntity);
+  	ef.removePredecessor(_transitionEntity);
   }
 
   @Override
@@ -81,12 +81,12 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
     Figure endFigure = end.getOwner();
     
     if (startFigure instanceof StateFigure) {
-      _data.setPrev(((StateFigure) startFigure).getEntity());
-      ((StateFigure) startFigure).addSuccessor(_data);
+      _transitionEntity.setPrev(((StateFigure) startFigure).getEntity());
+      ((StateFigure) startFigure).addSuccessor(_transitionEntity);
     }
     if (endFigure instanceof StateFigure) {
-      _data.setNext(((StateFigure) endFigure).getEntity());
-      ((StateFigure) endFigure).addPredecessor(_data);
+      _transitionEntity.setNext(((StateFigure) endFigure).getEntity());
+      ((StateFigure) endFigure).addPredecessor(_transitionEntity);
     }
 
     if (startFigure == endFigure)
@@ -101,7 +101,7 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
   @Override
   public TransitionFigure clone() {
     TransitionFigure that = (TransitionFigure) super.clone();
-    that._data = new TransitionEntity();
+    that._transitionEntity = new TransitionEntity();
 
     return that;
   }
@@ -164,10 +164,10 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
   }
 
   public void setData(TransitionEntity tran) {
-    _data = tran;
+    _transitionEntity = tran;
   }
 
   public TransitionEntity getData() {
-    return _data;
+    return _transitionEntity;
   }
 }

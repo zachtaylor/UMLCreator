@@ -45,7 +45,7 @@ import org.teamrocket.entities.TransitionEntity;
 
 public class StateFigure extends GraphicalCompositeFigure {
 
-  protected StateEntity _data;
+  protected StateEntity _stateEntity;
   private TextFigure _nameFigure;
   private HashSet<Action> _actions;
   private HashSet<Action> _disassociate;
@@ -104,7 +104,7 @@ public class StateFigure extends GraphicalCompositeFigure {
   }
 
   public StateEntity getEntity() {
-    return _data;
+    return _stateEntity;
   }
 
   // TaskFigure has one of these - it might be for some unseen functionality of
@@ -129,20 +129,20 @@ public class StateFigure extends GraphicalCompositeFigure {
 
   // modifiers for predecessor and successor lists
   public void addPredecessor(TransitionEntity t) {
-    _data.addPredecessor(t);
+    _stateEntity.addPredecessor(t);
 
   }
 
   public void removePredecessor(TransitionEntity t) {
-    _data.removePredecessor(t);
+    _stateEntity.removePredecessor(t);
   }
 
   public void addSuccessor(TransitionEntity t) {
-    _data.addSuccessor(t);
+    _stateEntity.addSuccessor(t);
   }
 
   public void removeSuccessor(TransitionEntity t) {
-    _data.removeSuccessor(t);
+    _stateEntity.removeSuccessor(t);
   }
 
   public void addBlankInternalTransition() {
@@ -212,11 +212,11 @@ public class StateFigure extends GraphicalCompositeFigure {
         continue;
     
       that.addStateToChildMenu(s);
-      s.getStateFigure().addStateToChildMenu(that._data);
+      s.getStateFigure().addStateToChildMenu(that._stateEntity);
     }
 
     that.changed();
-    ApplicationModel.addStateEntity(that._data);
+    ApplicationModel.addStateEntity(that._stateEntity);
 
     return that;
   }
@@ -232,8 +232,8 @@ public class StateFigure extends GraphicalCompositeFigure {
   @Override
   public void removeNotify(Drawing drawing) {
       super.removeNotify(drawing);
-      _data.setParent(null);
-      ApplicationModel.removeState(this._data);
+      _stateEntity.setParent(null);
+      ApplicationModel.removeState(this._stateEntity);
   }
   
   Color _oldColor;
@@ -294,13 +294,13 @@ public class StateFigure extends GraphicalCompositeFigure {
   public void init() {
     final StateFigure self = this;
     this.removeAllChildren();
-    _data = new StateEntity(self);
+    _stateEntity = new StateEntity(self);
     _nameFigure = new TextFigure() {
       @Override
       public void setText(String newText) {
         self.willChange();
 
-        _data.setLabel(newText);
+        _stateEntity.setLabel(newText);
 
         set(TEXT, newText);
         self.changed();
@@ -339,7 +339,7 @@ public class StateFigure extends GraphicalCompositeFigure {
 
     setName(labels.getString("teamrocket.state.defaultName"));
 
-    _data.setLabel(_nameFigure.getText());
+    _stateEntity.setLabel(_nameFigure.getText());
 
   }
 

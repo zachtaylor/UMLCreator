@@ -11,23 +11,23 @@ public class StartStateFigure extends StateFigure {
   }
 
   public void init() {
-    _data = new StateEntity(this);
+    _stateEntity = new StateEntity(this);
   }
 
   public StartStateFigure clone() {
     StartStateFigure noob = (StartStateFigure) super.superDuperClone();
 
-    noob._data = new StartStateEntity(noob);
-    ApplicationModel.addStartStateEntity(noob._data);
+    noob._stateEntity = new StartStateEntity(noob);
+    ApplicationModel.addStartStateEntity(noob._stateEntity);
     return noob;
   }
 
   public String getName() {
-    return _data.getName();
+    return _stateEntity.getName();
   }
 
   public void setName(String newValue) {
-    _data.setLabel(newValue);
+    _stateEntity.setLabel(newValue);
   }
 
   /*
