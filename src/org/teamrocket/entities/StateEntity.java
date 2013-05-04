@@ -182,14 +182,16 @@ public class StateEntity extends AbstractEntity {
   }
 
   public boolean containsInternalTransition(String event, String action) {
-    // return internalTransitions.
-    return false;
+    if (_internalTransitions.get(event) == null)
+      return false;
+    return _internalTransitions.get(event).contains(action);
+
   }
 
   public List<String> getInternalTransitions(String event) {
     if (_internalTransitions.get(event) != null)
       return Collections.unmodifiableList(_internalTransitions.get(event));
-    return null;
+    return new ArrayList<String>();
   }
 
   public void removeInternalTransition(String event, String action) {
@@ -209,20 +211,27 @@ public class StateEntity extends AbstractEntity {
       _parent.removeChild(this);
 
     _parent = parent;
-    _figure.willChange();
-    if(parent == null)
-    	_figure.set(AttributeKeys.FILL_COLOR, Color.black);
-    else
-    	_figure.set(AttributeKeys.FILL_COLOR, parent.getColor());
-    _figure.changed();
+
+    if (_figure != null) {
+      _figure.willChange();
+      if (parent == null)
+        _figure.set(AttributeKeys.FILL_COLOR, Color.black);
+      else
+        _figure.set(AttributeKeys.FILL_COLOR, parent.getColor());
+      _figure.changed();
+    }
+
   }
 
   public void removeParent() {
     _parent.removeChild(this);
     _parent = null;
-    _figure.willChange();
-    _figure.set(AttributeKeys.FILL_COLOR, Color.white);
-    _figure.changed();
+
+    if (_figure != null) {
+      _figure.willChange();
+      _figure.set(AttributeKeys.FILL_COLOR, Color.white);
+      _figure.changed();
+    }
   }
 
   private Color getColor() {
@@ -238,9 +247,11 @@ public class StateEntity extends AbstractEntity {
   }
 
   public boolean addChild(StateEntity child) {
-    _figure.willChange();
-    _figure.set(AttributeKeys.STROKE_COLOR, getColor());
-    _figure.changed();
+    if (_figure != null) {
+      _figure.willChange();
+      _figure.set(AttributeKeys.STROKE_COLOR, getColor());
+      _figure.changed();
+    }
 
     child.setParent(this);
     return _children.add(child);

@@ -78,7 +78,7 @@ public class Simulate implements Runnable {
   }
 
   void processInput() {
-    if (_state.getInternalTransitions(_line) != null) {
+    if (!_state.getInternalTransitions(_line).isEmpty()) {
       for (String s : _state.getInternalTransitions(_line)) {
         appendOutput(s);
       }

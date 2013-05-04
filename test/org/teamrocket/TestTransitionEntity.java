@@ -13,14 +13,14 @@ public class TestTransitionEntity extends TestCase {
   }
 
   public void testNext() {
-    StateEntity nextValue = new StateEntity();
+    StateEntity nextValue = new StateEntity(null);
     ent.setNext(nextValue);
 
     assertEquals(nextValue, ent.getNext());
   }
 
   public void testPrev() {
-    StateEntity prevValue = new StateEntity();
+    StateEntity prevValue = new StateEntity(null);
     ent.setPrev(prevValue);
 
     assertEquals(prevValue, ent.getPrev());
