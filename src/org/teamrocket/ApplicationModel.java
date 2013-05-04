@@ -53,8 +53,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 
 public class ApplicationModel extends DefaultApplicationModel {
 
-  private final static double[] scaleFactors = { 5, 4, 3, 2, 1.5, 1.25, 1,
-      0.75, 0.5, 0.25, 0.10 };
+  private final static double[] scaleFactors = { 5, 4, 3, 2, 1.5, 1.25, 1, 0.75, 0.5, 0.25, 0.10 };
 
   private static class ToolButtonListener implements ItemListener {
 
@@ -97,7 +96,7 @@ public class ApplicationModel extends DefaultApplicationModel {
       // warning
     }
     start.add(s);
-    // This is necessary for error checking.  Im not sure if the simulator
+    // This is necessary for error checking. Im not sure if the simulator
     // or some other thing doesnt want this to function this way?
     bucket.add(s);
   }
@@ -117,7 +116,7 @@ public class ApplicationModel extends DefaultApplicationModel {
     ResourceBundleUtil drawLabels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
     AbstractAction aa;
 
-    m.put(ImportXMLFileAction.ID, new ImportXMLFileAction(a));
+    m.put(SimulateXMLFileAction.ID, new SimulateXMLFileAction(a));
     m.put(ExportXMLFileAction.ID, new ExportXMLFileAction(a, v));
     m.put(ExportFileAction.ID, new ExportFileAction(a, v));
     m.put(SimulatorAction.ID, new SimulatorAction(a, v));
@@ -145,7 +144,7 @@ public class ApplicationModel extends DefaultApplicationModel {
         if (null != (a = am.get(OpenDirectoryAction.ID))) {
           m.add(a);
         }
-        if (null != (a = am.get(ImportXMLFileAction.ID))) {
+        if (null != (a = am.get(SimulateXMLFileAction.ID))) {
           m.add(a);
         }
       }
@@ -170,7 +169,7 @@ public class ApplicationModel extends DefaultApplicationModel {
           m.add(a);
         }
         if (null != (a = am.get(ErrorTestingAction.ID))) {
-        	m.add(a);
+          m.add(a);
         }
       }
     };
@@ -217,12 +216,10 @@ public class ApplicationModel extends DefaultApplicationModel {
   }
 
   /**
-   * Creates toolbars for the application. This class always returns an empty
-   * list. Subclasses may return other values.
+   * Creates toolbars for the application. This class always returns an empty list. Subclasses may return other values.
    */
   @Override
-  public java.util.List<JToolBar> createToolBars(Application a,
-      @Nullable View pr) {
+  public java.util.List<JToolBar> createToolBars(Application a, @Nullable View pr) {
     ResourceBundleUtil drawLabels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
     PertView p = (PertView) pr;
 

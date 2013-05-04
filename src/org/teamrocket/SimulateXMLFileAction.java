@@ -1,26 +1,38 @@
 package org.teamrocket;
 
-import org.jhotdraw.util.*;
-import org.jhotdraw.gui.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.io.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dialog;
+import java.awt.Frame;
+import java.awt.HeadlessException;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.net.URI;
 import java.util.prefs.Preferences;
+
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JRootPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
 import org.jhotdraw.app.Application;
 import org.jhotdraw.app.View;
 import org.jhotdraw.app.action.AbstractApplicationAction;
 import org.jhotdraw.gui.URIChooser;
-import org.jhotdraw.net.URIUtil;
+import org.jhotdraw.util.ResourceBundleUtil;
 import org.jhotdraw.util.prefs.PreferencesUtil;
 
-public class ImportXMLFileAction extends AbstractApplicationAction {
+public class SimulateXMLFileAction extends AbstractApplicationAction {
 
-  public final static String ID = "file.importxml";
+  public final static String ID = "file.simulatexml";
 
   /** Creates a new instance. */
-  public ImportXMLFileAction(Application app) {
+  public SimulateXMLFileAction(Application app) {
     super(app);
     ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.app.Labels");
     labels.configureAction(this, ID);
@@ -91,11 +103,12 @@ public class ImportXMLFileAction extends AbstractApplicationAction {
     app.setEnabled(true);
     view.getComponent().requestFocus();
     app.addRecentURI(uri);
+
+    (new Thread(new Simulate())).start();
   }
 
   /**
-   * We implement JFileChooser.showDialog by ourselves, so that we can center
-   * dialogs properly on screen on Mac OS X.
+   * We implement JFileChooser.showDialog by ourselves, so that we can center dialogs properly on screen on Mac OS X.
    */
   public int showDialog(URIChooser chooser, Component parent) {
     final Component finalParent = parent;
@@ -134,8 +147,7 @@ public class ImportXMLFileAction extends AbstractApplicationAction {
   }
 
   /**
-   * We implement JFileChooser.showDialog by ourselves, so that we can center
-   * dialogs properly on screen on Mac OS X.
+   * We implement JFileChooser.showDialog by ourselves, so that we can center dialogs properly on screen on Mac OS X.
    */
   protected JDialog createDialog(URIChooser chooser, Component parent) throws HeadlessException {
     String title = chooser.getDialogTitle();
@@ -144,8 +156,7 @@ public class ImportXMLFileAction extends AbstractApplicationAction {
     }
 
     JDialog dialog;
-    Window window = (parent == null || (parent instanceof Window)) ? (Window) parent : SwingUtilities
-        .getWindowAncestor(parent);
+    Window window = (parent == null || (parent instanceof Window)) ? (Window) parent : SwingUtilities.getWindowAncestor(parent);
     if (window instanceof Frame) {
       dialog = new JDialog((Frame) window, title, true);
     }
@@ -169,12 +180,9 @@ public class ImportXMLFileAction extends AbstractApplicationAction {
 
     PreferencesUtil.installFramePrefsHandler(prefs, "openChooser", dialog);
     /*
-     * if (window.getBounds().isEmpty()) { Rectangle screenBounds =
-     * window.getGraphicsConfiguration().getBounds();
-     * dialog.setLocation(screenBounds.x + (screenBounds.width -
-     * dialog.getWidth()) / 2, // screenBounds.y + (screenBounds.height -
-     * dialog.getHeight()) / 3); } else { dialog.setLocationRelativeTo(parent);
-     * }
+     * if (window.getBounds().isEmpty()) { Rectangle screenBounds = window.getGraphicsConfiguration().getBounds(); dialog.setLocation(screenBounds.x +
+     * (screenBounds.width - dialog.getWidth()) / 2, // screenBounds.y + (screenBounds.height - dialog.getHeight()) / 3); } else {
+     * dialog.setLocationRelativeTo(parent); }
      */
 
     return dialog;
