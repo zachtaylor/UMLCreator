@@ -19,6 +19,7 @@ import javax.swing.Action;
 import javax.swing.JOptionPane;
 
 import org.jhotdraw.draw.AttributeKeys;
+import org.jhotdraw.draw.Drawing;
 import org.jhotdraw.draw.Figure;
 import org.jhotdraw.draw.GraphicalCompositeFigure;
 import org.jhotdraw.draw.ListFigure;
@@ -228,6 +229,12 @@ public class StateFigure extends GraphicalCompositeFigure {
     return (StateFigure) super.clone();
   }
   
+  @Override
+  public void removeNotify(Drawing drawing) {
+      super.removeNotify(drawing);
+      _data.setParent(null);
+      ApplicationModel.removeState(this._data);
+  }
   
   Color _oldColor;
   public void toggleHighlight() {

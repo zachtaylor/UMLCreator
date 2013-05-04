@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import org.jhotdraw.draw.AttributeKeys;
 import org.jhotdraw.draw.EllipseFigure;
 import org.teamrocket.ApplicationModel;
+import org.teamrocket.entities.EndStateEntity;
 import org.teamrocket.entities.StateEntity;
 
 public class EndStateFigure extends StateFigure {
@@ -25,7 +26,7 @@ public class EndStateFigure extends StateFigure {
   public EndStateFigure clone() {
     EndStateFigure noob = (EndStateFigure) super.superDuperClone();
 
-    noob._data = new StateEntity(noob);
+    noob._data = new EndStateEntity(noob);
     ApplicationModel.addStateEntity(noob._data);
     return noob;
   }

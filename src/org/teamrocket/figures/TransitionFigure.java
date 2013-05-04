@@ -47,8 +47,16 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
 
     if (!(startState instanceof StateFigure) || !(endState instanceof StateFigure))
       return false;
+    
+    StateFigure sf = (StateFigure) startState;
+    StateFigure ef = (StateFigure) endState;
 
-    return !(startState instanceof EndStateFigure) && !(endState instanceof StartStateFigure) && (start != null) && (end != null);
+    return !(startState instanceof EndStateFigure) 
+    		&& !(endState instanceof StartStateFigure) 
+    		&& (start != null) && (end != null)
+    		&& ((sf.getEntity().getParent() == ef.getEntity().getParent())
+    				|| (ef.getEntity().getParent() == null)
+    				|| (sf.getEntity() == ef.getEntity().getParent()));
   }
 
   @Override
@@ -58,25 +66,20 @@ public class TransitionFigure extends LabeledLineConnectionFigure {
 
   @Override
   protected void handleDisconnect(Connector start, Connector end) {
-    if (start instanceof StateFigure)
-      ((StateFigure) start.getOwner()).removeSuccessor(_data);
-    else if (start instanceof StartStateFigure)
-      ((StartStateFigure) start.getOwner()).removeSuccessor(_data);
-    else if (start instanceof EndStateFigure)
-      ((EndStateFigure) start.getOwner()).removeSuccessor(_data);
-    if (end instanceof StateFigure)
-      ((StateFigure) start.getOwner()).removePredecessor(_data);
-    else if (end instanceof StartStateFigure)
-      ((StartStateFigure) start.getOwner()).removePredecessor(_data);
-    else if (end instanceof EndStateFigure)
-      ((EndStateFigure) end.getOwner()).removePredecessor(_data);
+  	if (!(start instanceof StateFigure) || !(end instanceof StateFigure))
+  		return;
+  	
+  	StateFigure sf = (StateFigure) start;
+  	StateFigure ef = (StateFigure) end;
+  	sf.removeSuccessor(_data);
+  	ef.removePredecessor(_data);
   }
 
   @Override
   protected void handleConnect(Connector start, Connector end) {
     Figure startFigure = start.getOwner();
     Figure endFigure = end.getOwner();
-
+    
     if (startFigure instanceof StateFigure) {
       _data.setPrev(((StateFigure) startFigure).getEntity());
       ((StateFigure) startFigure).addSuccessor(_data);

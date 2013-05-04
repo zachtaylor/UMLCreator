@@ -216,7 +216,10 @@ public class StateEntity extends AbstractEntity {
 
     _parent = parent;
     _figure.willChange();
-    _figure.set(AttributeKeys.FILL_COLOR, parent.getColor());
+    if(parent == null)
+    	_figure.set(AttributeKeys.FILL_COLOR, Color.black);
+    else
+    	_figure.set(AttributeKeys.FILL_COLOR, parent.getColor());
     _figure.changed();
   }
 

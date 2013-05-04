@@ -96,13 +96,21 @@ public class ApplicationModel extends DefaultApplicationModel {
       // warning
     }
     start.add(s);
-    // This is necessary for error checking. Im not sure if the simulator
-    // or some other thing doesnt want this to function this way?
-    bucket.add(s);
   }
 
   public static StateEntity getStartEntity() {
     return start.get(0);
+  }
+  
+  public static void removeState(StateEntity s) {
+    if(s instanceof StartStateEntity)
+    	start.remove(s);
+    else
+      bucket.remove(s);
+  }
+  
+  public static List<StateEntity> getStartStates() {
+  	return start;
   }
 
   /** Creates a new instance. */
